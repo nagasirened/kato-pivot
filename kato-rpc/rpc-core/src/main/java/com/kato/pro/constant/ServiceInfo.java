@@ -1,4 +1,4 @@
-package constant;
+package com.kato.pro.constant;
 
 import lombok.Data;
 
