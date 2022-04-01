@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: kato-recommend
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        file-extension: yaml
+      server-addr: nacos-server:8848
+redission:
+  addr: redis://localhost:6379/
+  password:
+
