@@ -1,8 +1,9 @@
 package com.kato.pro.loadbalance;
 
+import cn.hutool.core.collection.CollUtil;
+
 import java.util.List;
 
-import static com.kato.pro.loadbalance.BalanceUtils.valid;
 
 /**
  * @ClassName LoadBalancer
@@ -16,9 +17,13 @@ public interface LoadBalancer<ServiceInfo> {
     ServiceInfo chooseOne(List<ServiceInfo> services);
 
     default ServiceInfo choose(List<ServiceInfo> services) {
-        if (!valid(services)) {
+        if (!requireNotEmpty(services)) {
             return null;
         }
         return chooseOne(services);
+    }
+
+    default <T> boolean requireNotEmpty(List<T> services) {
+        return !CollUtil.isEmpty(services);
     }
 }

@@ -2,7 +2,13 @@ package com.kato.pro.rpc;
 
 import cn.hutool.core.convert.Convert;
 import com.kato.pro.constant.ConstantClass;
+import com.kato.pro.constant.MsgTypeEnum;
+import com.kato.pro.constant.RpcRequest;
+import com.kato.pro.constant.RpcResponse;
 import com.kato.pro.rpc.entity.MessageHeader;
+import com.kato.pro.rpc.entity.RpcProtocol;
+import com.kato.pro.serial.Serializer;
+import com.kato.pro.serial.SerializerEnum;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -58,8 +64,30 @@ public class DeCodec extends ByteToMessageDecoder {
         MessageHeader header = MessageHeader.builder()
                 .magic(magic).version(version).serialization(serializerType).msgType(msgType)
                 .status(status).requestId(Convert.toStr(reqId)).msgLen(dataLength).build();
-
-
+        // 获取反编译
+        Serializer serializer = SerializerEnum.getSerializerByType(serializerType);
+        MsgTypeEnum msgTypeEnum = MsgTypeEnum.getByType(msgType);
+        if (Objects.isNull(msgTypeEnum)) {
+            throw new RuntimeException("不存在的类型");
+        }
+        switch (msgTypeEnum) {
+            case REQUEST:
+                RpcProtocol<RpcRequest> reqProtocol = new RpcProtocol<>();
+                reqProtocol.setHeader(header);
+                RpcRequest rpcRequest = serializer.deserialize(data, RpcRequest.class);
+                reqProtocol.setData(rpcRequest);
+                list.add(reqProtocol);
+                break;
+            case RESPONSE:
+                RpcProtocol<RpcResponse> respProtocol = new RpcProtocol<>();
+                RpcResponse rpcResponse = serializer.deserialize(data, RpcResponse.class);
+                respProtocol.setData(rpcResponse);
+                respProtocol.setHeader(header);
+                list.add(respProtocol);
+                break;
+            default:
+                throw new RuntimeException("不存在的类型");
+        }
     }
 
 }
