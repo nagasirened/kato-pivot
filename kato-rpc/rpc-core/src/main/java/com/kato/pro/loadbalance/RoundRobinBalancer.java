@@ -1,5 +1,7 @@
 package com.kato.pro.loadbalance;
 
+import com.kato.pro.constant.ServiceInfo;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date 2022/4/1 2:40 下午
  * @Version 1.0
  */
-public class RoundRobinBalancer<ServiceInfo> implements LoadBalancer<ServiceInfo> {
+public class RoundRobinBalancer implements LoadBalancer {
 
     AtomicInteger counter = new AtomicInteger(0);
 

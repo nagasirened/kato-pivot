@@ -1,6 +1,7 @@
 package com.kato.pro.loadbalance;
 
 import cn.hutool.core.collection.CollUtil;
+import com.kato.pro.constant.ServiceInfo;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  * @Date 2022/4/1 2:36 下午
  * @Version 1.0
  */
-public interface LoadBalancer<ServiceInfo> {
+public interface LoadBalancer {
 
-    ServiceInfo chooseOne(List<ServiceInfo> services);
+    public ServiceInfo chooseOne(List<ServiceInfo> services);
 
     default ServiceInfo choose(List<ServiceInfo> services) {
         if (!requireNotEmpty(services)) {
