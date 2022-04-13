@@ -1,29 +1,24 @@
-package com.kato.pro.discovery;
+package com.kato.pro.register;
 
 import cn.hutool.core.collection.CollUtil;
 import com.kato.pro.constant.ConstantClass;
 import com.kato.pro.constant.ServiceInfo;
-import com.kato.pro.loadbalance.LoadBalancer;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
-import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-public class RedissonDiscoveryService implements DiscoveryService{
+public class RedissonRegisterService implements RegisterService {
 
     private RedissonClient redissonClient;
 
-    private final LoadBalancer loadBalancer;
-
-    public RedissonDiscoveryService(String serverAddress, LoadBalancer loadBalancer) {
-        this.loadBalancer = loadBalancer;
+    public RedissonRegisterService(String serverAddress) {
         try {
             AtomicInteger count = new AtomicInteger(0);
             while (count.addAndGet(1) <= 3) {
@@ -42,21 +37,22 @@ public class RedissonDiscoveryService implements DiscoveryService{
         }
     }
 
-    /**
-     * 没弄明白RRemoteService，不好使，直接使用 ListMultimap
-     */
     @Override
-    public ServiceInfo discover(String serviceName) {
-        RList<ServiceInfo> rList = redissonClient.getList(ConstantClass.REDISSON_REMOTE_SERVICE_PREFIX + serviceName);
-        List<ServiceInfo> serviceInfoList = rList.readAll();
-        if (CollUtil.isEmpty(serviceInfoList)) {
-            return null;
-        }
-        return loadBalancer.chooseOne(serviceInfoList);
+    public void register(ServiceInfo serviceInfo) {
+        RList<Object> rList = redissonClient.getList(ConstantClass.REDISSON_REMOTE_SERVICE_PREFIX);
+        rList.add(serviceInfo);
     }
 
-    @PreDestroy
-    public void destroy() {
-        this.redissonClient.shutdown();
+    @Override
+    public void unregister(ServiceInfo serviceInfo) {
+        RList<Object> rList = redissonClient.getList(ConstantClass.REDISSON_REMOTE_SERVICE_PREFIX);
+        rList.remove(serviceInfo);
     }
+
+    public ServiceInfo discover(String serviceName) {
+        RList<ServiceInfo> rList = redissonClient.getList("REMOTE_SERVICE_PREFIX" + serviceName);
+        List<ServiceInfo> serviceInfoList = rList.readAll();
+        return null;
+    }
+
 }

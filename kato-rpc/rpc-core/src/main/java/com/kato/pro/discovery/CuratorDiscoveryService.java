@@ -1,6 +1,7 @@
 package com.kato.pro.discovery;
 
 import cn.hutool.core.collection.CollUtil;
+import com.kato.pro.constant.ConstantClass;
 import com.kato.pro.constant.ServiceInfo;
 import com.kato.pro.loadbalance.LoadBalancer;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CuratorDiscoveryService implements DiscoveryService {
 
-    public static final String BASE_PATH = "/kato_discover";
-
     /** curator 服务注册器 */
     private ServiceDiscovery<ServiceInfo> serviceDiscovery;
     /** 负载均衡器 */
@@ -39,12 +38,12 @@ public class CuratorDiscoveryService implements DiscoveryService {
             // 启动服务注册器
             this.serviceDiscovery = ServiceDiscoveryBuilder.builder(ServiceInfo.class)
                     .client(client)
-                    .basePath(BASE_PATH)
+                    .basePath(ConstantClass.CURATOR_BASE_PATH)
                     .serializer(new JsonInstanceSerializer<>(ServiceInfo.class))
                     .build();
             serviceDiscovery.start();
         } catch (Exception e) {
-            log.error("Curator ServiceDiscovery error, message: {}", e.getMessage(), e);
+            log.error("CuratorDiscoveryService, Curator ServiceDiscovery error, message: {}", e.getMessage(), e);
         }
     }
 

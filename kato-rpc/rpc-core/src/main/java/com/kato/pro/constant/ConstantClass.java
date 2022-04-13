@@ -1,5 +1,9 @@
 package com.kato.pro.constant;
 
+import com.alibaba.fastjson.serializer.JSONSerializable;
+import org.apache.curator.x.discovery.details.InstanceSerializer;
+import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
+
 /**
  * @ClassName ConstantClass
  * @Author Zeng Guangfu
@@ -19,5 +23,13 @@ public class ConstantClass {
      */
     public static final int LESS_MSG_LENGTH = 29;
 
+    /**
+     * curator basePath
+     */
+    public static final String CURATOR_BASE_PATH = "/kato_discover";
 
+    /**
+     * redisson服务注册地址前缀
+     */
+    public static final String REDISSON_REMOTE_SERVICE_PREFIX = "servicePrefix:";
 }
