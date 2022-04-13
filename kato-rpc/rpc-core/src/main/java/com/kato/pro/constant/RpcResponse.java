@@ -15,12 +15,7 @@ import java.io.Serializable;
 public class RpcResponse implements Serializable {
 
     /**
-     * code
-     */
-    private Integer code;
-
-    /**
-     * 信息
+     * 信息, 有错误时发生
      */
     private String message;
 

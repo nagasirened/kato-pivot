@@ -2,10 +2,10 @@ package com.kato.pro.rpc;
 
 import cn.hutool.core.convert.Convert;
 import com.kato.pro.constant.ConstantClass;
-import com.kato.pro.constant.MsgTypeEnum;
 import com.kato.pro.constant.RpcRequest;
 import com.kato.pro.constant.RpcResponse;
 import com.kato.pro.rpc.entity.MessageHeader;
+import com.kato.pro.rpc.entity.MessageType;
 import com.kato.pro.rpc.entity.RpcProtocol;
 import com.kato.pro.serial.Serializer;
 import com.kato.pro.serial.SerializerEnum;
@@ -66,7 +66,7 @@ public class DeCodec extends ByteToMessageDecoder {
                 .status(status).requestId(Convert.toStr(reqId)).msgLen(dataLength).build();
         // 获取反编译
         Serializer serializer = SerializerEnum.getSerializerByType(serializerType);
-        MsgTypeEnum msgTypeEnum = MsgTypeEnum.getByType(msgType);
+        MessageType msgTypeEnum = MessageType.getByType(msgType);
         if (Objects.isNull(msgTypeEnum)) {
             throw new RuntimeException("不存在的类型");
         }

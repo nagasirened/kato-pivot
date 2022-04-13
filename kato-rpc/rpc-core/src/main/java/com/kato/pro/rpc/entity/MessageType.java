@@ -15,7 +15,7 @@ public enum MessageType {
         this.type = type;
     }
 
-    MessageType getByType(byte msgType) {
+    public static MessageType getByType(byte msgType) {
         for (MessageType messageType : MessageType.values()) {
             if (messageType.getType() == msgType) {
                 return messageType;
