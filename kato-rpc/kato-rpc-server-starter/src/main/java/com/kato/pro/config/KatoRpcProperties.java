@@ -19,5 +19,5 @@ public class KatoRpcProperties {
     private String appName;
 
     /** 端口 */
-    private String port;
+    private Integer port;
 }

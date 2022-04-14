@@ -12,12 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetAddress;
 
 @Slf4j
-public class NettyServer {
+public class NettyServer implements RpcServer {
 
     /**
      * 启动服务端
      * @param port  netty 端口
      */
+    @Override
     public void init(Integer port) {
         NioEventLoopGroup boss = new NioEventLoopGroup(1);
         NioEventLoopGroup worker = new NioEventLoopGroup(Math.max(3, Runtime.getRuntime().availableProcessors() >> 1));
@@ -30,9 +31,9 @@ public class NettyServer {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new EnCodec<>());
-                            pipeline.addLast(new DeCodec());
-                            pipeline.addLast(new KatoRequestHandler());
+                            pipeline.addLast(new EnCodec<>())
+                                    .addLast(new DeCodec())
+                                    .addLast(new KatoRequestHandler());
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);

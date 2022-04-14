@@ -11,6 +11,9 @@ import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
+import java.io.IOException;
+import java.util.List;
+
 @Slf4j
 public class CuratorRegisterService implements RegisterService {
 
@@ -51,10 +54,15 @@ public class CuratorRegisterService implements RegisterService {
 
     private ServiceInstance<ServiceInfo> packageServiceInstance(ServiceInfo serviceInfo) throws Exception {
         return ServiceInstance.<ServiceInfo>builder()
-                .name(serviceInfo.getServiceName())
+                .name(serviceInfo.getServiceVersion())
                 .address(serviceInfo.getAddress())
                 .port(serviceInfo.getPort())
                 .payload(serviceInfo)
                 .build();
+    }
+
+    @Override
+    public void destroy(List<String> serviceVersionList) throws IOException {
+        this.serviceDiscovery.close();
     }
 }

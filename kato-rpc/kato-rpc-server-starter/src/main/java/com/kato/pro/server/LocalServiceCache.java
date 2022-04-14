@@ -1,5 +1,7 @@
 package com.kato.pro.server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,4 +21,7 @@ public final class LocalServiceCache {
         return beanMap.get(serviceVersion);
     }
 
+    public static List<String> getAllKeys() {
+        return new ArrayList<>(beanMap.keySet());
+    }
 }

@@ -4,6 +4,8 @@ package com.kato.pro.config;
 import com.kato.pro.register.CuratorRegisterService;
 import com.kato.pro.register.RedissonRegisterService;
 import com.kato.pro.register.RegisterService;
+import com.kato.pro.server.NettyServer;
+import com.kato.pro.server.RpcServer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,4 +32,9 @@ public class KatoRpcServerConfig {
         }
     }
 
+    @Bean
+    @ConditionalOnMissingBean(RpcServer.class)
+    public RpcServer rpcServer() {
+        return new NettyServer();
+    }
 }

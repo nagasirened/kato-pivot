@@ -21,9 +21,9 @@ public class ServiceInfo implements Serializable {
     private String applicationName;
 
     /**
-     * 服务名称
+     * 服务名称 + 版本号
      */
-    private String serviceName;
+    private String serviceVersion;
 
     /**
      * 版本号
