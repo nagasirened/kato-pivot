@@ -6,7 +6,6 @@ import com.kato.pro.constant.ServiceInfo;
 import com.kato.pro.register.RegisterService;
 import com.kato.pro.server.LocalServiceCache;
 import com.kato.pro.server.RpcServer;
-import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -24,7 +23,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
 
     private final KatoRpcProperties properties;
 
-    RpcServerProvider(RegisterService registerService, RpcServer rpcServer, KatoRpcProperties properties) {
+    public RpcServerProvider(RegisterService registerService, RpcServer rpcServer, KatoRpcProperties properties) {
         this.registerService = registerService;
         this.rpcServer = rpcServer;
         this.properties = properties;
