@@ -59,10 +59,4 @@ public class RedissonRegisterService implements RegisterService {
         }
     }
 
-    public ServiceInfo discover(String serviceName) {
-        RList<ServiceInfo> rList = redissonClient.getList("REMOTE_SERVICE_PREFIX" + serviceName);
-        List<ServiceInfo> serviceInfoList = rList.readAll();
-        return null;
-    }
-
 }

@@ -33,13 +33,13 @@ public enum SerializerEnum {
         this.serializer = serializer;
     }
 
-    public static Serializer getSerializerByName(String name) {
+    public static SerializerEnum getSerializerByName(String name) {
         for (SerializerEnum item : SerializerEnum.values()) {
             if (StrUtil.equalsIgnoreCase(item.name(), name)) {
-                return item.getSerializer();
+                return item;
             }
         }
-        return HESSIAN.serializer;
+        return HESSIAN;
     }
 
     public static Serializer getSerializerByType(byte type) {

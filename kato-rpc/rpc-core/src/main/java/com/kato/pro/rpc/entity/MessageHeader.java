@@ -1,7 +1,13 @@
 package com.kato.pro.rpc.entity;
 
+import cn.hutool.core.util.IdUtil;
+import com.kato.pro.constant.ConstantClass;
+import com.kato.pro.serial.SerializerEnum;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 /**
  * @ClassName MessageHeader
@@ -56,4 +62,16 @@ public class MessageHeader {
      *  数据长度
      */
     private int msgLen;
+
+    public static MessageHeader getInstance(String serializerName) {
+        return MessageHeader.builder()
+                .magic(ConstantClass.MAGIC_NUMBER)
+                .version(ConstantClass.VERSION)
+                .serialization(SerializerEnum.getSerializerByName(serializerName).getSerializerType())
+                .status(ResultStatus.FAIL.getCode())
+                .msgType(MessageType.REQUEST.getType())
+                .requestId(IdUtil.getSnowflake().nextIdStr())
+                .build();
+    }
+
 }

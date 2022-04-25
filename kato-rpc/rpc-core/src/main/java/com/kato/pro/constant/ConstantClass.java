@@ -19,6 +19,11 @@ public class ConstantClass {
     public static final short MAGIC_NUMBER = 0x01;
 
     /**
+     * 协议版本号
+     */
+    public static final byte VERSION = 0x1;
+
+    /**
      * 消息头的最低长度
      */
     public static final int LESS_MSG_LENGTH = 29;

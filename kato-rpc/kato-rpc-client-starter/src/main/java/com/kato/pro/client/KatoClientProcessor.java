@@ -2,7 +2,8 @@ package com.kato.pro.client;
 
 import cn.hutool.core.util.StrUtil;
 import com.kato.pro.annotation.KatoResource;
-import jodd.util.StringUtil;
+import com.kato.pro.config.KatoClientProperties;
+import com.kato.pro.discovery.DiscoveryService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Proxy;
 import java.util.Objects;
 
 /**
@@ -20,6 +22,20 @@ import java.util.Objects;
 public class KatoClientProcessor implements BeanFactoryPostProcessor, ApplicationContextAware {
 
     private ApplicationContext applicationContext;
+
+    private DiscoveryService discoveryService;
+
+    private KatoClientProperties clientProperties;
+
+    public KatoClientProcessor(DiscoveryService discoveryService, KatoClientProperties clientProperties) {
+        this.discoveryService = discoveryService;
+        this.clientProperties = clientProperties;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -33,16 +49,17 @@ public class KatoClientProcessor implements BeanFactoryPostProcessor, Applicatio
                     if (Objects.nonNull(katoResource)) {
                         Object bean = applicationContext.getBean(clazz);
                         field.setAccessible(true);
-
-
+                        field.set(bean, Proxy.newProxyInstance(
+                                          field.getType().getClassLoader(),
+                                          new Class[]{field.getType()},
+                                          new ClientStubInvocationHandler(discoveryService, field.getType(), katoResource.version(), clientProperties)
+                                        )
+                        );
                     }
                 });
             }
         }
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }
+
