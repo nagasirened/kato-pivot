@@ -59,6 +59,7 @@
         <fast-json.version>1.2.41</fast-json.version>
         <guava.version>31.1-jre</guava.version>
         <opentracing.version>3.3.1</opentracing.version>
+        <aws-java-sdk-s3.version>1.12.63</aws-java-sdk-s3.version>
     </properties>
 
     <repositories>
@@ -275,6 +276,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>8.0.20</version>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-s3</artifactId>
+                <version>${aws-java-sdk-s3.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
