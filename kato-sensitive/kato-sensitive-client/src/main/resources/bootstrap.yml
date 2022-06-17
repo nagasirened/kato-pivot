@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: sensitive-client
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: nacos-server:8848
+        namespace: 149f2d06-67cf-4e07-bd30-3efb718662eb
+        group: kato-group
+        #extension-configs:
+        #  - { dataId: 'kato-sensitive-config.yaml', group: "DEFAULT_GROUP", refresh: true }

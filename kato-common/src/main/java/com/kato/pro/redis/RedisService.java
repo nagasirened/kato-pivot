@@ -11,7 +11,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationUtils;
 import org.springframework.util.Assert;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -22,11 +21,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisService {
 
-	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
 
-	@Resource
 	private RedisLockUtil redisLockUtil;
+
+	public RedisService( RedisLockUtil redisLockUtil ) {
+		this.redisLockUtil = redisLockUtil;
+		this.redisTemplate = redisLockUtil.getRedisTemplate();
+	}
 
 	/**
 	 * 指定缓存失效时间

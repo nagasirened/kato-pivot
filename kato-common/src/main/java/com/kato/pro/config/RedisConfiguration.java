@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kato.pro.redis.KatoRedisProperties;
 import com.kato.pro.redis.RedisLockUtil;
 import com.kato.pro.redis.RedisService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,15 +51,17 @@ public class RedisConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBean(name = "redisService")
-	public RedisService redisService() {
-		return new RedisService();
+	@ConditionalOnBean(name = "redisLockUtil")
+	public RedisLockUtil redisLockUtil(@Autowired RedisTemplate redisTemplate) {
+		return new RedisLockUtil(redisTemplate);
 	}
 
 	@Bean
-	@ConditionalOnBean(name = "redisLockUtil")
-	public RedisLockUtil redisLockUtil(RedisTemplate redisTemplate) {
-		return new RedisLockUtil(redisTemplate);
+	@ConditionalOnBean(name = "redisService")
+	public RedisService redisService(RedisLockUtil redisLockUtil) {
+		return new RedisService(redisLockUtil);
 	}
+
+
 
 }

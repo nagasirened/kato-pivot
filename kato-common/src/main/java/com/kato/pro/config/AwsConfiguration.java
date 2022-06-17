@@ -27,7 +27,7 @@ public class AwsConfiguration {
     @Primary
     @ConditionalOnProperty(prefix = "kato.aws")
     public AwsProperties awsProperties() {
-        return awsProperties();
+        return new AwsProperties();
     }
 
     @Bean
