@@ -16,7 +16,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -61,4 +60,5 @@ public class RedisConfiguration {
 	public RedisLockUtil redisLockUtil(RedisTemplate redisTemplate) {
 		return new RedisLockUtil(redisTemplate);
 	}
+
 }

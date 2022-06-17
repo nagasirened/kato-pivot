@@ -1,4 +1,4 @@
-package com.kato.pro.aws;
+package com.kato.pro.service;
 
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.S3Object;

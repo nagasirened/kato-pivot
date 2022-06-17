@@ -1,7 +1,6 @@
-package com.kato.pro.aws;
+package com.kato.pro.service;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
 
