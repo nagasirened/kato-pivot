@@ -21,7 +21,7 @@ public class OssClientFactory extends BaseKeyedPooledObjectFactory<String, OSS> 
      */
     @Override
     public OSS create(String s) throws Exception {
-        return new OSSClientBuilder().build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySceret());
+        return new OSSClientBuilder().build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
     }
 
     /**

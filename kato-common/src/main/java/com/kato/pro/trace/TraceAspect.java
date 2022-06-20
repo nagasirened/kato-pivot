@@ -1,3 +1,4 @@
+/*
 package com.kato.pro.trace;
 
 import cn.hutool.core.util.StrUtil;
@@ -25,9 +26,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+*/
 /**
  * 使用前添加注解  @EnableAspectJAutoProxy
- */
+ *//*
+
 @Slf4j
 @Aspect
 @Order(-1)
@@ -39,11 +42,15 @@ public class TraceAspect {
     @Value("{trace.skip.pattern}")
     private Pattern skipPattern;
 
-    /**  controller 方法打点  */
+    */
+/**  controller 方法打点  *//*
+
     @Pointcut("execution(* com.kato.pro.controller.*.*(..))")
     public void traceController() {}
 
-    /**  service 方法打点  */
+    */
+/**  aws 方法打点  *//*
+
     @Pointcut("execution(* com.kato.pro..impl..*(..))")
     public void traceService() {}
 
@@ -115,9 +122,11 @@ public class TraceAspect {
         return StrUtil.equalsAnyIgnoreCase(className, whiteClassArray);
     }
 
-    /**
+    */
+/**
      * 返回false代表跳过日志，返回true代表要打印日志
-     */
+     *//*
+
     private boolean isTraced(String methodName, String className, ProceedingJoinPoint proceedingJoinPoint) {
         // 自定义不打印日志的接口
         if (customSkip(methodName, className)) {
@@ -136,9 +145,11 @@ public class TraceAspect {
         }
     }
 
-    /**
+    */
+/**
      * 自由拓展要禁止打印的方法
-     */
+     *//*
+
     private boolean customSkip(String methodName, String className) {
         return StrUtil.equalsIgnoreCase(methodName, "doFilter") && StrUtil.equalsIgnoreCase(className, "com.ky.common.web.UserDefinedFilter");
     }
@@ -165,3 +176,4 @@ public class TraceAspect {
 
 
 }
+*/

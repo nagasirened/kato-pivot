@@ -1,4 +1,4 @@
-package com.kato.pro.service;
+package com.kato.pro.aws;
 
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.S3Object;
@@ -13,11 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
 @RequestMapping("/aws")
 public class AwsEndpoint {
 
     private final AwsTemplate template;
+
+    public AwsEndpoint(AwsTemplate template) {
+        this.template = template;
+    }
+
 
     /**
      * Bucket Endpoints

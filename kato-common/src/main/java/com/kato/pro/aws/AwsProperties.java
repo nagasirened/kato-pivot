@@ -1,4 +1,4 @@
-package com.kato.pro.service;
+package com.kato.pro.aws;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.kato.pro.service;
+package com.kato.pro.aws;
 
 import com.amazonaws.services.s3.model.*;
 import java.io.InputStream;

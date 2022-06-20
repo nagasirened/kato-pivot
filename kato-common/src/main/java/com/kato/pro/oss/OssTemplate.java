@@ -1,7 +1,9 @@
 package com.kato.pro.oss;
 
-public interface OssTemplate {
 
+import com.aliyun.oss.OSS;
+
+public interface OssTemplate {
 
 
 }

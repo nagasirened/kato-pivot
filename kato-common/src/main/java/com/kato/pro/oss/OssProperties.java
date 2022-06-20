@@ -13,7 +13,7 @@ public class OssProperties {
 
     private String accessKeyId;
 
-    private String accessKeySceret;
+    private String accessKeySecret;
 
     private String bucketName;
 
