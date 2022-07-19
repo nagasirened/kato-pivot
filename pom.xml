@@ -11,7 +11,6 @@
         <module>kato-search</module>
         <module>kato-common</module>
         <module>kato-core</module>
-        <module>kato-redisson</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
