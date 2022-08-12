@@ -2,9 +2,11 @@ package com.kato.pro.props;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.base.Splitter;
 import org.redisson.config.Config;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum RedissonType {
 
@@ -12,7 +14,7 @@ public enum RedissonType {
         @Override
         public Config pack(RedissonProperties properties) {
             Config config = new Config();
-            config.useSingleServer().setAddress(getAddress(properties)[0] );
+            config.useSingleServer().setDatabase(getDb(properties)).setAddress(getAddress(properties)[0] );
             return config;
         }
     },
@@ -32,6 +34,7 @@ public enum RedissonType {
             Config config = new Config();
             config.useReplicatedServers()
                     .setScanInterval(2000)
+                    .setDatabase(getDb(properties))
                     .addNodeAddress(getAddress(properties));
             return config;
         }
@@ -42,6 +45,7 @@ public enum RedissonType {
             Config config = new Config();
             config.useSentinelServers()
                     .setScanInterval(2000)
+                    .setDatabase(getDb(properties))
                     .addSentinelAddress(getAddress(properties));
             return config;
         }
@@ -57,6 +61,7 @@ public enum RedissonType {
                 addresses = Arrays.stream(addresses).skip(1).toArray(String[]::new);
             }
             config.useMasterSlaveServers()
+                    .setDatabase(getDb(properties))
                     .setMasterAddress(masterAddress)
                     .addSlaveAddress(addresses);
             return config;
@@ -69,14 +74,15 @@ public enum RedissonType {
     public String[] getAddress(RedissonProperties properties) {
         String addresses = properties.getAddress();
         if (StrUtil.isEmpty( addresses )) {
-            throw new RuntimeException( "地址不存在" );
+            throw new IllegalArgumentException( "redisson address not exist" );
         }
-        String[] split = addresses.split(",");
+        List<String> split = Splitter.on(",").trimResults().splitToList(addresses);
         String prefix = properties.getUseSSL() ? RedissonConstant.SSL_PREFIX : RedissonConstant.NOR_PREFIX;
-        return Arrays.stream(split).map(address -> prefix + address).toArray(String[]::new);
+        return split.stream().map(address -> prefix + address).toArray(String[]::new);
     }
 
-    public Integer getDb(Integer db) {
+    public Integer getDb(RedissonProperties redissonProperties) {
+        Integer db = redissonProperties.getDb();
         return ObjectUtil.isNull( db ) ? 0 : db;
     }
 }
