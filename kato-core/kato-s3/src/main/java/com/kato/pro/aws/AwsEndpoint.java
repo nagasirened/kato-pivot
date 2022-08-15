@@ -1,25 +1,28 @@
 package com.kato.pro.aws;
 
+import cn.hutool.core.util.IdUtil;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
+@Slf4j
 @RequestMapping("/aws")
 public class AwsEndpoint {
 
-    private final AwsTemplate template;
+    private final S3Template s3Template;
 
-    public AwsEndpoint(AwsTemplate template) {
-        this.template = template;
+    public AwsEndpoint(S3Template s3Template) {
+        this.s3Template = s3Template;
     }
 
 
@@ -30,28 +33,28 @@ public class AwsEndpoint {
     @PostMapping("/bucket/{bucketName}")
     public Bucket createBucket(@PathVariable String bucketName) {
 
-        template.createBucket(bucketName);
-        return template.getBucketByName(bucketName).get();
+        s3Template.createBucket(bucketName);
+        return s3Template.getBucketByName(bucketName).get();
 
     }
 
     @SneakyThrows
     @GetMapping("/bucket")
     public List<Bucket> getBuckets() {
-        return template.getAllBucket();
+        return s3Template.getAllBucket();
     }
 
     @SneakyThrows
     @GetMapping("/bucket/{bucketName}")
     public Bucket getBucket(@PathVariable String bucketName) {
-        return template.getBucketByName(bucketName).orElseThrow(() -> new IllegalArgumentException("Bucket Name not found!"));
+        return s3Template.getBucketByName(bucketName).orElseThrow(() -> new IllegalArgumentException("Bucket Name not found!"));
     }
 
     @SneakyThrows
     @DeleteMapping("/bucket/{bucketName}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteBucket(@PathVariable String bucketName) {
-        template.removeBucket(bucketName);
+        s3Template.removeBucket(bucketName);
     }
 
     /**
@@ -61,8 +64,8 @@ public class AwsEndpoint {
     @PostMapping("/object/{bucketName}")
     public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName) {
         String name = object.getOriginalFilename();
-        template.uploadObject(bucketName, name, object.getInputStream(), object.getSize(), object.getContentType());
-        return template.getObject(bucketName, name);
+        s3Template.uploadObject(bucketName, name, object.getInputStream(), object.getSize(), object.getContentType());
+        return s3Template.getObject(bucketName, name);
 
     }
 
@@ -70,15 +73,15 @@ public class AwsEndpoint {
     @PostMapping("/object/{bucketName}/{objectName}")
     public S3Object createObject(@RequestBody MultipartFile object, @PathVariable String bucketName,
                                  @PathVariable String objectName) {
-        template.uploadObject(bucketName, objectName, object.getInputStream(), object.getSize(), object.getContentType());
-        return template.getObject(bucketName, objectName);
+        s3Template.uploadObject(bucketName, objectName, object.getInputStream(), object.getSize(), object.getContentType());
+        return s3Template.getObject(bucketName, objectName);
 
     }
 
     @SneakyThrows
     @GetMapping("/object/{bucketName}/{objectName}")
     public List<S3ObjectSummary> filterObject(@PathVariable String bucketName, @PathVariable String objectName) {
-        return template.getObjectsByPrefix(bucketName, objectName);
+        return s3Template.getObjectsByPrefix(bucketName, objectName);
     }
 
     @SneakyThrows
@@ -88,7 +91,7 @@ public class AwsEndpoint {
         Map<String, Object> responseBody = new HashMap<>(8);
         responseBody.put("bucket", bucketName);
         responseBody.put("object", objectName);
-        responseBody.put("url", template.getObjectUrl(bucketName, objectName, expires));
+        responseBody.put("url", s3Template.getObjectUrl(bucketName, objectName, expires));
         responseBody.put("expires", expires);
         return responseBody;
     }
@@ -97,7 +100,27 @@ public class AwsEndpoint {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/object/{bucketName}/{objectName}/")
     public void deleteObject(@PathVariable String bucketName, @PathVariable String objectName) {
-        template.removeObject(bucketName, objectName);
+        s3Template.removeObject(bucketName, objectName);
     }
 
+    @SneakyThrows
+    @GetMapping("/object/{bucketName}/{objectName}")
+    public void downloadObject(@PathVariable String bucketName, @PathVariable String objectName, HttpServletResponse response) {
+        S3Object s3Object = s3Template.getObject(bucketName, objectName);
+        if (Objects.isNull(s3Object)) {
+            throw new IllegalArgumentException("file not exist");
+        }
+        response.addHeader("Content-Disposition", "attachment; filename=" + IdUtil.fastSimpleUUID() + ".csv");
+        byte[] buffer = new byte[1024]; int length = 0;
+        try (S3ObjectInputStream inputStream = s3Object.getObjectContent();
+             ServletOutputStream out = response.getOutputStream() ){
+            while ( (length = inputStream.read( buffer )) != -1 ) {
+                out.write( buffer, 0, length );
+            }
+            inputStream.close();
+            out.flush();
+        } catch (Exception e) {
+            log.info( "downloadS3File fail, bucket: {}, objectName: {}", bucketName, objectName, e );
+        }
+    }
 }

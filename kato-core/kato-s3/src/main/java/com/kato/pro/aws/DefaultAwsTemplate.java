@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import lombok.Cleanup;
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayInputStream;
@@ -14,14 +13,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
-public class DefaultAwsTemplate implements AwsTemplate {
-
-    private final AwsProperties awsProperties;
+public class DefaultAwsTemplate implements S3Template {
 
     private final AmazonS3 amazonS3;
 
-    public DefaultAwsTemplate(AwsProperties awsProperties, AmazonS3 amazonS3) {
-        this.awsProperties = awsProperties;
+    public DefaultAwsTemplate(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
     }
 
@@ -60,8 +56,7 @@ public class DefaultAwsTemplate implements AwsTemplate {
      */
     @SneakyThrows
     public S3Object getObject(String bucketName, String objectName) {
-        @Cleanup S3Object s3Object = amazonS3.getObject(bucketName, objectName);
-        return s3Object;
+        return amazonS3.getObject(bucketName, objectName);
     }
 
     /**

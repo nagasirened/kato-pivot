@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-public interface AwsTemplate {
+public interface S3Template {
 
      List<S3ObjectSummary> getObjectsByPrefix(String bucketName, String prefix);
 

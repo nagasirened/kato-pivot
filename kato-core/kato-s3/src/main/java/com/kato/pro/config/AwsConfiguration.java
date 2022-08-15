@@ -8,9 +8,9 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.kato.pro.aws.AwsEndpoint;
-import com.kato.pro.aws.AwsProperties;
-import com.kato.pro.aws.AwsTemplate;
 import com.kato.pro.aws.DefaultAwsTemplate;
+import com.kato.pro.aws.S3Properties;
+import com.kato.pro.aws.S3Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,18 +20,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-@ConditionalOnProperty(prefix = "kato.aws", name = "enable", havingValue = "true", matchIfMissing = false)
+@ConditionalOnProperty(prefix = "kato.s3", name = "enable", havingValue = "true")
 public class AwsConfiguration {
 
     @Bean
     @Primary
-    @ConditionalOnProperty(prefix = "kato.aws")
-    public AwsProperties awsProperties() {
-        return new AwsProperties();
+    @ConditionalOnProperty(prefix = "kato.s3")
+    public S3Properties awsProperties() {
+        return new S3Properties();
     }
 
     @Bean
-    public AmazonS3 amazonS3(@Autowired AwsProperties awsProperties) {
+    @ConditionalOnMissingBean(value = AmazonS3.class)
+    public AmazonS3 amazonS3(@Autowired S3Properties awsProperties) {
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         AwsClientBuilder.EndpointConfiguration endpointConfiguration =
                 new AwsClientBuilder.EndpointConfiguration(awsProperties.getEndpoint(), awsProperties.getRegion());
@@ -48,15 +49,14 @@ public class AwsConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(value = {AwsProperties.class, AmazonS3.class})
-    public AwsTemplate awsTemplate(@Autowired AwsProperties awsProperties,
-                                   @Autowired AmazonS3 amazonS3) {
-        return new DefaultAwsTemplate(awsProperties, amazonS3);
+    @ConditionalOnBean(value = {S3Properties.class, AmazonS3.class})
+    public S3Template awsTemplate(@Autowired AmazonS3 amazonS3) {
+        return new DefaultAwsTemplate(amazonS3);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public AwsEndpoint awsEndpoint(@Autowired AwsTemplate awsTemplate) {
-        return new AwsEndpoint(awsTemplate);
+    public AwsEndpoint awsEndpoint(@Autowired S3Template s3Template) {
+        return new AwsEndpoint(s3Template);
     }
 }

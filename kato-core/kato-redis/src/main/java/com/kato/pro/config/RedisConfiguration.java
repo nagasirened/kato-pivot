@@ -3,9 +3,6 @@ package com.kato.pro.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kato.pro.redis.KatoRedisProperties;
-import com.kato.pro.redis.RedisLockUtil;
-import com.kato.pro.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,6 +16,9 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import com.kato.pro.redis.KatoRedisProperties;
+import com.kato.pro.redis.RedisLockUtil;
+import com.kato.pro.redis.RedisService;
 
 @Configuration
 @EnableConfigurationProperties(KatoRedisProperties.class)
@@ -29,10 +29,9 @@ public class RedisConfiguration {
 	@Primary
 	@Bean(name = "redisTemplate")
 	@ConditionalOnClass(RedisOperations.class)
-	public org.springframework.data.redis.core.RedisTemplate redisTemplate(RedisConnectionFactory factory) {
-		org.springframework.data.redis.core.RedisTemplate template = new org.springframework.data.redis.core.RedisTemplate();
+	public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
+		RedisTemplate template = new RedisTemplate();
 		template.setConnectionFactory(factory);
-
 		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -63,7 +62,5 @@ public class RedisConfiguration {
 	public RedisService redisService(RedisLockUtil redisLockUtil) {
 		return new RedisService(redisLockUtil);
 	}
-
-
 
 }

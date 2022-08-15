@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class AwsProperties implements Serializable {
+public class S3Properties implements Serializable {
 
     private transient static final long serialVersionUID = 7111600914195056135L;
 

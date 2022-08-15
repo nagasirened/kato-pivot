@@ -12,13 +12,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.Resource;
 
-@Configuration
-@EnableConfigurationProperties(RedissonProperties.class)
+@EnableConfigurationProperties(value = {RedissonProperties.class})
 @ConditionalOnProperty(value = RedissonProperties.PREFIX + ".enable", havingValue = "true", matchIfMissing = true)
 public class RedissonConfiguration {
 
@@ -26,7 +24,7 @@ public class RedissonConfiguration {
     private RedissonProperties redissonProperties;
 
     /**
-     * 根据不同的redisson类型，加载对应的客户端对象
+     * 根据不同的redisson类型，加载对应的客户端对象8
      */
     @Bean
     @Order(value = 1)

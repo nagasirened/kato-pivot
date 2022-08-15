@@ -80,6 +80,11 @@
     </repositories>
 
     <dependencies>
+        <!-- 解决bootstrap.yml不生效的问题 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

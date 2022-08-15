@@ -1,0 +1,32 @@
+server:
+  port: 8001
+spring:
+  profiles:
+    active: dev
+  application:
+    name: kato-recommend
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos-server:8848
+      config:
+        enabled: true
+        file-extension: yaml
+        server-addr: nacos-server:8848
+        extension-configs:
+          - dataId: kato-retrieve.yaml
+            refresh: true
+          - dataId: kato-predict.yaml
+            refresh: true
+          - dataId: kato-rerank.yaml
+            refresh: true
+          - dataId: kato-rec-other.yaml
+            refresh: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+

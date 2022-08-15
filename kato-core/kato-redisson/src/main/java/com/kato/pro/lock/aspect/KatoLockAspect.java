@@ -1,7 +1,6 @@
 package com.kato.pro.lock.aspect;
 
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.kato.pro.lock.annotation.KatoDistributedLock;
 import com.kato.pro.lock.realize.KatoRedissonLock;
@@ -15,7 +14,6 @@ import javax.annotation.Resource;
 
 @Slf4j
 @Aspect
-@Component
 public class KatoLockAspect {
 
     @Resource
