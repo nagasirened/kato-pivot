@@ -16,6 +16,8 @@
         <module>kato-redisson</module>
         <module>kato-redis</module>
         <module>kato-s3</module>
+        <module>kato-dynamodb</module>
+        <module>kato-base</module>
     </modules>
 
     <properties>
