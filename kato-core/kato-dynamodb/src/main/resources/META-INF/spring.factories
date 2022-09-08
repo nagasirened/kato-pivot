@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
-  com.kato.pro.config.DynamoDBConfiguration
+  com.kato.pro.dynamodb.config.DynamoDBConfiguration

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
-  com.kato.pro.config.RedisConfiguration
+  com.kato.pro.redis.config.RedisConfiguration

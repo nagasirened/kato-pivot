@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
   com.kato.pro.RedisConfiguration, \
-  com.kato.pro.config.AwsConfiguration
+  AwsConfiguration
