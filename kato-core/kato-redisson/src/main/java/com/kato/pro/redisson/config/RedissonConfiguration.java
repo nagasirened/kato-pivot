@@ -42,5 +42,4 @@ public class RedissonConfiguration {
         return new KatoRedissonLock(redissonClient);
     }
 
-
 }
