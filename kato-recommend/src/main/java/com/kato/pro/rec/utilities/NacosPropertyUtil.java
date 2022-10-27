@@ -32,7 +32,11 @@ public class NacosPropertyUtil implements ApplicationContextAware {
      * @return              配置的值      true
      */
     public String getProperty(String property) {
-        return Optional.ofNullable(environment.getProperty(property)).orElse("");
+        return getProperty(property, "");
+    }
+
+    public String getProperty(String property, String defaultValue) {
+        return Optional.ofNullable(environment.getProperty(property)).orElse(defaultValue);
     }
 
     /**
