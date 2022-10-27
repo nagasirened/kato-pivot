@@ -1,4 +1,4 @@
-package com.kato.pro.utilities;
+package com.kato.pro.rec.utilities;
 
 
 import com.google.common.base.Preconditions;
@@ -27,7 +27,7 @@ public class NacosPropertyUtil implements ApplicationContextAware {
     }
 
     /**
-     * 获取Nacos配置信息
+     * 获取Nacos配置信息, 该信息作为以后A/B实验用
      * @param property      配置的key，如 kato.redisson.enabled
      * @return              配置的值      true
      */

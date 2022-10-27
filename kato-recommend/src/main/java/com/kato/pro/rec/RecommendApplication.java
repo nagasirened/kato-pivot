@@ -1,4 +1,4 @@
-package com.kato.pro;
+package com.kato.pro.rec;
 
 
 import com.kato.pro.redisson.lock.annotation.EnableRedissonLock;
