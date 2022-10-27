@@ -1,4 +1,4 @@
-package com.kato.pro.res;
+package com.kato.pro.base.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,20 +17,20 @@ public class Result<T> {
         this.t = t;
     }
 
-    public static <T> Result<T> build(ErrorCode errorCode) {
-        return build(errorCode, null);
+    public static <T> Result<T> build(CommonCode commonCode) {
+        return build(commonCode, null);
     }
 
     public static <T> Result<T> build(T t) {
-        return build(ErrorCode.OK, t);
+        return build(CommonCode.OK, t);
     }
 
     public static <T> Result<T> build(String message, T t) {
-        return new Result<>(ErrorCode.OK.getCode(), message, t);
+        return new Result<>(CommonCode.OK.getCode(), message, t);
     }
 
-    public static <T> Result<T> build(ErrorCode errorCode, T t) {
-        return new Result<>(errorCode.getCode(), errorCode.getMessage(), t);
+    public static <T> Result<T> build(CommonCode commonCode, T t) {
+        return new Result<>(commonCode.getCode(), commonCode.getMessage(), t);
     }
 
     public static <T> Result<T> build(Integer code, String message) {

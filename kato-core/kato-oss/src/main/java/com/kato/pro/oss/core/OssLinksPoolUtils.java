@@ -1,4 +1,4 @@
-package com.kato.pro.oss;
+package com.kato.pro.oss.core;
 
 import com.aliyun.oss.OSS;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ public class OssLinksPoolUtils {
 
     public static final String OSS_KEY = "kato_oss";
 
-    KeyedObjectPool<String, OSS> ossPool = null;
+    private KeyedObjectPool<String, OSS> ossPool = null;
 
     private final OssClientFactory ossClientFactory;
 
@@ -28,7 +28,7 @@ public class OssLinksPoolUtils {
         poolConfig.setMaxTotalPerKey(10);   // 单个模型最多连接数
         poolConfig.setMinIdlePerKey(0);     // 单个模型最小空闲连接数
         poolConfig.setMaxIdlePerKey(5);     // 单个模型最多空闲连接数
-        poolConfig.setMaxWaitMillis(500); // 最大等待时间
+        poolConfig.setMaxWaitMillis(500);   // 最大等待时间
         poolConfig.setLifo(true);           // 连接池存放池化对象，true放在空闲队列前面，false放在空闲队列后面
         ossPool = PoolUtils.synchronizedPool(new GenericKeyedObjectPool<>(ossClientFactory, poolConfig));
     }

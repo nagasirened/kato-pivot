@@ -1,8 +1,8 @@
-package com.kato.pro.config;
+package com.kato.pro.oss.config;
 
-import com.kato.pro.oss.OssClientFactory;
-import com.kato.pro.oss.OssLinksPoolUtils;
-import com.kato.pro.oss.OssProperties;
+import com.kato.pro.oss.core.OssClientFactory;
+import com.kato.pro.oss.core.OssLinksPoolUtils;
+import com.kato.pro.oss.core.OssProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

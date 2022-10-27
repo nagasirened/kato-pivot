@@ -1,5 +1,6 @@
-package com.kato.pro.res;
+package com.kato.pro.base.exception;
 
+import com.kato.pro.base.entity.CommonCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ public class KatoServiceException extends RuntimeException {
 
     private String message;
 
-    public KatoServiceException(ErrorCode errorCode) {
+    public KatoServiceException(CommonCode errorCode) {
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
     }
@@ -22,8 +23,7 @@ public class KatoServiceException extends RuntimeException {
     }
 
     public KatoServiceException(String message) {
-        this.code = ErrorCode.SYSTEM_ERROR.getCode();
+        this.code = CommonCode.SYSTEM_ERROR.getCode();
         this.message = message;
     }
-
 }

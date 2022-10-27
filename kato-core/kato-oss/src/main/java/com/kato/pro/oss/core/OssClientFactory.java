@@ -1,4 +1,4 @@
-package com.kato.pro.oss;
+package com.kato.pro.oss.core;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;

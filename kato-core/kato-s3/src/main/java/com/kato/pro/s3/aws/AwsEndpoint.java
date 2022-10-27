@@ -111,7 +111,8 @@ public class AwsEndpoint {
             throw new IllegalArgumentException("file not exist");
         }
         response.addHeader("Content-Disposition", "attachment; filename=" + IdUtil.fastSimpleUUID() + ".csv");
-        byte[] buffer = new byte[1024]; int length = 0;
+        byte[] buffer = new byte[1024];
+        int length;
         try (S3ObjectInputStream inputStream = s3Object.getObjectContent();
              ServletOutputStream out = response.getOutputStream() ){
             while ( (length = inputStream.read( buffer )) != -1 ) {

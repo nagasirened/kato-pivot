@@ -1,9 +1,9 @@
-package com.kato.pro.res;
+package com.kato.pro.base.entity;
 
 
 import lombok.Getter;
 
-public enum ErrorCode {
+public enum CommonCode {
 
     OK(200, "ok"),
     SYSTEM_ERROR(5000, "系统错误"),
@@ -15,7 +15,7 @@ public enum ErrorCode {
     @Getter
     private final String message;
 
-    ErrorCode(Integer code, String message) {
+    CommonCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
