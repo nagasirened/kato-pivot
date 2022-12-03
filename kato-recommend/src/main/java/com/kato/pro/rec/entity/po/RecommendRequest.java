@@ -12,10 +12,15 @@ import java.util.Map;
 @Data
 public class RecommendRequest {
 
+    /** 用户ID */
     private String userId;
+    /** 设备号 */
     private String deviceId;
+    /** maxNumber */
     private Integer topK;
+    /** ab参数 */
     private Map<String, String> abMap = new HashMap<>();
+    /** header解析的参数 */
     private HeaderDictionary headerDictionary;
 
     /**

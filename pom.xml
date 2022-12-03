@@ -9,7 +9,6 @@
         <module>kato-ad</module>
         <module>kato-sensitive</module>
         <module>kato-search</module>
-        <module>kato-common</module>
         <module>kato-core</module>
     </modules>
     <parent>

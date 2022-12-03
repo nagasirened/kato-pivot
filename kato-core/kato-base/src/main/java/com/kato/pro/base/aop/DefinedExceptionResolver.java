@@ -1,4 +1,4 @@
-package com.kato.pro.rec.config;
+package com.kato.pro.base.aop;
 
 import com.kato.pro.base.entity.CommonCode;
 import com.kato.pro.base.entity.Result;

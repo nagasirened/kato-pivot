@@ -1,4 +1,4 @@
-package com.kato.pro.rec.entity.constant;
+package com.kato.pro.base.constant;
 
 public class CommonConstant {
 

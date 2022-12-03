@@ -1,6 +1,6 @@
 package com.kato.pro.rec.utilities;
 
-import com.kato.pro.rec.entity.constant.CommonConstant;
+import com.kato.pro.base.constant.CommonConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
 import org.slf4j.MDC;
 
