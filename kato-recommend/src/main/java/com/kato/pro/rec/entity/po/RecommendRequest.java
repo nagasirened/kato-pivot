@@ -2,12 +2,14 @@ package com.kato.pro.rec.entity.po;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.kato.pro.base.entity.CommonCode;
 import com.kato.pro.base.exception.KatoServiceException;
 import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 public class RecommendRequest {
@@ -22,7 +24,9 @@ public class RecommendRequest {
     private Map<String, String> abMap = new HashMap<>();
     /** header解析的参数 */
     private HeaderDictionary headerDictionary;
-
+    /** 曝光的内容 */
+    @JSONField(deserialize = false, serialize = false)
+    private Set<String> itemShowedSet;
     /**
      * 参数解析后处理
      */

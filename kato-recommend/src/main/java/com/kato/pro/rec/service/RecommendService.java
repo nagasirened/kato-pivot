@@ -12,7 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @SuppressWarnings("all")
@@ -20,6 +22,7 @@ public class RecommendService implements CommandLineRunner {
 
     @Resource NacosPropertyUtil nacosPropertyUtil;
     @Resource StrongPushService strongPushService;
+    @Resource ItemShowedService itemShowedService;
 
     private RateLimiter rateLimiter;
 
@@ -37,10 +40,12 @@ public class RecommendService implements CommandLineRunner {
     public List<RecommendItem> recommend(RecommendRequest recommendRequest) {
         // 1. 预处理
         pretreatment(recommendRequest);
-        // 2. 冷启动内容直接获取，非推荐直接返回
+        // 2. 获取已经曝光的内容
+        itemShowedService.queryShowedItems(recommendRequest);
+        // 3. 冷启动内容直接获取，非推荐直接返回
         List<RecommendItem> coldStartItems = strongPushService.tryPush(recommendRequest);
         if (CollUtil.isNotEmpty(coldStartItems)) { return coldStartItems; }
-        // 3. 推荐API
+        // 4. 推荐API
         return doRecommend(recommendRequest);
     }
 

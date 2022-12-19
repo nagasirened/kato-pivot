@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface LoadBalancer {
 
-    public ServiceInfo chooseOne(List<ServiceInfo> services);
+    ServiceInfo chooseOne(List<ServiceInfo> services);
 
     default ServiceInfo choose(List<ServiceInfo> services) {
         if (!requireNotEmpty(services)) {

@@ -5,9 +5,6 @@ import com.kato.pro.constant.ConstantClass;
 import com.kato.pro.serial.SerializerEnum;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 /**
  * @ClassName MessageHeader

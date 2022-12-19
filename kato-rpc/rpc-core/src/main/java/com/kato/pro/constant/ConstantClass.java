@@ -1,8 +1,5 @@
 package com.kato.pro.constant;
 
-import com.alibaba.fastjson.serializer.JSONSerializable;
-import org.apache.curator.x.discovery.details.InstanceSerializer;
-import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
 /**
  * @ClassName ConstantClass
