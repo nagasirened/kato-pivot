@@ -11,12 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 public class RedisLockUtil {
 
-	public RedisLockUtil(RedisTemplate<String, Object> redisTemplate) {
+	public RedisLockUtil(RedisTemplate<String, String> redisTemplate) {
 		this.redisTemplate = redisTemplate;
 	}
 
 	@Getter
-	private final RedisTemplate<String, Object> redisTemplate;
+	private final RedisTemplate<String, String> redisTemplate;
 
 	private static final byte[] SCRIPT_RELEASE_LOCK = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end".getBytes();
 

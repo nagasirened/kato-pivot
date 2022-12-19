@@ -19,12 +19,14 @@ public class StrongPushService {
     private ItemShowedService itemShowedService;
 
     /**
-     * 冷启动，部分用户由于规则，可直接返回定制的数据，毋需推荐
+     * straight push
+     * For some reasons, some users can directly return customized data without recommendation
      */
     public List<RecommendItem> tryPush(RecommendRequest recommendRequest) {
         Map<String, String> abMap = recommendRequest.getAbMap();
         String deviceId = recommendRequest.getDeviceId();
-        // 2. 强推高热
+        Set<String> itemShowedSet = recommendRequest.getItemShowedSet();
+        // 2. straight push hotItems
         List<RecommendItem> directHotList = directHotPush(abMap);
         if (CollUtil.isNotEmpty(directHotList)) { return directHotList; }
 
@@ -33,7 +35,7 @@ public class StrongPushService {
     }
 
     /**
-     * 根据ab，强推高热
+     * depends on abMap, push hotItems
      * @param abMap     abMap
      * @return  List<RecommendResItem>
      */
@@ -42,11 +44,11 @@ public class StrongPushService {
         if (StrUtil.equalsIgnoreCase("0", directHotProperty)) {
             return null;
         }
-        // 获取内容
+        // get content
 
-        // 过滤
+        // filter
 
-        // 截取、埋点
+        // sub and metrics
         return null;
     }
 }

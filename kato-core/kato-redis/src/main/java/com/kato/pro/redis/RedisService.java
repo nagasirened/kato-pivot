@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisService {
 
-	private RedisTemplate<String, Object> redisTemplate;
+	private RedisTemplate<String, String> redisTemplate;
 
 	private RedisLockUtil redisLockUtil;
 
@@ -57,11 +57,11 @@ public class RedisService {
 	 * @param time     过期时间
 	 * @param timeUnit 过期时间单位
 	 */
-	public void setExpire(final String key, final Object value, final long time, final TimeUnit timeUnit) {
+	public void setExpire(String key, String value, long time, TimeUnit timeUnit) {
 		redisTemplate.opsForValue().set(key, value, time, timeUnit);
 	}
 
-	public void setExpire(final String key, final Object value, final long time, final TimeUnit timeUnit, RedisSerializer<Object> valueSerializer) {
+	public void setExpire(String key, Object value, long time, TimeUnit timeUnit, RedisSerializer<Object> valueSerializer) {
 		byte[] rawKey = rawKey(key);
 		byte[] rawValue = rawValue(value, valueSerializer);
 
@@ -159,7 +159,7 @@ public class RedisService {
 	 * @param value 值
 	 * @return true成功 false失败
 	 */
-	public Boolean set(String key, Object value) {
+	public Boolean set(String key, String value) {
 		try {
 			redisTemplate.opsForValue().set(key, value);
 			return true;
@@ -177,7 +177,7 @@ public class RedisService {
 	 * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
 	 * @return true成功 false 失败
 	 */
-	public Boolean set(String key, Object value, Long time) {
+	public Boolean set(String key, String value, Long time) {
 		try {
 			if (time > 0) {
 				redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
@@ -198,7 +198,7 @@ public class RedisService {
 	 * @param value 值
 	 * @return true成功 false 失败
 	 */
-	public Boolean set(String key, Object value, Duration timeout) {
+	public Boolean set(String key, String value, Duration timeout) {
 
 		try {
 			Assert.notNull(timeout, "Timeout must not be null!");
@@ -392,7 +392,7 @@ public class RedisService {
 	 * @param key 键
 	 * @return Set
 	 */
-	public Set<Object> smembers(String key) {
+	public Set<String> smembers(String key) {
 		try {
 			return redisTemplate.opsForSet().members(key);
 		} catch (Exception e) {
@@ -424,7 +424,7 @@ public class RedisService {
 	 * @param values 值 可以是多个
 	 * @return 成功个数
 	 */
-	public Long sSet(String key, Object... values) {
+	public Long sSet(String key, String... values) {
 		try {
 			return redisTemplate.opsForSet().add(key, values);
 		} catch (Exception e) {
@@ -441,7 +441,7 @@ public class RedisService {
 	 * @param values 值 可以是多个
 	 * @return 成功个数
 	 */
-	public Long sSetAndTime(String key, Long time, Object... values) {
+	public Long sSetAndTime(String key, Long time, String... values) {
 		try {
 			Long count = redisTemplate.opsForSet().add(key, values);
 			if (time > 0) {
@@ -493,7 +493,7 @@ public class RedisService {
 	 * @param end   结束 0 到 -1代表所有值
 	 * @return List
 	 */
-	public List<Object> lGet(String key, Long start, Long end) {
+	public List<String> lGet(String key, Long start, Long end) {
 		try {
 			return redisTemplate.opsForList().range(key, start, end);
 		} catch (Exception e) {
@@ -541,7 +541,7 @@ public class RedisService {
 	 * @param value 值
 	 * @return Boolean
 	 */
-	public Boolean lSet(String key, Object value) {
+	public Boolean lSet(String key, String value) {
 		try {
 			redisTemplate.opsForList().rightPush(key, value);
 			return true;
@@ -559,7 +559,7 @@ public class RedisService {
 	 * @param time  时间(秒)
 	 * @return Boolean
 	 */
-	public Boolean lSet(String key, Object value, Long time) {
+	public Boolean lSet(String key, String value, Long time) {
 		try {
 			redisTemplate.opsForList().rightPush(key, value);
 			if (time > 0) {
@@ -579,7 +579,7 @@ public class RedisService {
 	 * @param value 值
 	 * @return Boolean
 	 */
-	public Boolean lSet(String key, List<Object> value) {
+	public Boolean lSet(String key, List<String> value) {
 		try {
 			redisTemplate.opsForList().rightPushAll(key, value);
 			return true;
@@ -597,7 +597,7 @@ public class RedisService {
 	 * @param time  时间(秒)
 	 * @return Boolean
 	 */
-	public Boolean lSet(String key, List<Object> value, Long time) {
+	public Boolean lSet(String key, List<String> value, Long time) {
 		try {
 			redisTemplate.opsForList().rightPushAll(key, value);
 			if (time > 0) {
@@ -618,7 +618,7 @@ public class RedisService {
 	 * @param value 值
 	 * @return Boolean
 	 */
-	public Boolean lUpdateIndex(String key, Long index, Object value) {
+	public Boolean lUpdateIndex(String key, Long index, String value) {
 		try {
 			redisTemplate.opsForList().set(key, index, value);
 			return true;
@@ -712,5 +712,12 @@ public class RedisService {
 	public void unLock(String key) {
 		redisLockUtil.releaseLock(key, "");
 	}
+
+	public Set<String> reverseRangeByScore(String redisKey, double min, double max, int offset, int count) {
+		return redisTemplate.opsForZSet().reverseRangeByScore(redisKey, min, max, offset, count);
+	}
+
+
+
 
 }

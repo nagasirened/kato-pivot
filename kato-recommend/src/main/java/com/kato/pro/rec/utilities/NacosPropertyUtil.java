@@ -1,6 +1,7 @@
 package com.kato.pro.rec.utilities;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -8,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -37,6 +39,21 @@ public class NacosPropertyUtil implements ApplicationContextAware {
 
     public String getProperty(String property, String defaultValue) {
         return Optional.ofNullable(environment.getProperty(property)).orElse(defaultValue);
+    }
+
+    public String getAbOrProperty(Map<String, String> abMap, String property, String defaultValue) {
+        try {
+            if (abMap.containsKey(property)) {
+                return Optional.ofNullable(abMap.get(property)).orElse(defaultValue);
+            }
+            return Optional.ofNullable(environment.getProperty(property)).orElse(defaultValue);
+        } catch (Exception ignored) {
+            return defaultValue;
+        }
+    }
+
+    public Boolean checkRule(Map<String, String> abMap, String property, String defaultValue) {
+        return StrUtil.equals("1", getAbOrProperty(abMap, property, defaultValue));
     }
 
     /**
