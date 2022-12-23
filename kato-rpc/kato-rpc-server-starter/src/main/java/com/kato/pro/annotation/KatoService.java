@@ -16,7 +16,7 @@ public @interface KatoService {
     /**
      * 暴露的服务类型，这里应该填写实现的接口
      */
-    Class<?> interfaceType() default Object.class;
+    Class<?> interfaceType();
 
     /**
      * 服务版本，默认为1.0

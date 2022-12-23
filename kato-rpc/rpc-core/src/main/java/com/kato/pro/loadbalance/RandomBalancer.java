@@ -4,6 +4,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.kato.pro.constant.ServiceInfo;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * @ClassName RandomBalancer
@@ -14,9 +16,20 @@ import java.util.List;
  */
 public class RandomBalancer implements LoadBalancer {
 
+    public final Random random = new Random();
+
+
     @Override
     public ServiceInfo chooseOne(List<ServiceInfo> services) {
-        return RandomUtil.randomEle(services);
+        if (Objects.isNull(services) || services.size() == 0) {
+            return null;
+        }
+
+        if (services.size() == 1) {
+            return services.get(0);
+        }
+
+        return services.get(random.nextInt(services.size()));
     }
 
 }

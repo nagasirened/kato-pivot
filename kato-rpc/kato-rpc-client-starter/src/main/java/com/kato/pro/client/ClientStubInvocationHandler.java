@@ -1,12 +1,16 @@
 package com.kato.pro.client;
 
+import com.kato.pro.client.transport.NetClientTransportFactory;
+import com.kato.pro.client.transport.RequestMetadata;
 import com.kato.pro.config.KatoClientProperties;
 import com.kato.pro.constant.RpcRequest;
+import com.kato.pro.constant.RpcResponse;
 import com.kato.pro.constant.ServiceInfo;
 import com.kato.pro.discovery.DiscoveryService;
 import com.kato.pro.rpc.entity.MessageHeader;
 import com.kato.pro.rpc.entity.RpcProtocol;
 import lombok.extern.slf4j.Slf4j;
+import sun.plugin2.message.transport.TransportFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -47,10 +51,24 @@ class ClientStubInvocationHandler implements InvocationHandler {
         rpcRequest.setParameters(args);
         rpcRequest.setParameterTypes(method.getParameterTypes());
         rpcRequest.setServiceVersion(serviceVersion);
+        requestRpcProtocol.setData(rpcRequest);
 
         // 由NettyClient开启调用，地址在serviceInfo中
+        RequestMetadata requestMetadata = new RequestMetadata().setProtocol(requestRpcProtocol)
+                .setAddress(serviceInfo.getAddress())
+                .setPort(serviceInfo.getPort())
+                .setTimeout(clientProperties.getTimeout());
+        RpcProtocol<RpcResponse> responseRpcProtocol = NetClientTransportFactory.getNetClientTransport().sendRequest(requestMetadata);
+        if (responseRpcProtocol == null) {
+            log.error("请求超时");
+            throw new RuntimeException("rpc调用结果失败， 请求超时 timeout:" + clientProperties.getTimeout());
+        }
 
+        if (responseRpcProtocol.getHeader().getStatus() != 0) {
+            log.error("rpc调用结果失败， message：{}", responseRpcProtocol.getData().getMessage());
+            throw new RuntimeException(responseRpcProtocol.getData().getMessage());
+        }
 
-        return null;
+        return responseRpcProtocol.getData().getData();
     }
 }

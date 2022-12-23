@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
-import java.util.concurrent.*;
 
 /**
  * SimpleChannelInboundHandler 代表该入参处理器，仅处理泛型类型的内容
@@ -21,30 +20,26 @@ import java.util.concurrent.*;
 @Slf4j
 public class KatoRequestHandler extends SimpleChannelInboundHandler<RpcProtocol<RpcRequest>> {
 
-    final ExecutorService executorService = new ThreadPoolExecutor(10, 10, 60, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100));
-
     @Override
     protected void channelRead0(ChannelHandlerContext context, RpcProtocol<RpcRequest> rpcRequestRpcProtocol) throws Exception {
-        executorService.execute(() -> {
-            MessageHeader header = rpcRequestRpcProtocol.getHeader();
-            RpcRequest rpcRequest = rpcRequestRpcProtocol.getData();
+        MessageHeader header = rpcRequestRpcProtocol.getHeader();
+        RpcRequest rpcRequest = rpcRequestRpcProtocol.getData();
 
-            // 返回的结果
-            RpcProtocol<RpcResponse> rpcProtocol = new RpcProtocol<>();
-            RpcResponse rpcResponse = new RpcResponse();
-            try {
-                header.setStatus(ResultStatus.SUCCESS.getCode());
-                rpcResponse.setData(handle(rpcRequest));
-            } catch (Exception e) {
-                header.setStatus(ResultStatus.FAIL.getCode());
-                rpcResponse.setMessage(e.getMessage());
-                log.error("request handler exception happened", e);
-            }
-            header.setMsgType(MessageType.RESPONSE.getType());
-            rpcProtocol.setHeader(header);
-            rpcProtocol.setData(rpcResponse);
-            context.channel().writeAndFlush(rpcProtocol);
-        });
+        // 返回的结果
+        RpcProtocol<RpcResponse> rpcProtocol = new RpcProtocol<>();
+        RpcResponse rpcResponse = new RpcResponse();
+        try {
+            header.setStatus(ResultStatus.SUCCESS.getCode());
+            rpcResponse.setData(handle(rpcRequest));
+        } catch (Exception e) {
+            header.setStatus(ResultStatus.FAIL.getCode());
+            rpcResponse.setMessage(e.getMessage());
+            log.error("request handler exception happened", e);
+        }
+        header.setMsgType(MessageType.RESPONSE.getType());
+        rpcProtocol.setHeader(header);
+        rpcProtocol.setData(rpcResponse);
+        context.channel().writeAndFlush(rpcProtocol);
     }
 
     /**

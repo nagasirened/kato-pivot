@@ -2,11 +2,13 @@ package com.kato.pro.server;
 
 import com.kato.pro.rpc.DeCodec;
 import com.kato.pro.rpc.EnCodec;
+import com.kato.pro.rpc.KatoLengthFiledHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
@@ -21,8 +23,9 @@ public class NettyServer implements RpcServer {
     @Override
     public void init(Integer port) {
         NioEventLoopGroup boss = new NioEventLoopGroup(1);
-        NioEventLoopGroup worker = new NioEventLoopGroup(Math.max(3, Runtime.getRuntime().availableProcessors() >> 1));
+        NioEventLoopGroup worker = new NioEventLoopGroup(3);
 
+        NioEventLoopGroup reqEventLoopGroup = new NioEventLoopGroup(Math.max(Runtime.getRuntime().availableProcessors(), 10));
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap()
                     .group(boss, worker)
@@ -31,9 +34,10 @@ public class NettyServer implements RpcServer {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new EnCodec<>())
-                                    .addLast(new DeCodec())
-                                    .addLast(new KatoRequestHandler());
+                            pipeline.addLast(new KatoLengthFiledHandler())
+                                    .addLast("outboundEeCodec", new EnCodec<>())
+                                    .addLast("inboundDeCodec", new DeCodec())
+                                    .addLast(reqEventLoopGroup, "reqEventLoopGroup", new KatoRequestHandler());
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);

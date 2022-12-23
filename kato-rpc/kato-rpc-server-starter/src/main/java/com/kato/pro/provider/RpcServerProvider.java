@@ -1,5 +1,6 @@
 package com.kato.pro.provider;
 
+import com.google.common.base.Joiner;
 import com.kato.pro.annotation.KatoService;
 import com.kato.pro.config.KatoRpcProperties;
 import com.kato.pro.constant.ServiceInfo;

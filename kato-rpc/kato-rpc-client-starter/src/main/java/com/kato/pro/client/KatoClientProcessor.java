@@ -1,9 +1,9 @@
 package com.kato.pro.client;
 
-import cn.hutool.core.util.StrUtil;
 import com.kato.pro.annotation.KatoResource;
 import com.kato.pro.config.KatoClientProperties;
 import com.kato.pro.discovery.DiscoveryService;
+import jodd.util.StringUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -23,9 +23,9 @@ public class KatoClientProcessor implements BeanFactoryPostProcessor, Applicatio
 
     private ApplicationContext applicationContext;
 
-    private DiscoveryService discoveryService;
+    private final DiscoveryService discoveryService;
 
-    private KatoClientProperties clientProperties;
+    private final KatoClientProperties clientProperties;
 
     public KatoClientProcessor(DiscoveryService discoveryService, KatoClientProperties clientProperties) {
         this.discoveryService = discoveryService;
@@ -42,7 +42,7 @@ public class KatoClientProcessor implements BeanFactoryPostProcessor, Applicatio
         for (String definitionName : beanFactory.getBeanDefinitionNames()) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(definitionName);
             String beanClassName = beanDefinition.getBeanClassName();
-            if (StrUtil.isNotBlank(beanClassName)) {
+            if (StringUtil.isNotBlank(beanClassName)) {
                 Class<?> clazz = ClassUtils.resolveClassName(beanClassName, this.getClass().getClassLoader());
                 ReflectionUtils.doWithFields(clazz, field -> {
                     KatoResource katoResource = field.getAnnotation(KatoResource.class);
