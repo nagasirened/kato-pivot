@@ -1,4 +1,4 @@
-package com.kato.pro.base.constant;
+package com.kato.pro.auth.constant;
 
 public class OAuth2Constant {
 

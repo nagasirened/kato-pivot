@@ -18,14 +18,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.kato.pro</groupId>
-            <artifactId>kato-base</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>software.amazon.dax</groupId>
             <artifactId>amazon-dax-client</artifactId>
             <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

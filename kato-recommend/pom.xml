@@ -21,6 +21,11 @@
     <dependencies>
         <dependency>
             <groupId>org.kato.pro</groupId>
+            <artifactId>kato-web</artifactId>
+            <version>${kato.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kato.pro</groupId>
             <artifactId>kato-oss</artifactId>
             <version>${kato.version}</version>
         </dependency>

@@ -17,7 +17,7 @@
         <module>kato-redis</module>
         <module>kato-s3</module>
         <module>kato-dynamodb</module>
-        <module>kato-base</module>
+        <module>kato-web</module>
         <module>kato-csv-reader</module>
         <module>kato-oss</module>
     </modules>

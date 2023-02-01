@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pro.auth.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.kato.pro.base.constant.OAuth2Constant;

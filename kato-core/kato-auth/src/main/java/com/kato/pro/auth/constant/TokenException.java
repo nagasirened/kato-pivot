@@ -1,4 +1,4 @@
-package com.kato.pro.base.exception;
+package com.kato.pro.auth.constant;
 
 /**
  * Token处理异常
