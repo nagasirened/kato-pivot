@@ -10,7 +10,6 @@ import com.kato.pro.discovery.DiscoveryService;
 import com.kato.pro.rpc.entity.MessageHeader;
 import com.kato.pro.rpc.entity.RpcProtocol;
 import lombok.extern.slf4j.Slf4j;
-import sun.plugin2.message.transport.TransportFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

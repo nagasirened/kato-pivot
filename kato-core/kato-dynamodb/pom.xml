@@ -18,6 +18,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.kato.pro</groupId>
+            <artifactId>kato-web</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>software.amazon.dax</groupId>
             <artifactId>amazon-dax-client</artifactId>
             <version>2.0.1</version>

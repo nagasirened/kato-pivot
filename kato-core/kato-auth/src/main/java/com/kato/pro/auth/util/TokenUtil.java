@@ -1,7 +1,7 @@
 package com.kato.pro.auth.util;
 
 import cn.hutool.core.util.StrUtil;
-import com.kato.pro.base.constant.OAuth2Constant;
+import com.kato.pro.auth.constant.OAuth2Constant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.experimental.UtilityClass;
