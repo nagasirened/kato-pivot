@@ -3,7 +3,7 @@ package com.kato.pro.rec.entity.po;
 import lombok.Data;
 
 @Data
-public class HeaderDictionary {
+public class KatoHeader {
 
     /**
      * base

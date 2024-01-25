@@ -1,4 +1,4 @@
-package com.kato.pro.s3.aws;
+package com.kato.pro.s3.aws.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.kato.pro.s3.config.S3Template;
 import lombok.SneakyThrows;
 
 import java.io.ByteArrayInputStream;
@@ -13,11 +14,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
-public class DefaultAwsTemplate implements S3Template {
+public class AwsS3Template implements S3Template {
 
     private final AmazonS3 amazonS3;
 
-    public DefaultAwsTemplate(AmazonS3 amazonS3) {
+    public AwsS3Template(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
     }
 

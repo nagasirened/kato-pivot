@@ -1,4 +1,4 @@
-package com.kato.pro.s3.aws;
+package com.kato.pro.s3.config;
 
 import lombok.Data;
 

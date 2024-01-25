@@ -1,13 +1,11 @@
 package com.kato.pro.rec.entity.po;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.kato.pro.base.entity.CommonCode;
-import com.kato.pro.base.exception.KatoServiceException;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,23 +15,13 @@ public class RecommendRequest {
     /** 用户ID */
     private String userId;
     /** 设备号 */
+    @NotEmpty(message = "device is empty")
     private String deviceId;
     /** maxNumber */
-    private Integer topK;
+    private Integer topK = 10;
     /** ab参数 */
     private Map<String, String> abMap = new HashMap<>();
-    /** header解析的参数 */
-    private HeaderDictionary headerDictionary;
     /** 曝光的内容 */
     @JSONField(deserialize = false, serialize = false)
-    private Set<String> itemShowedSet;
-    /**
-     * 参数解析后处理
-     */
-    public void check() {
-        if (StrUtil.isBlank(deviceId) || ObjectUtil.isNull(headerDictionary)) {
-            throw new KatoServiceException(CommonCode.PARAM_ERROR);
-        }
-        topK = ObjectUtil.isNull(topK) ? 10 : topK;
-    }
+    private Set<String> itemShowedSet = new HashSet<>();
 }

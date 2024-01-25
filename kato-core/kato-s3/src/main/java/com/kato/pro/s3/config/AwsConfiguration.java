@@ -8,9 +8,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.kato.pro.s3.aws.AwsEndpoint;
-import com.kato.pro.s3.aws.DefaultAwsTemplate;
-import com.kato.pro.s3.aws.S3Properties;
-import com.kato.pro.s3.aws.S3Template;
+import com.kato.pro.s3.aws.impl.AwsS3Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -51,7 +49,7 @@ public class AwsConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(value = {S3Properties.class, AmazonS3.class})
     public S3Template awsTemplate(@Autowired AmazonS3 amazonS3) {
-        return new DefaultAwsTemplate(amazonS3);
+        return new AwsS3Template(amazonS3);
     }
 
     @Bean

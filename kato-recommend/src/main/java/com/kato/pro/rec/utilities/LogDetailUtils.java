@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.kato.pro.base.util.NacosPropertyUtil;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,8 @@ public class LogDetailUtils {
     /**
      * 所有人默认日志等级是1，仅被配置的部分用户等级可以是2或者3
      */
-    @Resource NacosPropertyUtil nacosPropertyUtil;
+    @Resource
+    NacosPropertyUtil nacosPropertyUtil;
 
     public static final String LOG_ON_OFF = "logOnOff";
     private Integer interval = 10000;

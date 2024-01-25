@@ -9,7 +9,7 @@ import com.google.common.cache.LoadingCache;
 import com.kato.pro.base.constant.CommonConstant;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.po.RecommendRequest;
-import com.kato.pro.rec.utilities.NacosPropertyUtil;
+import com.kato.pro.base.util.NacosPropertyUtil;
 import com.kato.pro.rec.utilities.RedisKey;
 import com.kato.pro.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +36,6 @@ public class ItemShowedService {
         String deviceId = recommendRequest.getDeviceId();
         Map<String, String> abMap = recommendRequest.getAbMap();
         Set<String> itemShowedSet = recommendRequest.getItemShowedSet();
-        if (Objects.isNull(itemShowedSet)) {
-            itemShowedSet = new HashSet<>();
-        }
         // showed
         itemShowedSet.addAll(getShowedRecords(deviceId, abMap));
         // played
@@ -48,9 +45,7 @@ public class ItemShowedService {
     }
 
     /**
-     * =================================================================
-     *                 get contents who had been showed
-     * =================================================================
+     * get contents who had been showed
      */
     @SuppressWarnings("all")
     final LoadingCache<String, Set<String>> contentImpressionCache = CacheBuilder.newBuilder()
