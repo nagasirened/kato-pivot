@@ -23,5 +23,5 @@ public class RecommendRequest {
     private Map<String, String> abMap = new HashMap<>();
     /** 曝光的内容 */
     @JSONField(deserialize = false, serialize = false)
-    private Set<String> itemShowedSet = new HashSet<>();
+    private Set<Integer> trash = new HashSet<>();
 }

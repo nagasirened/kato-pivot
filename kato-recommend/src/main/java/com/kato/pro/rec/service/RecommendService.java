@@ -16,7 +16,7 @@ public class RecommendService {
 
     @Resource private LimitationService limitationService;
     @Resource private StrongPushService strongPushService;
-    @Resource private ItemShowedService itemShowedService;
+    @Resource private PersonTrashService personTrashService;
 
     /**
      * RECOMMEND
@@ -26,12 +26,12 @@ public class RecommendService {
     public List<RecommendItem> recommend(RecommendRequest recommendRequest) {
         // 1. pre
         limitationService.tryAcquire(LimiterCategory.RECOMMEND);
-        // 2. 获取已经曝光的内容
-        itemShowedService.queryShowedItems(recommendRequest);
-        // 3. 冷启动内容直接获取，非推荐直接返回
+        // 2. query items which need to filter
+        personTrashService.wrapTrash(recommendRequest);
+        // 3. cold_start, which contains content will return value directly
         List<RecommendItem> coldStartItems = strongPushService.tryPush(recommendRequest);
         if (CollUtil.isNotEmpty(coldStartItems)) { return coldStartItems; }
-        // 4. 推荐API
+        // 4. handle recommend
         return doRecommend(recommendRequest);
     }
 

@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.kato.pro.base.constant.CommonConstant;
 import com.kato.pro.base.util.NacosPropertyUtil;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -115,6 +119,67 @@ public class LogDetailUtils {
             return;
         }
         logSupport.put(key, value);
+    }
+
+    private static class LogSupport {
+
+        private final Map<String, LinkedHashMap<String, Object>> logMap = new ConcurrentHashMap<>();
+        private final Map<String, Integer> logLevel = new ConcurrentHashMap<>();
+
+        /** 唯一标记 */
+        private String getTraceId() {
+            return MDC.get(CommonConstant.TRACE_ID);
+        }
+
+        /** 初始化 */
+        public void initMap() {
+            logMap.put(getTraceId(), new LinkedHashMap<>());
+        }
+
+        public void put(String key, Object value) {
+            LinkedHashMap<String, Object> detailMap = logMap.get(getTraceId());
+            if (detailMap == null) {
+                initMap();
+                detailMap = logMap.get(getTraceId());
+            }
+            detailMap.put(key, value);
+        }
+
+        public Map<String, Object> getTraceMap() {
+            return logMap.get(getTraceId());
+        }
+
+        public void reset() {
+            logMap.remove(getTraceId());
+        }
+
+        public Integer getActiveSize() {
+            return logMap.size();
+        }
+
+        /**
+         * 日志等级相关函数
+         */
+        public void setDefaultLevel() {
+            logLevel.put(getTraceId(), LevelEnum.NORMAL.getLevel());
+        }
+
+        public void setLevel(LevelEnum levelEnum) {
+            logLevel.put(getTraceId(), levelEnum.getLevel());
+        }
+
+        public void setLevel(Integer level) {
+            logLevel.put(getTraceId(), level);
+        }
+
+        public Integer getLevel() {
+            return logLevel.get(getTraceId());
+        }
+
+        public Boolean verify(Integer currentLevel) {
+            return getLevel() >= currentLevel;
+        }
+
     }
 
 }

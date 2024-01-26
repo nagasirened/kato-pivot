@@ -9,7 +9,7 @@ import java.util.Set;
 @Data
 public class RecommendItem {
 
-    private String itemId;
+    private Integer itemId;
     private Double score = 0D;
     private Double rankScore;
     private String rs;
