@@ -15,4 +15,6 @@ public class AbOrNacosConstant {
     public static final String REC_FILTER_BLACK_SWITCH = "rec_filter_black_switch";
     public static final String REC_FILTER_BLACK_LIST = "rec_filter_black_list";
 
+    public static final String OBTAIN_NUMBER = "retrieve.obtain_number";
+
 }

@@ -1,5 +1,6 @@
 package com.kato.pro.loadbalance;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.kato.pro.constant.ServiceInfo;
 
@@ -21,7 +22,7 @@ public class RandomBalancer implements LoadBalancer {
 
     @Override
     public ServiceInfo chooseOne(List<ServiceInfo> services) {
-        if (Objects.isNull(services) || services.size() == 0) {
+        if (CollUtil.isEmpty(services)) {
             return null;
         }
 

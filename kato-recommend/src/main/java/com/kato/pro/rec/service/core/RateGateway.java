@@ -6,7 +6,7 @@ import com.kato.pro.base.entity.CommonCode;
 import com.kato.pro.base.exception.KatoServiceException;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.enums.LimiterCategory;
-import com.kato.pro.base.util.NacosPropertyUtil;
+import com.kato.pro.base.service.NacosPropertyAcquirer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,19 +18,21 @@ import java.util.Optional;
 @Slf4j
 @Component
 @SuppressWarnings("ALL")
-public class LimitationService implements CommandLineRunner {
+public class RateGateway implements CommandLineRunner {
 
     @Resource
-    NacosPropertyUtil nacosPropertyUtil;
+    NacosPropertyAcquirer nacosPropertyAcquirer;
 
     private Map<String, RateLimiter> limiterMap;
 
-
     @Override
     public void run(String... args) throws Exception {
-        String permitsPerSecond = Optional.ofNullable(nacosPropertyUtil.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT)).orElse("100");
-        RateLimiter recommendRateLimiter = RateLimiter.create(Integer.parseInt(permitsPerSecond));
+        init();
+    }
 
+    public void init() {
+        String permitsPerSecond = Optional.ofNullable(nacosPropertyAcquirer.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT)).orElse("100");
+        RateLimiter recommendRateLimiter = RateLimiter.create(Integer.parseInt(permitsPerSecond));
         limiterMap = ImmutableMap.of(LimiterCategory.RECOMMEND.lowerName(), recommendRateLimiter);
     }
 

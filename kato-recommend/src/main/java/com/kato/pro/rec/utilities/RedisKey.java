@@ -10,6 +10,7 @@ public enum RedisKey {
 
     REC_CONTENT_IMPRESSION("rec_impression", 86400 * 3),
     REC_CONTENT_PLAYED("rec_played", 86400 * 10),
+    RETRIEVE_DEVICE_OBTAIN_NUMBER("obtain_number", 86400 + 10),
     ;
 
     private final String prefix;

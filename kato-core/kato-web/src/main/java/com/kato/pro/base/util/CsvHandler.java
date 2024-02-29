@@ -9,13 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public abstract class CsvHandler<T> {
 
     private final Boolean existHeaderLine;
     @Getter private final List<T> result;
+    private volatile Map<String, Integer> headerIndexMap;
 
     public CsvHandler() {
         this(true);
@@ -28,7 +31,9 @@ public abstract class CsvHandler<T> {
     public CsvHandler(Boolean existHeaderLine, Integer capacity) {
         this.existHeaderLine = existHeaderLine;
         this.result = new ArrayList<>(capacity);
-
+        if (existHeaderLine) {
+            headerIndexMap = new HashMap<>();
+        }
     }
 
     public void handleCsv(InputStream inputStream) {
@@ -49,7 +54,10 @@ public abstract class CsvHandler<T> {
             String[] data;
             while (csvReader.readRecord()) {
                 data = csvReader.getValues();
-                result.add(doHandleData(data));
+                T t = doHandleData(data);
+                if (t != null) {
+                    result.add(t);
+                }
             }
             csvReader.close();
         } catch (Exception e) {
@@ -61,9 +69,16 @@ public abstract class CsvHandler<T> {
      * you can use log to cover default
      */
     public void doHandleHeaders(String[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            headerIndexMap.put(headers[i], i);
+        }
         log.error("headers info: {}", JsonUtils.toStr(headers));
     }
 
     public abstract T doHandleData(String[] data);
+
+    public Integer headerIndex(String field) {
+        return headerIndexMap.get(field);
+    }
 
 }

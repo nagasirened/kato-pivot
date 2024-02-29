@@ -1,7 +1,6 @@
 package com.kato.pro.base.util;
 
-import com.kato.pro.base.util.JsonUtils;
-import com.kato.pro.rec.entity.po.KatoHeader;
+import com.kato.pro.base.entity.KatoHeader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;

@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kato.pro.base.constant.CommonConstant;
-import com.kato.pro.base.util.NacosPropertyUtil;
+import com.kato.pro.base.service.NacosPropertyAcquirer;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Component
-public class LogDetailUtils {
+public class LogsDetailUtils {
 
     /**
      * 所有人默认日志等级是1，仅被配置的部分用户等级可以是2或者3
      */
     @Resource
-    NacosPropertyUtil nacosPropertyUtil;
+    NacosPropertyAcquirer nacosPropertyAcquirer;
 
     public static final String LOG_ON_OFF = "logOnOff";
     private Integer interval = 10000;
@@ -36,7 +36,7 @@ public class LogDetailUtils {
 
     @PostConstruct
     public void loadInterval() {
-        String intervalProperty = nacosPropertyUtil.getProperty(AbParamConstant.LOG_DETAIL_INTERVAL, "10000");
+        String intervalProperty = nacosPropertyAcquirer.getProperty(AbParamConstant.LOG_DETAIL_INTERVAL, "10000");
         try {
             Integer logInterval = Convert.toInt(intervalProperty);
             if (logInterval > 0) {
@@ -89,7 +89,7 @@ public class LogDetailUtils {
      */
     private int userStrongHit(String deviceId) {
         try {
-            String strongHitStr = nacosPropertyUtil.getProperty(AbParamConstant.LOG_DETAIL_STRONG_HIT, "{}");
+            String strongHitStr = nacosPropertyAcquirer.getProperty(AbParamConstant.LOG_DETAIL_STRONG_HIT, "{}");
             JSONObject userLevelDictionary = JSONObject.parseObject(strongHitStr);
             if (userLevelDictionary.containsKey(deviceId)) {
                 return userLevelDictionary.getInteger(deviceId);

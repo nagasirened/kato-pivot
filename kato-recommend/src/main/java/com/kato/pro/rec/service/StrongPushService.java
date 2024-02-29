@@ -29,8 +29,7 @@ public class StrongPushService {
          * 1. direct hot
          */
         List<RecommendItem> result = directHotPush(abMap);
-        RecommendUtils.ridItemsOfRes(result, recommendRequest.getTrash());
-        return result;
+        return RecommendUtils.ridItemsOfRes(result, recommendRequest.getTrash());
     }
 
     /**

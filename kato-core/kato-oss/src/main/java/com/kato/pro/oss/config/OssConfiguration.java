@@ -5,6 +5,7 @@ import com.kato.pro.oss.core.OssClientFactory;
 import com.kato.pro.oss.core.OssLinksPoolUtils;
 import com.kato.pro.oss.core.OssProperties;
 import com.kato.pro.oss.core.OssTemplate;
+import com.kato.pro.oss.repository.OssRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,4 +38,10 @@ public class OssConfiguration {
     public OssTemplate ossTemplate(OssLinksPoolUtils ossLinksPoolUtils) {
         return new DefaultOssTemplate(ossLinksPoolUtils);
     }
+
+    @Bean
+    public OssRepository ossRepository() {
+        return new OssRepository();
+    }
+
 }

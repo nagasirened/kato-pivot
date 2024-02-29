@@ -60,7 +60,7 @@ public class RedisConfiguration {
 
 	@Bean
 	@ConditionalOnBean(name = "redisLockUtil")
-	public RedisLockUtil redisLockUtil(@Autowired RedisTemplate redisTemplate) {
+	public RedisLockUtil redisLockUtil(@Autowired RedisTemplate<String, String> redisTemplate) {
 		return new RedisLockUtil(redisTemplate);
 	}
 

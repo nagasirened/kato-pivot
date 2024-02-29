@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pro.base.service;
 
 
 import cn.hutool.core.util.StrUtil;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * 获取nacos中的配置
  */
 @Component
-public class NacosPropertyUtil implements ApplicationContextAware {
+public class NacosPropertyAcquirer implements ApplicationContextAware {
 
     private static ApplicationContext context;
 

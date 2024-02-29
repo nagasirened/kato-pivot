@@ -1,4 +1,4 @@
-package com.kato.pro.rec.entity.po;
+package com.kato.pro.base.entity;
 
 import lombok.Data;
 
