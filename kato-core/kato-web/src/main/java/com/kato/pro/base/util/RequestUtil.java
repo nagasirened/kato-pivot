@@ -1,5 +1,6 @@
 package com.kato.pro.base.util;
 
+import com.kato.pre.base.util.JsonUtils;
 import com.kato.pro.base.entity.KatoHeader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
@@ -53,7 +54,7 @@ public final class RequestUtil {
                 declaredField.set(katoHeader, request.getHeader(fieldName));
             }
         } catch (Exception e) {
-            log.error("initHeader fail, request: {}", JsonUtils.toStr(request));
+            log.error("initHeader fail, request: {}", JsonUtils.toJSONString(request));
             return null;
         }
         return katoHeader;

@@ -45,4 +45,5 @@ public class KatoLockAspect {
         return (StrUtil.isBlank(prefix) ? baseName : prefix + "_" + baseName) +
                 (StrUtil.isBlank(suffix) ? "" : "_" + suffix);
     }
+
 }

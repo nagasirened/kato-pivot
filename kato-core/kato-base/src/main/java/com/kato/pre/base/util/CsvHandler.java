@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pre.base.util;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -72,7 +72,7 @@ public abstract class CsvHandler<T> {
         for (int i = 0; i < headers.length; i++) {
             headerIndexMap.put(headers[i], i);
         }
-        log.error("headers info: {}", JsonUtils.toStr(headers));
+        log.error("headers info: {}", JsonUtils.toJSONString(headers));
     }
 
     public abstract T doHandleData(String[] data);

@@ -30,10 +30,10 @@
         <spring.boot.version>2.5.5</spring.boot.version>
         <spring.cloud.version>2020.0.4</spring.cloud.version>
         <alibaba.cloud.version>2021.1</alibaba.cloud.version>
-
+        <servlet.version>2.3</servlet.version>
         <lombok.version>1.18.22</lombok.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
-        <jackjson.version>2.13.2</jackjson.version>
+        <jackjson.version>2.17.0</jackjson.version>
         <druid-boot-stater.version>1.2.8</druid-boot-stater.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <redission.version>3.17.0</redission.version>
@@ -82,20 +82,10 @@
     </repositories>
 
     <dependencies>
-        <!-- 解决bootstrap.yml不生效的问题 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackjson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -307,6 +297,36 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

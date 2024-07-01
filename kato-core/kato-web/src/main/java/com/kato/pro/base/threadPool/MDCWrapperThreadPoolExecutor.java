@@ -4,6 +4,7 @@ import org.slf4j.MDC;
 
 import java.util.concurrent.*;
 
+@SuppressWarnings("ALL")
 public class MDCWrapperThreadPoolExecutor extends ThreadPoolExecutor {
 
     public MDCWrapperThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {

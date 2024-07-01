@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class NacosPropertyAcquirer implements ApplicationContextAware {
 
-    private static ApplicationContext context;
+    private ApplicationContext context;
 
     private Environment environment;
 

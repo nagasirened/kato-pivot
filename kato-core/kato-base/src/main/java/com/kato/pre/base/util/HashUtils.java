@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pre.base.util;
 
 import cn.hutool.core.lang.hash.MurmurHash;
 

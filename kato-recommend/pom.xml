@@ -41,11 +41,6 @@
         </dependency>
         <dependency>
             <groupId>org.kato.pro</groupId>
-            <artifactId>kato-csv-reader</artifactId>
-            <version>${kato.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kato.pro</groupId>
             <artifactId>kato-redisson</artifactId>
             <version>${kato.version}</version>
         </dependency>
