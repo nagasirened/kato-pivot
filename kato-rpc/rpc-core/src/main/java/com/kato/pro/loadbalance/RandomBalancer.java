@@ -19,7 +19,6 @@ public class RandomBalancer implements LoadBalancer {
 
     public final Random random = new Random();
 
-
     @Override
     public ServiceInfo chooseOne(List<ServiceInfo> services) {
         if (CollUtil.isEmpty(services)) {

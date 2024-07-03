@@ -1,4 +1,4 @@
-package com.kato.pre.base.util;
+package com.kato.pro.base.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import com.kato.pre.base.constant.BaseConstant;
+import com.kato.pro.base.entity.BaseConstant;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -133,6 +133,22 @@ public final class JsonUtils {
         }
         try {
             return MAPPER.readValue(json, cls);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * byte数组转换为指定对象
+     * @param bytes 字符组
+     * @param cls 目标对象
+     */
+    public static <T> T toObject(byte[] bytes, Class<T> cls) {
+        if(bytes == null || cls == null || bytes.length == 0){
+            return null;
+        }
+        try {
+            return MAPPER.readValue(bytes, cls);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

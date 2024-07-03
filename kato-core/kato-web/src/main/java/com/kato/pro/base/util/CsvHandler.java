@@ -1,4 +1,4 @@
-package com.kato.pre.base.util;
+package com.kato.pro.base.util;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -16,9 +16,16 @@ import java.util.Map;
 @Slf4j
 public abstract class CsvHandler<T> {
 
+    // 是否包含表头行
     private final Boolean existHeaderLine;
-    @Getter private final List<T> result;
+    // 表头字段所在的索引位置
     private volatile Map<String, Integer> headerIndexMap;
+
+    @Getter private Boolean result = true;
+    // 存储结果的集合
+    @Getter private final List<T> datas;
+    // 是否有异常
+    @Getter private Exception exception;
 
     public CsvHandler() {
         this(true);
@@ -30,7 +37,7 @@ public abstract class CsvHandler<T> {
 
     public CsvHandler(Boolean existHeaderLine, Integer capacity) {
         this.existHeaderLine = existHeaderLine;
-        this.result = new ArrayList<>(capacity);
+        this.datas = new ArrayList<>(capacity);
         if (existHeaderLine) {
             headerIndexMap = new HashMap<>();
         }
@@ -56,12 +63,14 @@ public abstract class CsvHandler<T> {
                 data = csvReader.getValues();
                 T t = doHandleData(data);
                 if (t != null) {
-                    result.add(t);
+                    datas.add(t);
                 }
             }
             csvReader.close();
         } catch (Exception e) {
-            log.error("CsvStreamHandler#handleCsv, parse csv error");
+            log.info("CsvStreamHandler#handleCsv, parse csv fail");
+            this.result = false;
+            this.exception = e;
         }
     }
 
@@ -72,7 +81,7 @@ public abstract class CsvHandler<T> {
         for (int i = 0; i < headers.length; i++) {
             headerIndexMap.put(headers[i], i);
         }
-        log.error("headers info: {}", JsonUtils.toJSONString(headers));
+        log.info("headers info: {}", JsonUtils.toJSONString(headers));
     }
 
     public abstract T doHandleData(String[] data);

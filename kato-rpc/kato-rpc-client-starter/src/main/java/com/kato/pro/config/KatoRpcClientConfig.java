@@ -16,6 +16,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Objects;
+
 @Configuration
 @EnableConfigurationProperties({KatoClientProperties.class})
 public class KatoRpcClientConfig {
@@ -39,12 +41,10 @@ public class KatoRpcClientConfig {
     @ConditionalOnMissingBean
     public DiscoveryService discoveryService() {
         ServiceType serviceType = this.katoClientProperties.getServiceType();
-        switch (serviceType) {
-            case REDIS:
-                return new RedissonDiscoveryService(katoClientProperties.getDiscoverAddress(), loadBalancer());
-            default:
-                return new CuratorDiscoveryService(katoClientProperties.getDiscoverAddress(), loadBalancer());
+        if (Objects.requireNonNull(serviceType) == ServiceType.REDIS) {
+            return new RedissonDiscoveryService(katoClientProperties.getDiscoverAddress(), loadBalancer());
         }
+        return new CuratorDiscoveryService(katoClientProperties.getDiscoverAddress(), loadBalancer());
     }
 
     @Bean

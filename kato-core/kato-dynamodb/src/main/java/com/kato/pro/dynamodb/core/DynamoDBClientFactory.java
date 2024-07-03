@@ -23,4 +23,9 @@ public class DynamoDBClientFactory extends AbstractKeyedPooledObjectFactory<Dyna
                 .region(Region.of(dynamoProperties.getRegion()))
                 .build();
     }
+
+    public DynamoProperties getDynamoProperties() {
+        return dynamoProperties;
+    }
+    
 }

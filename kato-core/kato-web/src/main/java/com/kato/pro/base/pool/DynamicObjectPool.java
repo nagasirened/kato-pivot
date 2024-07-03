@@ -23,10 +23,10 @@ public class DynamicObjectPool<M extends ClientManager<? extends AutoCloseable>>
      * maxIdle           最大空闲连接数
      * maxWaitMillis     最大等待时间
      */
-    private Integer maxTotal;
-    private Integer minIdle;
-    private Integer maxIdle;
-    private Integer maxWaitMillis;
+    private Integer maxTotal = 100;
+    private Integer minIdle = 10;
+    private Integer maxIdle = 100;
+    private Integer maxWaitMillis = 1000;
 
 
     /**

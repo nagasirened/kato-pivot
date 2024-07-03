@@ -3,10 +3,9 @@ package com.kato.pro.auth.aspect;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
+import com.kato.pro.base.util.JsonUtils;
 import com.kato.pro.auth.annotation.PreAuth;
-import com.kato.pro.auth.constant.LoginUser;
+import com.kato.pro.base.entity.LoginUser;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
 import com.kato.pro.auth.util.SecurityUtil;
@@ -22,8 +21,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -71,7 +71,7 @@ public class PreAuthAspect {
         String redisKey = OAuth2Constant.PERMISSION_PREFIX + loginUser.getAccount() + StrUtil.DOT + loginUser.getRoleId();
         String permissionData = Convert.toStr(redisService.get(redisKey));
         try {
-            return hasPermissions(JSONObject.parseObject(permissionData, new TypeReference<List<String>>() {}), permission);
+            return hasPermissions(Optional.ofNullable(JsonUtils.toList(permissionData, String.class)).orElse(new ArrayList<>()), permission);
         } catch (Exception ignore) {
             log.warn("PreAuthAspect#verifyPermission");
             return false;

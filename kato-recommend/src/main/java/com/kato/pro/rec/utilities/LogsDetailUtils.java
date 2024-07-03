@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.kato.pro.base.constant.CommonConstant;
+import com.kato.pro.base.entity.BaseConstant;
 import com.kato.pro.base.service.NacosPropertyAcquirer;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
@@ -128,7 +128,7 @@ public class LogsDetailUtils {
 
         /** 唯一标记 */
         private String getTraceId() {
-            return MDC.get(CommonConstant.TRACE_ID);
+            return MDC.get(BaseConstant.TRACE_ID);
         }
 
         /** 初始化 */

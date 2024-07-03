@@ -1,8 +1,8 @@
 package com.kato.pro.base.service;
 
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Preconditions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -65,7 +65,7 @@ public class NacosPropertyAcquirer implements ApplicationContextAware {
      */
     public <T> T getBean(String beanName, Class<T> clazz) {
         T bean = context.getBean(beanName, clazz);
-        Preconditions.checkNotNull(bean, "bean is not exists");
+        Assert.notNull(bean, "bean is not exists");
         return bean;
     }
 

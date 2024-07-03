@@ -2,7 +2,7 @@ package com.kato.pro.auth.util;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import com.kato.pro.auth.constant.LoginUser;
+import com.kato.pro.base.entity.LoginUser;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
 import com.kato.pro.auth.thread.UserContextHolder;
@@ -26,7 +26,7 @@ public class SecurityUtil {
     public String getToken(HttpServletRequest request) {
         String headerToken = getHeaderToken(request);
         if (StrUtil.isBlank(headerToken)) {
-            throw new TokenException("token不存在");
+            return null;
         }
         return TokenUtil.getToken(headerToken);
     }

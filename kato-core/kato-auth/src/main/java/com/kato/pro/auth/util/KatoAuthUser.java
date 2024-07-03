@@ -1,7 +1,7 @@
 package com.kato.pro.auth.util;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.kato.pro.auth.constant.LoginUser;
+import com.kato.pro.base.entity.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

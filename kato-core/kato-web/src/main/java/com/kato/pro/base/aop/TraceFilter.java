@@ -2,7 +2,7 @@ package com.kato.pro.base.aop;
 
 
 import cn.hutool.core.util.IdUtil;
-import com.kato.pro.base.constant.CommonConstant;
+import com.kato.pro.base.entity.BaseConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
@@ -22,7 +22,7 @@ public class TraceFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        MDC.put(CommonConstant.TRACE_ID, IdUtil.fastSimpleUUID());
+        MDC.put(BaseConstant.TRACE_ID, IdUtil.fastSimpleUUID());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

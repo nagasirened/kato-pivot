@@ -52,7 +52,7 @@
         <okhttp.version>4.10.0-RC1</okhttp.version>
         <okio.version>3.0.0</okio.version>
         <spring-boot-maven-plugin.version>2.3.12.RELEASE</spring-boot-maven-plugin.version>
-        <hutool.version>5.7.22</hutool.version>
+        <hutool.version>5.8.28</hutool.version>
         <netty.version>4.1.75.Final</netty.version>
         <hession.version>4.0.65</hession.version>
         <protobuf-java.version>3.19.4</protobuf-java.version>
@@ -66,6 +66,7 @@
         <aws-java-sdk-s3.version>1.12.63</aws-java-sdk-s3.version>
         <amazon.awssdk>2.17.238</amazon.awssdk>
         <jjwt.version>0.9.1</jjwt.version>
+        <ttl.version>2.12.1</ttl.version>
     </properties>
 
     <repositories>
@@ -327,6 +328,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

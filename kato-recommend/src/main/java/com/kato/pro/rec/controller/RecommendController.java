@@ -1,5 +1,6 @@
 package com.kato.pro.rec.controller;
 
+import com.kato.pro.base.entity.BaseConstant;
 import com.kato.pro.base.constant.CommonConstant;
 import com.kato.pro.base.entity.Result;
 import com.kato.pro.rec.entity.core.RecommendItem;
@@ -26,7 +27,7 @@ public class RecommendController {
     @GetMapping
     public Result<String> refreshRate() {
         rateGateway.init();
-        return Result.build(CommonConstant.SUCCESS);
+        return Result.build(BaseConstant.SUCCESS);
     }
 
 }

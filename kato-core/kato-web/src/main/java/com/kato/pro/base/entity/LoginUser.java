@@ -1,4 +1,4 @@
-package com.kato.pro.auth.constant;
+package com.kato.pro.base.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

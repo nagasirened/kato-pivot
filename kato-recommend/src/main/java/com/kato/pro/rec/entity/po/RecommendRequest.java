@@ -1,6 +1,7 @@
 package com.kato.pro.rec.entity.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -22,6 +23,6 @@ public class RecommendRequest {
     /** ab参数 */
     private Map<String, String> abMap = new HashMap<>();
     /** 曝光的内容 */
-    @JSONField(deserialize = false, serialize = false)
+    @JsonIgnore
     private Set<Integer> trash = new HashSet<>();
 }

@@ -1,4 +1,4 @@
-package com.kato.pre.base.constant;
+package com.kato.pro.base.entity;
 
 public class BaseConstant {
 
@@ -9,6 +9,9 @@ public class BaseConstant {
     public static final String TIME_ZONE_GMT8 = "GMT+8";
     public static final String DATE_FORMAT_SIMPLE = "MMdd";
     public static final String DATE_FORMAT_YMD = "yyyyMMdd";
+
+    public static final String TRACE_ID = "traceId";
+    public static final String SUCCESS = "ok";
 
 
 

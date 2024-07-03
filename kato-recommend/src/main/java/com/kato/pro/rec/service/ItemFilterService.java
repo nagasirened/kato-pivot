@@ -9,7 +9,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
-import com.kato.pro.base.constant.CommonConstant;
+import com.kato.pro.base.entity.BaseConstant;
 import com.kato.pro.base.util.CsvHandler;
 import com.kato.pro.oss.repository.OssRepository;
 import com.kato.pro.rec.entity.core.RecommendItem;
@@ -41,7 +41,7 @@ public class ItemFilterService {
     private final double FPP = 0.000000000000001;
 
     public void refreshTrash(OssRepository ossRepository) {
-        String dateStr = DateUtil.format(new Date(), CommonConstant.DATE_FORMAT_YMD);
+        String dateStr = DateUtil.format(new Date(), BaseConstant.DATE_FORMAT_YMD);
         StopWatch loadTrash = StopWatch.create("load_trash");
         loadTrash.start();
         try {
@@ -54,7 +54,10 @@ public class ItemFilterService {
             @Cleanup OSSObject ossObject = ossRepository.loadFile(String.format(TRASH_FILE_NAME, dateStr));
             if (ossObject != null) {
                 csvHandler.handleCsv(ossObject.getObjectContent());
-                List<String> results = csvHandler.getResult();
+                if (!csvHandler.getResult()) {
+                    throw csvHandler.getException();
+                }
+                List<String> results = csvHandler.getDatas();
                 BloomFilter<String> filter = BloomFilter.create(Funnels.stringFunnel(Charset.defaultCharset()), results.size(), FPP);
                 for (String next : results) {
                     filter.put(next);

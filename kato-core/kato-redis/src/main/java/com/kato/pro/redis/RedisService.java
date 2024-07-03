@@ -1,6 +1,7 @@
 package com.kato.pro.redis;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.ImmutableMap;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -30,6 +31,10 @@ public class RedisService {
 		this.redisTemplate = redisLockUtil.getRedisTemplate();
 	}
 
+	public void errorLog(Exception e) {
+		log.error("Exception: {}", e.getMessage());
+	}
+
 	/**
 	 * 指定缓存失效时间
 	 *
@@ -44,7 +49,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -67,7 +72,7 @@ public class RedisService {
 
 		redisTemplate.execute(new RedisCallback<Object>() {
 			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+			public Object doInRedis(@NonNull RedisConnection connection) throws DataAccessException {
 				potentiallyUsePsetEx(connection);
 				return null;
 			}
@@ -110,7 +115,7 @@ public class RedisService {
 		try {
 			return redisTemplate.hasKey(key);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -164,7 +169,7 @@ public class RedisService {
 			redisTemplate.opsForValue().set(key, value);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -186,7 +191,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -209,7 +214,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -275,7 +280,7 @@ public class RedisService {
 			redisTemplate.opsForHash().putAll(key, map);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -296,7 +301,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -314,7 +319,7 @@ public class RedisService {
 			redisTemplate.opsForHash().put(key, item, value);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -336,7 +341,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -396,7 +401,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForSet().members(key);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return null;
 		}
 	}
@@ -412,7 +417,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForSet().isMember(key, value);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -428,7 +433,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForSet().add(key, values);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -449,7 +454,7 @@ public class RedisService {
 			}
 			return count;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -464,7 +469,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForSet().size(key);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -480,7 +485,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForSet().remove(key, values);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -497,7 +502,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForList().range(key, start, end);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return null;
 		}
 	}
@@ -512,7 +517,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForList().size(key);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -529,7 +534,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForList().index(key, index);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return null;
 		}
 	}
@@ -546,7 +551,7 @@ public class RedisService {
 			redisTemplate.opsForList().rightPush(key, value);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -567,7 +572,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -584,7 +589,7 @@ public class RedisService {
 			redisTemplate.opsForList().rightPushAll(key, value);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -605,7 +610,7 @@ public class RedisService {
 			}
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -623,7 +628,7 @@ public class RedisService {
 			redisTemplate.opsForList().set(key, index, value);
 			return true;
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return false;
 		}
 	}
@@ -640,7 +645,7 @@ public class RedisService {
 		try {
 			return redisTemplate.opsForList().remove(key, count, value);
 		} catch (Exception e) {
-			log.error("Exception: {}", e.getMessage());
+			errorLog(e);
 			return 0L;
 		}
 	}
@@ -673,7 +678,6 @@ public class RedisService {
 		if (value instanceof byte[]) {
 			return (byte[]) value;
 		}
-
 		return valueSerializer.serialize(value);
 	}
 
@@ -689,28 +693,6 @@ public class RedisService {
 			return value;
 		}
 		return valueSerializer.deserialize(value);
-	}
-
-
-	/**
-	 * 分布式锁
-	 *
-	 * @param key        分布式锁key
-	 * @param expireTime 持有锁的最长时间 (redis过期时间) 秒为单位
-	 * @return 返回获取锁状态 成功失败
-	 */
-	public boolean tryLock(String key, int expireTime) {
-		final JSONObject lock = new JSONObject();
-		lock.put("id", key);
-		// startTime
-		lock.put("st", System.currentTimeMillis());
-		// keepSeconds
-		lock.put("ks", expireTime);
-		return redisLockUtil.tryLock(key, "", expireTime);
-	}
-
-	public void unLock(String key) {
-		redisLockUtil.releaseLock(key, "");
 	}
 
 	public Set<String> reverseRangeByScore(String redisKey, double min, double max, int offset, int count) {

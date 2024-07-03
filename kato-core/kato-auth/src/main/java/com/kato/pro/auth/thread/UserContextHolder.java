@@ -1,7 +1,7 @@
 package com.kato.pro.auth.thread;
 
 
-import com.kato.pro.auth.constant.LoginUser;
+import com.kato.pro.base.entity.LoginUser;
 
 public class UserContextHolder {
 

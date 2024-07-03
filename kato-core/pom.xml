@@ -19,7 +19,6 @@
         <module>kato-dynamodb</module>
         <module>kato-web</module>
         <module>kato-oss</module>
-        <module>kato-base</module>
     </modules>
 
     <properties>

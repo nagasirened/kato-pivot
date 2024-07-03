@@ -1,7 +1,7 @@
-package com.kato.pre.base.util;
+package com.kato.pro.base.util;
 
 import cn.hutool.core.date.DateUtil;
-import com.kato.pre.base.constant.BaseConstant;
+import com.kato.pro.base.entity.BaseConstant;
 import lombok.experimental.UtilityClass;
 
 import java.util.Date;

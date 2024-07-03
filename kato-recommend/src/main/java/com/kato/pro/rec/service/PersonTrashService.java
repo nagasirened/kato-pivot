@@ -2,8 +2,8 @@ package com.kato.pro.rec.service;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSONArray;
-import com.kato.pro.base.constant.CommonConstant;
+import com.kato.pro.base.entity.BaseConstant;
+import com.kato.pro.base.util.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.po.RecommendRequest;
 import com.kato.pro.base.service.NacosPropertyAcquirer;
@@ -20,11 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class PersonTrashService {
 
-    @Resource
-    private RedisService redisService;
-
-    @Resource
-    private NacosPropertyAcquirer nacosPropertyAcquirer;
+    @Resource private RedisService redisService;
+    @Resource private NacosPropertyAcquirer nacosPropertyAcquirer;
 
     /**
      * get data who had been showed, played, and in black-list
@@ -46,7 +43,7 @@ public class PersonTrashService {
      */
     private Set<Integer> getShowedRecords(String deviceId, Map<String, String> abMap) {
         // 1. 当天已曝光数据
-        String dated = DateUtil.format(new Date(), CommonConstant.DATE_FORMAT_SIMPLE);
+        String dated = DateUtil.format(new Date(), BaseConstant.DATE_FORMAT_SIMPLE);
         String redisKey = RedisKey.REC_CONTENT_IMPRESSION.makeRedisKey(dated, deviceId);
         Set<Integer> showSet = Optional.ofNullable(redisService.smembers(redisKey)).orElse(new HashSet<>()).stream().map(Convert::toInt).collect(Collectors.toSet());
 
@@ -59,7 +56,7 @@ public class PersonTrashService {
         try {
             Date today = new Date();
             for (int i = 1; i < days; i++) {
-                dated = DateUtil.format(DateUtil.offsetDay(today, -i), CommonConstant.DATE_FORMAT_SIMPLE);
+                dated = DateUtil.format(DateUtil.offsetDay(today, -i), BaseConstant.DATE_FORMAT_SIMPLE);
                 redisKey = RedisKey.REC_CONTENT_IMPRESSION.makeRedisKey(dated, deviceId);
                 showSet.addAll(Optional.ofNullable(redisService.smembers(redisKey)).orElse(new HashSet<>()).stream().map(Convert::toInt).collect(Collectors.toSet()));
             }
@@ -99,7 +96,7 @@ public class PersonTrashService {
         Boolean switched = nacosPropertyAcquirer.checkRule(abMap, AbOrNacosConstant.REC_FILTER_BLACK_SWITCH, "0");
         if (switched) {
             String property = nacosPropertyAcquirer.getProperty(AbOrNacosConstant.REC_FILTER_BLACK_LIST, "[]");
-            return JSONArray.parseArray(property, Integer.class);
+            return JsonUtils.toList(property, Integer.class);
         }
         return new LinkedList<>();
     }
