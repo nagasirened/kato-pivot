@@ -3,8 +3,8 @@ package com.kato.pro.dynamodb.config;
 
 import com.kato.pro.dynamodb.core.DynamoDBClientFactory;
 import com.kato.pro.dynamodb.core.DynamoProperties;
-import com.kato.pro.base.pool.ClientManager;
-import com.kato.pro.base.pool.DynamicObjectPool;
+import com.kato.pro.common.pool.ClientManager;
+import com.kato.pro.common.pool.DynamicObjectPool;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

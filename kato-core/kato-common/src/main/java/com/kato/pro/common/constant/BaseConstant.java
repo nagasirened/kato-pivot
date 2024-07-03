@@ -1,4 +1,4 @@
-package com.kato.pro.base.entity;
+package com.kato.pro.common.constant;
 
 public class BaseConstant {
 
@@ -10,6 +10,7 @@ public class BaseConstant {
     public static final String DATE_FORMAT_SIMPLE = "MMdd";
     public static final String DATE_FORMAT_YMD = "yyyyMMdd";
 
+    public static final String DEVICE_ID = "device_id";
     public static final String TRACE_ID = "traceId";
     public static final String SUCCESS = "ok";
 

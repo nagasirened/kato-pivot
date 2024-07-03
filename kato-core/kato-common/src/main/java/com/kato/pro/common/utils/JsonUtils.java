@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pro.common.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import com.kato.pro.base.entity.BaseConstant;
+import com.kato.pro.common.constant.BaseConstant;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

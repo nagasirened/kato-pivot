@@ -2,7 +2,7 @@ package com.kato.pro.base.aop;
 
 
 import cn.hutool.core.util.IdUtil;
-import com.kato.pro.base.entity.BaseConstant;
+import com.kato.pro.common.constant.BaseConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;

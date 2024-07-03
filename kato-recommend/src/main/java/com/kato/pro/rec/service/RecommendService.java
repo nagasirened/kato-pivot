@@ -1,7 +1,7 @@
 package com.kato.pro.rec.service;
 
 import cn.hutool.core.collection.CollUtil;
-import com.kato.pro.base.util.JsonUtils;
+import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.enums.LevelEnum;
@@ -38,7 +38,7 @@ public class RecommendService {
         try {
             // log init
             logsDetailUtils.init(request.getDeviceId());
-            logsDetailUtils.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toStr(request), LevelEnum.DETAIL);
+            logsDetailUtils.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
             // 2. query items which need to filter
             personTrashService.wrapTrash(request);
             // 3. cold_start, which contains content will return value directly

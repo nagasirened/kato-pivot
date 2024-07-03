@@ -2,8 +2,8 @@ package com.kato.pro.rec.service;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import com.kato.pro.base.entity.BaseConstant;
-import com.kato.pro.base.util.JsonUtils;
+import com.kato.pro.common.constant.BaseConstant;
+import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.po.RecommendRequest;
 import com.kato.pro.base.service.NacosPropertyAcquirer;

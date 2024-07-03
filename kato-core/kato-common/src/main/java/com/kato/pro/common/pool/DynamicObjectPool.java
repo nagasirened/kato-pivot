@@ -1,4 +1,4 @@
-package com.kato.pro.base.pool;
+package com.kato.pro.common.pool;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

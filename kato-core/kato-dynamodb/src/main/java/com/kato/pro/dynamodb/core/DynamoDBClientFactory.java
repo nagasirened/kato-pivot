@@ -1,6 +1,6 @@
 package com.kato.pro.dynamodb.core;
 
-import com.kato.pro.base.pool.AbstractKeyedPooledObjectFactory;
+import com.kato.pro.common.pool.AbstractKeyedPooledObjectFactory;
 import lombok.Getter;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;

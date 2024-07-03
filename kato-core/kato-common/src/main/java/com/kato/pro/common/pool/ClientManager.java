@@ -1,8 +1,7 @@
-package com.kato.pro.base.pool;
+package com.kato.pro.common.pool;
 
 import lombok.Data;
 
-import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data

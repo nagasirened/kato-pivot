@@ -1,4 +1,4 @@
-package com.kato.pro.base.pool;
+package com.kato.pro.common.pool;
 
 import org.apache.commons.pool2.BaseKeyedPooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;

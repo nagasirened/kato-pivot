@@ -1,7 +1,6 @@
 package com.kato.pro.rec.controller;
 
-import com.kato.pro.base.entity.BaseConstant;
-import com.kato.pro.base.constant.CommonConstant;
+import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.base.entity.Result;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.po.RecommendRequest;

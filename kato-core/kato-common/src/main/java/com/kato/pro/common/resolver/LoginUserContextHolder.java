@@ -1,7 +1,7 @@
-package com.kato.pro.base.resolver;
+package com.kato.pro.common.resolver;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
-import com.kato.pro.base.entity.LoginUser;
+import com.kato.pro.common.entity.LoginUser;
 
 public class LoginUserContextHolder {
 

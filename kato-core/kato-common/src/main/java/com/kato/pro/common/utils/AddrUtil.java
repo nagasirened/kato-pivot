@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pro.common.utils;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;

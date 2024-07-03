@@ -1,6 +1,8 @@
 package com.kato.pro.serial;
 
 
+import com.kato.pro.common.utils.JsonUtils;
+
 import java.nio.charset.StandardCharsets;
 
 /**

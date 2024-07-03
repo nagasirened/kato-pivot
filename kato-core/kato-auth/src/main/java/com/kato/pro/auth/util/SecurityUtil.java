@@ -2,7 +2,7 @@ package com.kato.pro.auth.util;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import com.kato.pro.base.entity.LoginUser;
+import com.kato.pro.common.entity.LoginUser;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
 import com.kato.pro.auth.thread.UserContextHolder;

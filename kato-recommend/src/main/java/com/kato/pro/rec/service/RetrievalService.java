@@ -2,7 +2,7 @@ package com.kato.pro.rec.service;
 
 import cn.hutool.core.convert.Convert;
 import com.kato.pro.base.service.NacosPropertyAcquirer;
-import com.kato.pro.base.util.DateHelper;
+import com.kato.pro.common.utils.DateHelper;
 import com.kato.pro.base.util.PropertyUtil;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.constant.LogConstant;

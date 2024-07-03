@@ -18,11 +18,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.kato.pro</groupId>
-            <artifactId>kato-web</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
@@ -30,12 +25,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
-        </dependency>
-        <!-- 自动给redis客户端lettuce启用epoll -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>

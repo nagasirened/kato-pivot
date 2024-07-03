@@ -1,4 +1,4 @@
-package com.kato.pro.base.threadPool;
+package com.kato.pro.common.threadPool;
 
 import cn.hutool.core.util.IdUtil;
 import org.slf4j.MDC;

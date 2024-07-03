@@ -1,11 +1,11 @@
 package com.kato.pro.rec.utilities;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.kato.pro.base.entity.BaseConstant;
+import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.base.service.NacosPropertyAcquirer;
+import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.enums.LevelEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -78,7 +79,7 @@ public class LogsDetailUtils {
     private void initSupport(String deviceId, Integer level) {
         logSupport.initMap();
         logSupport.setLevel(level);
-        putLog("deviceId", deviceId, LevelEnum.NORMAL);
+        putLog(BaseConstant.DEVICE_ID, deviceId, LevelEnum.NORMAL);
         MDC.put(LOG_ON_OFF, "1");
     }
 
@@ -90,9 +91,10 @@ public class LogsDetailUtils {
     private int userStrongHit(String deviceId) {
         try {
             String strongHitStr = nacosPropertyAcquirer.getProperty(AbParamConstant.LOG_DETAIL_STRONG_HIT, "{}");
-            JSONObject userLevelDictionary = JSONObject.parseObject(strongHitStr);
-            if (userLevelDictionary.containsKey(deviceId)) {
-                return userLevelDictionary.getInteger(deviceId);
+            Map<String, String> userLevelDictionary = JsonUtils.toObject(strongHitStr, Map.class);
+            if (MapUtil.isNotEmpty(userLevelDictionary)) {
+                String val = Optional.ofNullable(userLevelDictionary.get(deviceId)).orElse("1");
+                return Convert.toInt(val);
             }
         } catch (Exception e) {
             log.error("LogDetailUtils#userStrongHit, the config in nacos about userStrongHit is wrong, deviceId: {}", deviceId, e);
@@ -105,7 +107,7 @@ public class LogsDetailUtils {
      */
     public void windUp() {
         if (StrUtil.equals("1", MDC.get(LOG_ON_OFF))) {
-            log.info("LogsDetailUtils#windUp, currentMapSize: {}, logsInfo: {}", logSupport.getActiveSize(), JSON.toJSONString(logSupport.getTraceMap()));
+            log.info("LogsDetailUtils#windUp, currentMapSize: {}, logsInfo: {}", logSupport.getActiveSize(), JsonUtils.toJSONString(logSupport.getTraceMap()));
         }
         logSupport.reset();
         MDC.remove(LOG_ON_OFF);

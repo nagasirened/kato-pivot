@@ -1,4 +1,4 @@
-package com.kato.pro.base.util;
+package com.kato.pro.common.utils;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;

@@ -2,7 +2,7 @@ package com.kato.pro.base.resolver;
 
 import com.kato.pro.auth.util.SecurityUtil;
 import com.kato.pro.base.annotation.LoadUser;
-import com.kato.pro.base.entity.LoginUser;
+import com.kato.pro.common.entity.LoginUser;
 import lombok.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

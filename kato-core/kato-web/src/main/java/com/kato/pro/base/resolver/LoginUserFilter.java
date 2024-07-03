@@ -1,7 +1,8 @@
 package com.kato.pro.base.resolver;
 
 import com.kato.pro.auth.util.SecurityUtil;
-import com.kato.pro.base.entity.LoginUser;
+import com.kato.pro.common.entity.LoginUser;
+import com.kato.pro.common.resolver.LoginUserContextHolder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.filter.OncePerRequestFilter;
 
