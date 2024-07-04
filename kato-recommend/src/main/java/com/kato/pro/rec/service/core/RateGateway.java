@@ -2,8 +2,8 @@ package com.kato.pro.rec.service.core;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.RateLimiter;
-import com.kato.pro.base.entity.CommonCode;
-import com.kato.pro.base.exception.KatoServiceException;
+import com.kato.pro.common.constant.CommonCode;
+import com.kato.pro.common.exception.KatoServiceException;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.enums.LimiterCategory;
 import com.kato.pro.base.service.NacosPropertyAcquirer;

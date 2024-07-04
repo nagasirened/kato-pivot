@@ -1,6 +1,6 @@
-package com.kato.pro.base.exception;
+package com.kato.pro.common.exception;
 
-import com.kato.pro.base.entity.CommonCode;
+import com.kato.pro.common.constant.CommonCode;
 import lombok.Getter;
 import lombok.Setter;
 

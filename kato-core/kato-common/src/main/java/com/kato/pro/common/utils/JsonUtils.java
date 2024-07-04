@@ -178,9 +178,9 @@ public final class JsonUtils {
             return null;
         }
         if (o instanceof String) {
-            return toObject((String)o, Map.class);
+            return toObject((String) o, new TypeReference<Map<K, V>>() {});
         }
-        return MAPPER.convertValue(o, Map.class);
+        return MAPPER.convertValue(o, new TypeReference<Map<K, V>>() {});
     }
 
     /**
@@ -192,7 +192,7 @@ public final class JsonUtils {
             return null;
         }
         try {
-            return MAPPER.readValue(json, List.class);
+            return MAPPER.readValue(json, new TypeReference<List<T>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

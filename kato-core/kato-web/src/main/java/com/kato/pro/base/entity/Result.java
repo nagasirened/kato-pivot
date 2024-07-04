@@ -1,5 +1,6 @@
 package com.kato.pro.base.entity;
 
+import com.kato.pro.common.constant.CommonCode;
 import lombok.Getter;
 import lombok.Setter;
 

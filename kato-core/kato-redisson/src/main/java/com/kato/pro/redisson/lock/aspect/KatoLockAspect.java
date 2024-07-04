@@ -2,12 +2,14 @@ package com.kato.pro.redisson.lock.aspect;
 
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Preconditions;
+import com.kato.pro.common.entity.Locker;
 import com.kato.pro.redisson.lock.annotation.KatoDistributedLock;
-import com.kato.pro.redisson.lock.realize.KatoRedissonLock;
+import com.kato.pro.redisson.lock.realize.RedissonDistributeLock;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.redisson.api.RLock;
 
 import javax.annotation.Resource;
 
@@ -16,24 +18,24 @@ import javax.annotation.Resource;
 public class KatoLockAspect {
 
     @Resource
-    private KatoRedissonLock katoRedissonLock;
+    private RedissonDistributeLock redissonDistributeLock;
 
     /**
      * 拦截所有注解了 KatoDistributedLock 的内容
      * @param joinPoint                     ProceedingJoinPoint
      * @param katoDistributedLock           锁拓展信息
-     * @return
+     * @return  接口正确返回
      */
     @Around("@annotation(katoDistributedLock)")
     public Object around(ProceedingJoinPoint joinPoint, KatoDistributedLock katoDistributedLock) throws Throwable {
         String lockKey = wrapLockKey(katoDistributedLock);
-        boolean getLock = katoRedissonLock.tryLock(lockKey, katoDistributedLock.expire());
-        Preconditions.checkArgument(getLock, "get lock %s fail ", lockKey);
+        Locker<RLock> locker = redissonDistributeLock.tryLock(lockKey, katoDistributedLock.expire());
+        Preconditions.checkArgument(locker != null, "get lock %s fail ", lockKey);
         log.info("KatoLockAspect#around, get distributeLock {} success, do sth.", lockKey);
         try {
             return joinPoint.proceed();
         } finally {
-            katoRedissonLock.releaseLock(lockKey);
+            locker.close();
             log.info("KatoLockAspect#around, release distributeLock {} success, do sth.", lockKey);
         }
     }

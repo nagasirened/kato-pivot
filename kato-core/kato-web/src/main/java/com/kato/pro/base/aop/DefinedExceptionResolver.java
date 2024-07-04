@@ -1,8 +1,8 @@
 package com.kato.pro.base.aop;
 
-import com.kato.pro.base.entity.CommonCode;
+import com.kato.pro.common.constant.CommonCode;
 import com.kato.pro.base.entity.Result;
-import com.kato.pro.base.exception.KatoServiceException;
+import com.kato.pro.common.exception.KatoServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

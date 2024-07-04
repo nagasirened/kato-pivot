@@ -23,10 +23,10 @@ public class DynamicObjectPool<M extends ClientManager<? extends AutoCloseable>>
      * maxIdle           最大空闲连接数
      * maxWaitMillis     最大等待时间
      */
-    private Integer maxTotal = 100;
-    private Integer minIdle = 10;
-    private Integer maxIdle = 100;
-    private Integer maxWaitMillis = 1000;
+    private Integer maxTotal;
+    private Integer minIdle;
+    private Integer maxIdle;
+    private Integer maxWaitMillis;
 
 
     /**
@@ -35,10 +35,6 @@ public class DynamicObjectPool<M extends ClientManager<? extends AutoCloseable>>
     public DynamicObjectPool(String clientKey, BaseKeyedPooledObjectFactory<String, M> factory) {
         this.clientKey = clientKey;
         GenericKeyedObjectPoolConfig<M> poolConfig = new GenericKeyedObjectPoolConfig<>();
-        poolConfig.setMaxTotalPerKey(maxTotal);
-        poolConfig.setMinIdlePerKey(minIdle);
-        poolConfig.setMaxIdlePerKey(maxIdle);
-        poolConfig.setMaxWaitMillis(maxWaitMillis);
         this.clientPool = PoolUtils.synchronizedPool(new GenericKeyedObjectPool<>(factory, poolConfig));
     }
 

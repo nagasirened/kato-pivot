@@ -1,10 +1,10 @@
 package com.kato.pro.dynamodb.config;
 
 
-import com.kato.pro.dynamodb.core.DynamoDBClientFactory;
-import com.kato.pro.dynamodb.core.DynamoProperties;
 import com.kato.pro.common.pool.ClientManager;
 import com.kato.pro.common.pool.DynamicObjectPool;
+import com.kato.pro.dynamodb.core.DynamoDBClientFactory;
+import com.kato.pro.dynamodb.core.DynamoProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +21,7 @@ public class DynamoDBConfiguration {
     private DynamoProperties dynamoProperties;
 
     @Bean
-    @ConditionalOnProperty(prefix = "aws.access", name = {"key", "secret", "region"})
+    @ConditionalOnProperty(prefix = "aws.dynamo.access", name = {"key", "secret", "region"})
     public DynamicObjectPool<ClientManager<DynamoDbClient>> dynamoPool() {
         DynamoDBClientFactory factory = new DynamoDBClientFactory(dynamoProperties);
         DynamicObjectPool<ClientManager<DynamoDbClient>> objectPool = new DynamicObjectPool<>(DynamoDbClient.class.getSimpleName(), factory);

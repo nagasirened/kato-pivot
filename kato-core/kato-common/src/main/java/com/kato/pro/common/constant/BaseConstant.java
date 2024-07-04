@@ -1,19 +1,20 @@
 package com.kato.pro.common.constant;
 
-public class BaseConstant {
+public interface BaseConstant {
 
-    public static final String MONTH_FORMAT = "yyyy-MM";
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
-    public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String SIMPLE_MONTH_FORMAT = "yyyyMM";
-    public static final String TIME_ZONE_GMT8 = "GMT+8";
-    public static final String DATE_FORMAT_SIMPLE = "MMdd";
-    public static final String DATE_FORMAT_YMD = "yyyyMMdd";
+    String DEVICE_ID = "device_id";
+    String TRACE_ID = "traceId";
+    String SUCCESS = "ok";
+    String LOCK_PREFIX = "locker_";
+    String TOKEN_HEADER = "Authorization";
+    String BEARER_TYPE = "Bearer";
 
-    public static final String DEVICE_ID = "device_id";
-    public static final String TRACE_ID = "traceId";
-    public static final String SUCCESS = "ok";
-
-
+    String MONTH_FORMAT = "yyyy-MM";
+    String DATE_FORMAT = "yyyy-MM-dd";
+    String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    String SIMPLE_MONTH_FORMAT = "yyyyMM";
+    String TIME_ZONE_GMT8 = "GMT+8";
+    String DATE_FORMAT_SIMPLE = "MMdd";
+    String DATE_FORMAT_YMD = "yyyyMMdd";
 
 }

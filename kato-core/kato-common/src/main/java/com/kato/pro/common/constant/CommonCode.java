@@ -1,4 +1,4 @@
-package com.kato.pro.base.entity;
+package com.kato.pro.common.constant;
 
 
 import lombok.Getter;
