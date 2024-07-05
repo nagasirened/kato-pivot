@@ -6,7 +6,7 @@ import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.po.RecommendRequest;
-import com.kato.pro.base.service.NacosPropertyAcquirer;
+import com.kato.pro.base.util.ConfigUtils;
 import com.kato.pro.rec.utilities.RedisKey;
 import com.kato.pro.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class PersonTrashService {
 
     @Resource private RedisService redisService;
-    @Resource private NacosPropertyAcquirer nacosPropertyAcquirer;
 
     /**
      * get data who had been showed, played, and in black-list
@@ -48,7 +47,7 @@ public class PersonTrashService {
         Set<Integer> showSet = Optional.ofNullable(redisService.smembers(redisKey)).orElse(new HashSet<>()).stream().map(Convert::toInt).collect(Collectors.toSet());
 
         // 2. 过去几天已曝光数据
-        Integer days = Convert.toInt(nacosPropertyAcquirer.getAbOrProperty(abMap, AbOrNacosConstant.RECOMMEND_IMPRESSION_DAYS, "1"));
+        Integer days = Convert.toInt(ConfigUtils.getAbOrProperty(abMap, AbOrNacosConstant.RECOMMEND_IMPRESSION_DAYS, "1"));
         if (days <= 1) {
             return showSet;
         }
@@ -72,7 +71,7 @@ public class PersonTrashService {
      * =================================================================
      */
     private Set<Integer> getPlayedRecords(String deviceId, Map<String, String> abMap) {
-        Integer topNumber = Convert.toInt(nacosPropertyAcquirer.getAbOrProperty(abMap, AbOrNacosConstant.RECOMMEND_PLAYED_NUMBER, "500"));
+        Integer topNumber = Convert.toInt(ConfigUtils.getAbOrProperty(abMap, AbOrNacosConstant.RECOMMEND_PLAYED_NUMBER, "500"));
         String redisKey = RedisKey.REC_CONTENT_PLAYED.makeRedisKey(deviceId);
         Set<String> playedIdSet = Optional.ofNullable(redisService.reverseRangeByScore(redisKey, 0, -1, 0, topNumber)).orElse(new HashSet<>());
         // 已豁免的内容，就算播放过了也可以放出来
@@ -93,9 +92,9 @@ public class PersonTrashService {
      * =================================================================
      */
     private Collection<Integer> getBlackRecords(Map<String, String> abMap) {
-        Boolean switched = nacosPropertyAcquirer.checkRule(abMap, AbOrNacosConstant.REC_FILTER_BLACK_SWITCH, "0");
+        Boolean switched = ConfigUtils.checkRule(abMap, AbOrNacosConstant.REC_FILTER_BLACK_SWITCH);
         if (switched) {
-            String property = nacosPropertyAcquirer.getProperty(AbOrNacosConstant.REC_FILTER_BLACK_LIST, "[]");
+            String property = ConfigUtils.getProperty(AbOrNacosConstant.REC_FILTER_BLACK_LIST, BaseConstant.EMPTY_BRACKET);
             return JsonUtils.toList(property, Integer.class);
         }
         return new LinkedList<>();

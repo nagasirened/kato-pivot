@@ -8,6 +8,9 @@ public interface BaseConstant {
     String SUCCESS = "ok";
     String ON = "on";
     String OFF = "off";
+    String JUDGE_YES = "1";
+    String JUDGE_NO = "0";
+    String EMPTY_BRACKET = "[]";
     String LOCK_PREFIX = "locker_";
     String TOKEN_HEADER = "Authorization";
     String BEARER_TYPE = "Bearer";

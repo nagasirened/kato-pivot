@@ -6,12 +6,11 @@ import com.kato.pro.common.constant.CommonCode;
 import com.kato.pro.common.exception.KatoServiceException;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.enums.LimiterCategory;
-import com.kato.pro.base.service.NacosPropertyAcquirer;
+import com.kato.pro.base.util.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,9 +18,6 @@ import java.util.Optional;
 @Component
 @SuppressWarnings("ALL")
 public class RateGateway implements CommandLineRunner {
-
-    @Resource
-    NacosPropertyAcquirer nacosPropertyAcquirer;
 
     private Map<String, RateLimiter> limiterMap;
 
@@ -31,7 +27,7 @@ public class RateGateway implements CommandLineRunner {
     }
 
     public void init() {
-        String permitsPerSecond = Optional.ofNullable(nacosPropertyAcquirer.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT)).orElse("100");
+        String permitsPerSecond = Optional.ofNullable(ConfigUtils.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT)).orElse("100");
         RateLimiter recommendRateLimiter = RateLimiter.create(Integer.parseInt(permitsPerSecond));
         limiterMap = ImmutableMap.of(LimiterCategory.RECOMMEND.lowerName(), recommendRateLimiter);
     }

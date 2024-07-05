@@ -5,6 +5,7 @@ import cn.hutool.core.text.StrSplitter;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
+import com.kato.pro.base.resolver.KatoHeaderFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,6 +18,8 @@ import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EnableConfigurationProperties({FilterProperties.class})
 public class FilterChainConfig {
@@ -29,11 +32,7 @@ public class FilterChainConfig {
     @Bean
     public List<FilterRegistrationBean<?>> registrationBean() {
         List<FilterRegistrationBean<?>> beans = new ArrayList<>();
-        List<FilterProperties.FilterConf> includes = filterProperties.getIncludes();
-        if (CollUtil.isEmpty(includes)) {
-            return beans;
-        }
-
+        List<FilterProperties.FilterConf> includes = Stream.concat(filterProperties.getIncludes().stream(), defaultFilter().stream()).distinct().collect(Collectors.toList());
         for (FilterProperties.FilterConf temp : includes) {
             String path = temp.getPath();
             if (StrUtil.isBlank(path)) {
@@ -62,5 +61,12 @@ public class FilterChainConfig {
         return beans;
     }
 
+    public List<FilterProperties.FilterConf> defaultFilter() {
+        return ImmutableList.of(
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.KatoHeaderFilter.class.getTypeName(), "/*", 100),
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.LoginUserFilter.class.getTypeName(), "/*", 100),
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.TraceFilter.class.getTypeName(), "/*", 100)
+        );
+    }
 
 }

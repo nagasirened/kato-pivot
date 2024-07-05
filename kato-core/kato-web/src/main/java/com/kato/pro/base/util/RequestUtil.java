@@ -9,14 +9,26 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public final class RequestUtil {
 
+    static List<Field> fields;
+    public static final ThreadLocal<KatoHeader> holder = new InheritableThreadLocal<>();
+    static {
+        Field[] declaredFields = KatoHeader.class.getDeclaredFields();
+        fields = Stream.of(declaredFields).peek(item -> item.setAccessible(true)).collect(Collectors.toList());
+    }
+
     private RequestUtil() {}
 
-    public static final InheritableThreadLocal<KatoHeader> holder = new InheritableThreadLocal<>();
+    public static boolean hasHeader() {
+        return Objects.nonNull(holder.get());
+    }
 
     public static void setHeader(KatoHeader header) {
         if (Objects.isNull(header)) {
@@ -24,10 +36,6 @@ public final class RequestUtil {
         } else {
             holder.set(header);
         }
-    }
-
-    public static void reset() {
-        holder.remove();
     }
 
     public static KatoHeader getHeader() {
@@ -40,6 +48,13 @@ public final class RequestUtil {
     }
 
     /**
+     * 释放
+     */
+    public static void reset() {
+        holder.remove();
+    }
+
+    /**
      * 封装header对象
      */
     private static KatoHeader initHeader() {
@@ -48,9 +63,8 @@ public final class RequestUtil {
         HttpServletRequest request = servletRequestAttributes.getRequest();
         KatoHeader katoHeader = new KatoHeader();
         try {
-            for (Field declaredField : katoHeader.getClass().getDeclaredFields()) {
+            for (Field declaredField : fields) {
                 String fieldName = declaredField.getName();
-                declaredField.setAccessible(true);
                 declaredField.set(katoHeader, request.getHeader(fieldName));
             }
         } catch (Exception e) {

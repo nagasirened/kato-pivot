@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.kato.pro.base.util.ConfigUtil;
+import com.kato.pro.base.util.ConfigUtils;
 import com.kato.pro.common.constant.PropertyConstant;
 import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.entity.LevelEnum;
@@ -21,14 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 日志抽样工具类
  * 设置interval，用户默认等级1，每interval次数次调用打印一次用户当前的日志信息。 开发者埋点日志内容
- * 等级3及以上, 每条日志都打印，但是等级不一样，有些日志可以设置至少是某个等级的才能收集，低于某个等级的不搜集日志
+ * 等级2及以上, 每条日志都打印，但是等级不一样，有些日志可以设置至少是某个等级的才能收集，低于某个等级的不搜集日志. >3的按3算
  */
-
-/**
- * 使用方式
- */
-
-
 @Slf4j
 public class ScaleLogger {
 
@@ -52,7 +46,7 @@ public class ScaleLogger {
         }
         // level = 1
         int cnt = counter.incrementAndGet();
-        Integer interval = Optional.ofNullable(ConfigUtil.getIntegerProperty(PropertyConstant.LOG_INTERVAL)).orElse(10000);
+        Integer interval = Optional.ofNullable(ConfigUtils.getIntegerProperty(PropertyConstant.LOG_INTERVAL)).orElse(10000);
         if (cnt % interval == 0) {
             counter.getAndUpdate((prev) -> 0);  // 重置为0
             initSupport(deviceId, level);
@@ -84,7 +78,7 @@ public class ScaleLogger {
      * @return  level
      */
     private static int userStrongHit(String deviceId) {
-        String strongHits = ConfigUtil.getProperty(PropertyConstant.LOG_STRONG_HITS, "{}");
+        String strongHits = ConfigUtils.getProperty(PropertyConstant.LOG_STRONG_HITS, "{}");
         if (StrUtil.isBlank(strongHits) || "{}".equals(strongHits)) return 1;
         try {
             // 结合@RefreshScope，保证配置文件更新后，实时生效

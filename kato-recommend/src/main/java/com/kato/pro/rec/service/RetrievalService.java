@@ -1,9 +1,9 @@
 package com.kato.pro.rec.service;
 
 import cn.hutool.core.convert.Convert;
-import com.kato.pro.base.service.NacosPropertyAcquirer;
+import com.kato.pro.base.util.ConfigUtils;
+import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.utils.DateHelper;
-import com.kato.pro.base.util.PropertyUtil;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.common.entity.LevelEnum;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @Service
 public class RetrievalService {
 
-    @Resource private NacosPropertyAcquirer nacosPropertyAcquirer;
+    @Resource private ConfigUtils configUtils;
     @Resource private RedisService redisService;
 
     /**
@@ -39,7 +39,7 @@ public class RetrievalService {
     private int refreshObtainNumber(RecommendRequest request) {
         int res = -1;
         try {
-            boolean verifySwitch = PropertyUtil.verifySwitch(nacosPropertyAcquirer, request.getAbMap(), AbOrNacosConstant.OBTAIN_NUMBER, "0");
+            boolean verifySwitch = ConfigUtils.checkRule(request.getAbMap(), AbOrNacosConstant.OBTAIN_NUMBER);
             if (!verifySwitch) return res;
 
             String date = DateHelper.currentMMdd();
