@@ -2,9 +2,12 @@ package com.kato.pro.common.constant;
 
 public interface BaseConstant {
 
-    String DEVICE_ID = "device_id";
+    String DEVICE_ID = "deviceId";
+    String USER_ID = "userId";
     String TRACE_ID = "traceId";
     String SUCCESS = "ok";
+    String ON = "on";
+    String OFF = "off";
     String LOCK_PREFIX = "locker_";
     String TOKEN_HEADER = "Authorization";
     String BEARER_TYPE = "Bearer";

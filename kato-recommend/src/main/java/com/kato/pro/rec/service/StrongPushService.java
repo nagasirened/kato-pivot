@@ -29,7 +29,7 @@ public class StrongPushService {
          * 1. direct hot
          */
         List<RecommendItem> result = directHotPush(abMap);
-        return RecommendUtils.ridItemsOfRes(result, recommendRequest.getTrash());
+        return RecommendUtils.ridItemsOfRes(result, recommendRequest.getExposure());
     }
 
     /**
@@ -43,7 +43,7 @@ public class StrongPushService {
         if (StrUtil.equalsIgnoreCase("0", directHotProperty)) {
             return result;
         }
-        // get content
+        // todo get content
 
         // filter
 

@@ -4,11 +4,11 @@ import cn.hutool.core.collection.CollUtil;
 import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
-import com.kato.pro.rec.entity.enums.LevelEnum;
+import com.kato.pro.common.entity.LevelEnum;
 import com.kato.pro.rec.entity.enums.LimiterCategory;
 import com.kato.pro.rec.entity.po.RecommendRequest;
 import com.kato.pro.rec.service.core.RateGateway;
-import com.kato.pro.rec.utilities.LogsDetailUtils;
+import com.kato.pro.base.log.ScaleLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,6 @@ public class RecommendService {
     @Resource private RateGateway rateGateway;
     @Resource private StrongPushService strongPushService;
     @Resource private PersonTrashService personTrashService;
-    @Resource private LogsDetailUtils logsDetailUtils;
     @Resource private RetrievalService retrievalService;
 
     /**
@@ -37,8 +36,7 @@ public class RecommendService {
         rateGateway.tryAcquire(LimiterCategory.RECOMMEND);
         try {
             // log init
-            logsDetailUtils.init(request.getDeviceId());
-            logsDetailUtils.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
+            ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
             // 2. query items which need to filter
             personTrashService.wrapTrash(request);
             // 3. cold_start, which contains content will return value directly
@@ -49,8 +47,6 @@ public class RecommendService {
         } catch (Exception e) {
             log.error("RecommendService#recommend, fail happened, msg: {}", e.getMessage(), e);
             return new ArrayList<>();
-        } finally {
-            logsDetailUtils.windUp();
         }
     }
 

@@ -29,13 +29,13 @@ public class PersonTrashService {
     public void wrapTrash(RecommendRequest recommendRequest) {
         String deviceId = recommendRequest.getDeviceId();
         Map<String, String> abMap = recommendRequest.getAbMap();
-        Set<Integer> trashSet = recommendRequest.getTrash();
+        Set<Integer> exposure = recommendRequest.getExposure();
         // showed
-        trashSet.addAll(getShowedRecords(deviceId, abMap));
+        exposure.addAll(getShowedRecords(deviceId, abMap));
         // played
-        trashSet.addAll(getPlayedRecords(deviceId, abMap));
+        exposure.addAll(getPlayedRecords(deviceId, abMap));
         // black-list
-        trashSet.addAll(getBlackRecords(abMap));
+        exposure.addAll(getBlackRecords(abMap));
     }
 
     /**

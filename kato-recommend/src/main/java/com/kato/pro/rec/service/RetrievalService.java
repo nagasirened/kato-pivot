@@ -6,9 +6,9 @@ import com.kato.pro.common.utils.DateHelper;
 import com.kato.pro.base.util.PropertyUtil;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.constant.LogConstant;
-import com.kato.pro.rec.entity.enums.LevelEnum;
+import com.kato.pro.common.entity.LevelEnum;
 import com.kato.pro.rec.entity.po.RecommendRequest;
-import com.kato.pro.rec.utilities.LogsDetailUtils;
+import com.kato.pro.base.log.ScaleLogger;
 import com.kato.pro.rec.utilities.RedisKey;
 import com.kato.pro.redis.RedisService;
 import io.micrometer.core.annotation.Timed;
@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 public class RetrievalService {
 
     @Resource private NacosPropertyAcquirer nacosPropertyAcquirer;
-    @Resource private LogsDetailUtils logsDetailUtils;
     @Resource private RedisService redisService;
 
     /**
@@ -47,7 +46,7 @@ public class RetrievalService {
             String redisKey = RedisKey.RETRIEVE_DEVICE_OBTAIN_NUMBER.makeRedisKey(request.getDeviceId(), date);
             return Convert.toInt(redisService.incr(redisKey, 1L));
         } finally {
-            logsDetailUtils.putLog(LogConstant.OBTAIN_NUMBER, -1, LevelEnum.NORMAL);
+            ScaleLogger.putLog(LogConstant.OBTAIN_NUMBER, -1, LevelEnum.NORMAL);
         }
     }
 

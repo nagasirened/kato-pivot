@@ -1,4 +1,4 @@
-package com.kato.pro.rec.entity.enums;
+package com.kato.pro.common.entity;
 
 import lombok.Getter;
 

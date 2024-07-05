@@ -1,7 +1,6 @@
 package com.kato.pro.rec.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -24,5 +23,5 @@ public class RecommendRequest {
     private Map<String, String> abMap = new HashMap<>();
     /** 曝光的内容 */
     @JsonIgnore
-    private Set<Integer> trash = new HashSet<>();
+    private Set<Integer> exposure = new HashSet<>();
 }

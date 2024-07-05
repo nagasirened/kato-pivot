@@ -1,4 +1,4 @@
-package com.kato.pro.base.aop;
+package com.kato.pro.base.resolver;
 
 import com.kato.pro.common.constant.CommonCode;
 import com.kato.pro.base.entity.Result;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
-public class DefinedExceptionResolver {
+public class DefinedExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result<Object> handleException(MethodArgumentNotValidException e) {

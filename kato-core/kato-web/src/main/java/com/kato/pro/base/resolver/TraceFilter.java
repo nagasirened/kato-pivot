@@ -1,4 +1,4 @@
-package com.kato.pro.base.aop;
+package com.kato.pro.base.resolver;
 
 
 import cn.hutool.core.util.IdUtil;
