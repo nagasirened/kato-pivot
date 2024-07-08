@@ -1,8 +1,8 @@
 package com.kato.pro.rec.entity.constant;
 
-public class AbParamConstant {
+public interface AbParamConstant {
 
     /** 直接推荐高热内容 */
-    public static final String DIRECT_PUSH_HOT = "direct_hot";
+    String DIRECT_PUSH_HOT = "direct_hot";
 
 }

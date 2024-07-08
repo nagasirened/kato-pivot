@@ -6,7 +6,7 @@ import com.kato.pro.base.entity.Result;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.po.RecommendRequest;
 import com.kato.pro.rec.service.RecommendService;
-import com.kato.pro.rec.service.core.RateGateway;
+import com.kato.pro.base.util.RateGateway;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

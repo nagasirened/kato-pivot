@@ -24,4 +24,5 @@ public class RecommendRequest {
     /** 曝光的内容 */
     @JsonIgnore
     private Set<Integer> exposure = new HashSet<>();
+
 }

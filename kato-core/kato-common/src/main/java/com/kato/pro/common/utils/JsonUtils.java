@@ -184,6 +184,20 @@ public final class JsonUtils {
     }
 
     /**
+     * 对象转换为map对象
+     * @param o 要转换的对象
+     */
+    public static <K, V> Map<K, V> toMap(Object o, Class<K> k, Class<V> v) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof String) {
+            return toObject((String) o, new TypeReference<Map<K, V>>() {});
+        }
+        return MAPPER.convertValue(o, new TypeReference<Map<K, V>>() {});
+    }
+
+    /**
      * json字符串转换为list对象
      * @param json json字符串
      */

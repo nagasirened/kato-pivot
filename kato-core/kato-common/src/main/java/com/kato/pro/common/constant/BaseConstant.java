@@ -23,4 +23,7 @@ public interface BaseConstant {
     String DATE_FORMAT_SIMPLE = "MMdd";
     String DATE_FORMAT_YMD = "yyyyMMdd";
 
+    /**  */
+    String RECOMMEND_API_RATE_LIMIT = "api.rate.limit";
+
 }

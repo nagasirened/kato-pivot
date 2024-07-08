@@ -5,9 +5,8 @@ import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.common.entity.LevelEnum;
-import com.kato.pro.rec.entity.enums.LimiterCategory;
 import com.kato.pro.rec.entity.po.RecommendRequest;
-import com.kato.pro.rec.service.core.RateGateway;
+import com.kato.pro.base.util.RateGateway;
 import com.kato.pro.base.log.ScaleLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,7 @@ import java.util.List;
 @Service
 @SuppressWarnings("all")
 public class RecommendService {
-
-    @Resource private RateGateway rateGateway;
+    public static final String RATE_KEY = "recommend";
     @Resource private StrongPushService strongPushService;
     @Resource private PersonTrashService personTrashService;
     @Resource private RetrievalService retrievalService;
@@ -33,7 +31,7 @@ public class RecommendService {
      */
     public List<RecommendItem> recommend(RecommendRequest request) {
         // 1. pre
-        rateGateway.tryAcquire(LimiterCategory.RECOMMEND);
+        RateGateway.tryAcquire(RATE_KEY);
         try {
             // log init
             ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);

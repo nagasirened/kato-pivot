@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration= \
-  com.kato.pro.base.util.ConfigUtils
+  com.kato.pro.base.util.ConfigUtils,\
+  com.kato.pro.base.util.RateGateway
