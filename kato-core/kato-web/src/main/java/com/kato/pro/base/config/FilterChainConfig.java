@@ -1,16 +1,12 @@
 package com.kato.pro.base.config;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.text.StrSplitter;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-import com.kato.pro.base.resolver.KatoHeaderFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Resource;

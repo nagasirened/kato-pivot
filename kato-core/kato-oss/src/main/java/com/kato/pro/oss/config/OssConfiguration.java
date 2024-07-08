@@ -41,7 +41,7 @@ public class OssConfiguration {
 
     @Bean
     public OssRepository ossRepository() {
-        return new OssRepository();
+        return new OssRepository(ossProperties);
     }
 
 }

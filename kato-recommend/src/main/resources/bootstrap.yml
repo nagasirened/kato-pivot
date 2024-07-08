@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8080
 spring:
   profiles:
     active: dev
@@ -8,11 +8,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: nacos-server:8848
+        server-addr: localhost:8848
       config:
         enabled: true
         file-extension: yaml
-        server-addr: nacos-server:8848
+        server-addr: localhost:8848
         extension-configs:
           - dataId: kato-retrieve.yaml
             refresh: true

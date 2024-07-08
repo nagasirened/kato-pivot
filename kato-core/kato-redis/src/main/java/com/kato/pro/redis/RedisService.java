@@ -21,13 +21,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisService {
 
-	private RedisTemplate<String, String> redisTemplate;
-
-	private RedisLockUtil redisLockUtil;
-
-	public RedisService( RedisLockUtil redisLockUtil ) {
-		this.redisLockUtil = redisLockUtil;
-		this.redisTemplate = redisLockUtil.getRedisTemplate();
+	private final RedisTemplate<String, String> redisTemplate;
+	public RedisService( RedisTemplate<String, String> redisTemplate ) {
+		this.redisTemplate = redisTemplate;
 	}
 
 	public void errorLog(Exception e) {

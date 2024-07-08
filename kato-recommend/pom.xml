@@ -39,11 +39,6 @@
             <artifactId>kato-redis</artifactId>
             <version>${kato.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.kato.pro</groupId>
-            <artifactId>kato-redisson</artifactId>
-            <version>${kato.version}</version>
-        </dependency>
         <!--nacos-config-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

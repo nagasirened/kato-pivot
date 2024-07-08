@@ -18,11 +18,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.kato</groupId>
-            <artifactId>kato-common</artifactId>
+            <groupId>org.kato.pro</groupId>
+            <artifactId>kato-web</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <!-- aws-s3 -->
+        </dependency><!-- aws-s3 -->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>

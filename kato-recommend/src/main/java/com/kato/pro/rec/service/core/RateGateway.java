@@ -27,7 +27,7 @@ public class RateGateway implements CommandLineRunner {
     }
 
     public void init() {
-        String permitsPerSecond = Optional.ofNullable(ConfigUtils.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT)).orElse("100");
+        String permitsPerSecond = ConfigUtils.getProperty(AbOrNacosConstant.RECOMMEND_API_RATE_LIMIT, "100");
         RateLimiter recommendRateLimiter = RateLimiter.create(Integer.parseInt(permitsPerSecond));
         limiterMap = ImmutableMap.of(LimiterCategory.RECOMMEND.lowerName(), recommendRateLimiter);
     }

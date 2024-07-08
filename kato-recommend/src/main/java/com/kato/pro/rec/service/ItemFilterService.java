@@ -15,6 +15,7 @@ import com.kato.pro.oss.repository.OssRepository;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
 import java.time.Duration;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @SuppressWarnings("All")
+@Service
 public class ItemFilterService {
 
     final static Cache<String, BloomFilter<String>> bloomCache = CacheBuilder.newBuilder()

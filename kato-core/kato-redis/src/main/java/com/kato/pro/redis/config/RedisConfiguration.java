@@ -8,6 +8,7 @@ import io.lettuce.core.SocketOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,7 +28,6 @@ import com.kato.pro.redis.RedisService;
 import java.time.Duration;
 import java.util.Optional;
 
-@Configuration
 @EnableConfigurationProperties(KatoRedisProperties.class)
 @ConditionalOnProperty(value = KatoRedisProperties.PREFIX + ".enabled", havingValue = "true", matchIfMissing = true)
 public class RedisConfiguration {
@@ -59,15 +59,15 @@ public class RedisConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBean(name = "redisLockUtil")
+	@ConditionalOnMissingBean(name = "redisLockUtil")
 	public RedisLockUtil redisLockUtil(@Autowired RedisTemplate<String, String> redisTemplate) {
 		return new RedisLockUtil(redisTemplate);
 	}
 
 	@Bean
-	@ConditionalOnBean(name = "redisService")
-	public RedisService redisService(RedisLockUtil redisLockUtil) {
-		return new RedisService(redisLockUtil);
+	@ConditionalOnMissingBean(name = "redisService")
+	public RedisService redisService(RedisTemplate<String, String> redisTemplate) {
+		return new RedisService(redisTemplate);
 	}
 
 	/**
