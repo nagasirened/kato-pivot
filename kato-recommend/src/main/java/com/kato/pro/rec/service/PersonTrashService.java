@@ -25,7 +25,7 @@ public class PersonTrashService {
     /**
      * get data who had been showed, played, and in black-list
      */
-    public void wrapTrash(RecommendRequest recommendRequest) {
+    public void wrapExposure(RecommendRequest recommendRequest) {
         String deviceId = recommendRequest.getDeviceId();
         Map<String, String> abMap = recommendRequest.getAbMap();
         Set<Integer> exposure = recommendRequest.getExposure();

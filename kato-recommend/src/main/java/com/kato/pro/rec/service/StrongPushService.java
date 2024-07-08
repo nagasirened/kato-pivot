@@ -21,13 +21,11 @@ public class StrongPushService {
     /**
      * straight push
      * For some reasons, some users can directly return customized data without recommendation
+     * 1. direct hot
      */
     public List<RecommendItem> tryPush(RecommendRequest recommendRequest) {
         Map<String, String> abMap = recommendRequest.getAbMap();
-        /*
-         * straight push hotItems
-         * 1. direct hot
-         */
+        // 1. direct hot items
         List<RecommendItem> result = directHotPush(abMap);
         return RecommendUtils.ridItemsOfRes(result, recommendRequest.getExposure());
     }

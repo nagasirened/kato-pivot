@@ -9,6 +9,7 @@ import com.kato.pro.common.exception.KatoServiceException;
 import com.kato.pro.common.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -31,6 +32,7 @@ public class RateGateway implements CommandLineRunner {
         init();
     }
 
+    @Scheduled(cron = "50 0/10 * * * ?")
     public void init() {
         String permitsPerSecond = ConfigUtils.getProperty(BaseConstant.RECOMMEND_API_RATE_LIMIT, "{}");
         Map<String, Integer> map = JsonUtils.toMap(permitsPerSecond, String.class, Integer.class);

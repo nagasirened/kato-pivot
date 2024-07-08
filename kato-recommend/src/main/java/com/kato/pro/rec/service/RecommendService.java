@@ -32,15 +32,16 @@ public class RecommendService {
     public List<RecommendItem> recommend(RecommendRequest request) {
         // 1. pre
         RateGateway.tryAcquire(RATE_KEY);
+        ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
         try {
-            // log init
-            ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
-            // 2. query items which need to filter
-            personTrashService.wrapTrash(request);
-            // 3. cold_start, which contains content will return value directly
-            List<RecommendItem> coldStartItems = strongPushService.tryPush(request);
-            if (CollUtil.isNotEmpty(coldStartItems)) { return coldStartItems; }
-            // 4. handle recommend
+            // 2. 包装需要过滤的数据，如曝光、黑名单等
+            personTrashService.wrapExposure(request);
+            // 3. 内容冷启动，给予部分特殊情况直接返回某些固定数据池的方式
+            List<RecommendItem> directItems = strongPushService.tryPush(request);
+            if (CollUtil.isNotEmpty(directItems)) {
+                return directItems;
+            }
+            // 4. 执行推荐
             return doRecommend(request);
         } catch (Exception e) {
             log.error("RecommendService#recommend, fail happened, msg: {}", e.getMessage(), e);
@@ -55,13 +56,13 @@ public class RecommendService {
      */
     private List<RecommendItem> doRecommend(RecommendRequest recommendRequest) {
         // 召回/裁剪
-        retrievalService.retrieve(recommendRequest);
+        List<RecommendItem> retrieveItems = retrievalService.retrieve(recommendRequest);
 
         // rank
 
         // 重排序
 
-        // 后置处理
+        // 后置处理, 如曝光、埋点等
 
         return null;
     }
