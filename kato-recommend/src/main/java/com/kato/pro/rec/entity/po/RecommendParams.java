@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
-public class RecommendRequest {
+public class RecommendParams {
 
     /** 用户ID */
     private String userId;

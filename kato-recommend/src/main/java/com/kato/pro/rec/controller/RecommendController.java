@@ -4,7 +4,7 @@ import com.kato.pro.base.annotation.ScaleLog;
 import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.base.entity.Result;
 import com.kato.pro.rec.entity.core.RecommendItem;
-import com.kato.pro.rec.entity.po.RecommendRequest;
+import com.kato.pro.rec.entity.po.RecommendParams;
 import com.kato.pro.rec.service.RecommendService;
 import com.kato.pro.base.util.RateGateway;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +21,8 @@ public class RecommendController {
 
     @ScaleLog
     @PostMapping
-    public Result<List<RecommendItem>> recommend(@RequestBody RecommendRequest request) {
-        return Result.build(recommendService.recommend(request));
+    public Result<List<RecommendItem>> recommend(@RequestBody RecommendParams params) {
+        return Result.build(recommendService.recommend(params));
     }
 
     @GetMapping

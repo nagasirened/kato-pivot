@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -105,6 +106,10 @@ public class ConfigUtils implements ApplicationContextAware {
         T bean = context.getBean(beanName, clazz);
         Assert.notNull(bean, "bean is not exists");
         return bean;
+    }
+
+    public static <T> Map<String, T> getBeanMapByType(Class<T> clazz) {
+        return Optional.of(context.getBeansOfType(clazz)).orElse(new HashMap<>());
     }
 
 }

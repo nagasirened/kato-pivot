@@ -1,9 +1,9 @@
 package com.kato.pro.rec.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.kato.pro.rec.entity.constant.AbParamConstant;
+import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
-import com.kato.pro.rec.entity.po.RecommendRequest;
+import com.kato.pro.rec.entity.po.RecommendParams;
 import com.kato.pro.rec.utilities.RecommendUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,11 @@ public class StrongPushService {
      * For some reasons, some users can directly return customized data without recommendation
      * 1. direct hot
      */
-    public List<RecommendItem> tryPush(RecommendRequest recommendRequest) {
-        Map<String, String> abMap = recommendRequest.getAbMap();
+    public List<RecommendItem> tryPush(RecommendParams recommendParams) {
+        Map<String, String> abMap = recommendParams.getAbMap();
         // 1. direct hot items
         List<RecommendItem> result = directHotPush(abMap);
-        return RecommendUtils.ridItemsOfRes(result, recommendRequest.getExposure());
+        return RecommendUtils.ridItemsOfRes(result, recommendParams.getExposure());
     }
 
     /**
@@ -37,7 +37,7 @@ public class StrongPushService {
      */
     private List<RecommendItem> directHotPush(Map<String, String> abMap) {
         List<RecommendItem> result = new LinkedList<>();
-        String directHotProperty = abMap.getOrDefault(AbParamConstant.DIRECT_PUSH_HOT, "0");
+        String directHotProperty = abMap.getOrDefault(AbOrNacosConstant.DIRECT_PUSH_HOT, "0");
         if (StrUtil.equalsIgnoreCase("0", directHotProperty)) {
             return result;
         }

@@ -7,9 +7,12 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.kato.pro.common.constant.BaseConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -17,6 +20,7 @@ import java.util.TimeZone;
 public final class JsonUtils {
 
     private final static ObjectMapper MAPPER = new ObjectMapper();
+    private static final Logger log = LoggerFactory.getLogger(JsonUtils.class);
 
     static {
         // 忽略在json字符串中存在，但是在java对象中不存在对应属性的情况
@@ -225,7 +229,8 @@ public final class JsonUtils {
             JavaType javaType = MAPPER.getTypeFactory().constructParametricType(List.class, cls);
             return MAPPER.readValue(json, javaType);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            log.error("MAPPER toList fail, json: {}, clazz: {}", json, cls);
+            return new LinkedList<>();
         }
     }
 }

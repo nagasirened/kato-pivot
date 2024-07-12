@@ -5,7 +5,7 @@ import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.common.entity.LevelEnum;
-import com.kato.pro.rec.entity.po.RecommendRequest;
+import com.kato.pro.rec.entity.po.RecommendParams;
 import com.kato.pro.base.util.RateGateway;
 import com.kato.pro.base.log.ScaleLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -26,23 +26,23 @@ public class RecommendService {
 
     /**
      * RECOMMEND
-     * @param request request-param
+     * @param params request-param
      * @return  List<RecommendResItem>
      */
-    public List<RecommendItem> recommend(RecommendRequest request) {
+    public List<RecommendItem> recommend(RecommendParams params) {
         // 1. pre
         RateGateway.tryAcquire(RATE_KEY);
-        ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(request), LevelEnum.DETAIL);
+        ScaleLogger.putLog(LogConstant.REQUEST_PARAM, JsonUtils.toJSONString(params), LevelEnum.DETAIL);
         try {
             // 2. 包装需要过滤的数据，如曝光、黑名单等
-            personTrashService.wrapExposure(request);
+            personTrashService.wrapExposure(params);
             // 3. 内容冷启动，给予部分特殊情况直接返回某些固定数据池的方式
-            List<RecommendItem> directItems = strongPushService.tryPush(request);
+            List<RecommendItem> directItems = strongPushService.tryPush(params);
             if (CollUtil.isNotEmpty(directItems)) {
                 return directItems;
             }
             // 4. 执行推荐
-            return doRecommend(request);
+            return doRecommend(params);
         } catch (Exception e) {
             log.error("RecommendService#recommend, fail happened, msg: {}", e.getMessage(), e);
             return new ArrayList<>();
@@ -51,12 +51,12 @@ public class RecommendService {
 
     /**
      * handle
-     * @param recommendRequest  request-param
+     * @param recommendParams  request-param
      * @return  List<RecommendResItem>
      */
-    private List<RecommendItem> doRecommend(RecommendRequest recommendRequest) {
+    private List<RecommendItem> doRecommend(RecommendParams recommendParams) {
         // 召回/裁剪
-        List<RecommendItem> retrieveItems = retrievalService.retrieve(recommendRequest);
+        List<RecommendItem> retrieveItems = retrievalService.retrieve(recommendParams);
 
         // rank
 
