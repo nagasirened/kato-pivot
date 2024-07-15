@@ -62,8 +62,7 @@ public class FilterChainConfig {
         return ImmutableList.of(
                 new FilterProperties.FilterConf(com.kato.pro.base.resolver.KatoHeaderFilter.class.getTypeName(), "/*", 100),
                 new FilterProperties.FilterConf(UserDeviceFilter.class.getTypeName(), "/*", 100),
-                new FilterProperties.FilterConf(com.kato.pro.base.resolver.TraceFilter.class.getTypeName(), "/*", 100),
-                new FilterProperties.FilterConf(com.kato.pro.base.resolver.AbMapFilter.class.getTypeName(), "/*", 100)
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.TraceFilter.class.getTypeName(), "/*", 100)
         );
     }
 
