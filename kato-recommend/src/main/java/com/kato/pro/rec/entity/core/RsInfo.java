@@ -1,6 +1,9 @@
 package com.kato.pro.rec.entity.core;
 
+import com.kato.pro.rec.entity.enums.RsEnum;
 import lombok.*;
+
+import java.util.Arrays;
 
 
 /**
@@ -10,16 +13,22 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode(of = {"rsName"})
 public class RsInfo {
+    private Integer label;
     /* 召回源名称 */
     private String rsName;
     /* 召回上限 */
     private Integer rsLimit;
     /* 权重 */
     private Integer weight;
+    /* 用户new|old，不填代表不用过滤 */
+    private Boolean accessible;
+    /* 唯一召回源过滤 */
+    private Boolean unique;
     /* 拓展参数 */
     private String spare;
     /* 限制用户类别 old\new\... */
     private String userType;
+
 
     public RsInfo(String rsName) {
         this(rsName, 1);

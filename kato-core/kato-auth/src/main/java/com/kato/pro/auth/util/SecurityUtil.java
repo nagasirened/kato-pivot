@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import com.kato.pro.common.entity.LoginUser;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
-import com.kato.pro.auth.thread.UserContextHolder;
 import io.jsonwebtoken.Claims;
 import lombok.experimental.UtilityClass;
 
@@ -55,14 +54,12 @@ public class SecurityUtil {
     public LoginUser getLoginUser(HttpServletRequest request) {
         String token = getToken(request);
         Claims claims = getClaims(token);
-        LoginUser loginUser = LoginUser.builder().userId(Convert.toStr(claims.get(OAuth2Constant.USER_ID)))
+        return LoginUser.builder().userId(Convert.toStr(claims.get(OAuth2Constant.USER_ID)))
                 .account(Convert.toStr(claims.get(OAuth2Constant.USER_NAME)))
                 .roleId(Convert.toStr(claims.get(OAuth2Constant.ROLE_ID)))
                 .tenantId(Convert.toStr(claims.get(OAuth2Constant.TENANT_ID)))
                 .type(Convert.toInt(claims.get(OAuth2Constant.TYPE)))
                 .build();
-        UserContextHolder.setUser(loginUser);
-        return loginUser;
     }
 
 

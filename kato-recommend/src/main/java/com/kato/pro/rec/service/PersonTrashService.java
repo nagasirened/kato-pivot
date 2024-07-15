@@ -3,6 +3,7 @@ package com.kato.pro.rec.service;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import com.kato.pro.common.constant.BaseConstant;
+import com.kato.pro.common.resolver.DeviceContextHolder;
 import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.po.RecommendParams;
@@ -25,10 +26,10 @@ public class PersonTrashService {
     /**
      * get data who had been showed, played, and in black-list
      */
-    public void wrapExposure(RecommendParams recommendParams) {
-        String deviceId = recommendParams.getDeviceId();
-        Map<String, String> abMap = recommendParams.getAbMap();
-        Set<Integer> exposure = recommendParams.getExposure();
+    public void wrapExposure(RecommendParams params) {
+        String deviceId = DeviceContextHolder.getDeviceId();
+        Map<String, String> abMap = params.getAbMap();
+        Set<Integer> exposure = params.getExposure();
         // showed
         exposure.addAll(getShowedRecords(deviceId, abMap));
         // played

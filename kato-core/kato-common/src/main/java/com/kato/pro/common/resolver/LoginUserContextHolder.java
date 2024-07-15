@@ -11,7 +11,7 @@ public class LoginUserContextHolder {
         CONTEXT.set(loginUser);
     }
 
-    public LoginUser getLoginUser() {
+    public static LoginUser getLoginUser() {
         return CONTEXT.get();
     }
 

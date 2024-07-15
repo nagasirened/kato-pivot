@@ -3,6 +3,7 @@ package com.kato.pro.base.config;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
+import com.kato.pro.base.resolver.UserDeviceFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -60,8 +61,9 @@ public class FilterChainConfig {
     public List<FilterProperties.FilterConf> defaultFilter() {
         return ImmutableList.of(
                 new FilterProperties.FilterConf(com.kato.pro.base.resolver.KatoHeaderFilter.class.getTypeName(), "/*", 100),
-                new FilterProperties.FilterConf(com.kato.pro.base.resolver.LoginUserFilter.class.getTypeName(), "/*", 100),
-                new FilterProperties.FilterConf(com.kato.pro.base.resolver.TraceFilter.class.getTypeName(), "/*", 100)
+                new FilterProperties.FilterConf(UserDeviceFilter.class.getTypeName(), "/*", 100),
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.TraceFilter.class.getTypeName(), "/*", 100),
+                new FilterProperties.FilterConf(com.kato.pro.base.resolver.AbMapFilter.class.getTypeName(), "/*", 100)
         );
     }
 

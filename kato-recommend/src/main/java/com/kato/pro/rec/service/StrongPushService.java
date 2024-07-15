@@ -23,11 +23,11 @@ public class StrongPushService {
      * For some reasons, some users can directly return customized data without recommendation
      * 1. direct hot
      */
-    public List<RecommendItem> tryPush(RecommendParams recommendParams) {
-        Map<String, String> abMap = recommendParams.getAbMap();
+    public List<RecommendItem> tryPush(RecommendParams params) {
+        Map<String, String> abMap = params.getAbMap();
         // 1. direct hot items
         List<RecommendItem> result = directHotPush(abMap);
-        return RecommendUtils.ridItemsOfRes(result, recommendParams.getExposure());
+        return RecommendUtils.ridItemsOfRes(result, params.getExposure());
     }
 
     /**
@@ -41,7 +41,7 @@ public class StrongPushService {
         if (StrUtil.equalsIgnoreCase("0", directHotProperty)) {
             return result;
         }
-        // todo get content
+        // get content
 
         // filter
 
