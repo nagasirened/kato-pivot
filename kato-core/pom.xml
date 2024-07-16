@@ -20,6 +20,7 @@
         <module>kato-web</module>
         <module>kato-oss</module>
         <module>kato-common</module>
+        <module>code-generator</module>
     </modules>
 
     <properties>
