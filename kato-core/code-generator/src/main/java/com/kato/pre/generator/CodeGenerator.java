@@ -12,7 +12,7 @@ public class CodeGenerator {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/user-center", "root", "root")
                 .globalConfig(builder ->
                     builder.author("guangfu.zeng")
-                            .enableSwagger()
+                            // .enableSwagger()
                             .outputDir("D:/generator-codes/")
                 )
                 .dataSourceConfig(builder ->
@@ -26,7 +26,7 @@ public class CodeGenerator {
                 )
                 .packageConfig(builder ->  // parent.moduleName.XXX
                     builder.parent("com.kato.pro")
-                            .moduleName("recommend")
+                            .moduleName("uaa")
                             .service("service")
                             .serviceImpl("service.impl")
                             .controller("controller")
@@ -34,7 +34,7 @@ public class CodeGenerator {
                             .entity("entity")
                 )
                 .strategyConfig(builder ->
-                    builder.addInclude("sys_menu")
+                    builder.addInclude("sys_user", "sys_role_user", "sys_role", "sys_role_menu", "sys_menu")
                             .addTablePrefix("sys_")
                 )
                 .templateEngine(new VelocityTemplateEngine())

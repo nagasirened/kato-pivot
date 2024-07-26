@@ -1,19 +1,20 @@
 package com.kato.pro.base.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class SuperModel<T extends Model<T>> extends Model<T> {
 
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(fill = FieldFill.INSERT)
@@ -21,5 +22,7 @@ public class SuperModel<T extends Model<T>> extends Model<T> {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    private Integer creatorId;
 
 }
