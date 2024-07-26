@@ -1,5 +1,6 @@
 package com.kato.pro.uaa.handler;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.base.entity.LoginAppUser;
 import com.kato.pro.base.entity.SysRole;
@@ -21,6 +22,7 @@ public class KatoUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Assert.notEmpty(username);
         // 用户尝试邮箱登录
         if (CharSequenceUtil.startWith(username, AuthConstant.MOBILE_PREFIX)) {
             String mobile = CharSequenceUtil.subAfter(username, AuthConstant.MOBILE_PREFIX, false);

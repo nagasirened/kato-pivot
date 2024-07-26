@@ -10,5 +10,6 @@ public class AuthConstant {
 
     // 电话号码默认prefix
     public static final String MOBILE_PREFIX = "mobile-";
+    public static final String DEFAULT_JSON_CONTENT_TYPE = "application/json;charset=UTF-8";
 
 }
