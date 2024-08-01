@@ -1,6 +1,6 @@
 package com.kato.pro.uaa.properties;
 
-import com.kato.pro.uaa.entity.LoginType;
+import com.kato.pro.uaa.entity.base.LoginType;
 import lombok.Getter;
 import lombok.Setter;
 

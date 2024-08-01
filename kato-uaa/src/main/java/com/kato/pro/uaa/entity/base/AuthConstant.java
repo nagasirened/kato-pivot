@@ -1,4 +1,4 @@
-package com.kato.pro.uaa.entity;
+package com.kato.pro.uaa.entity.base;
 
 public class AuthConstant {
     private AuthConstant(){}

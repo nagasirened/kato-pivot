@@ -27,6 +27,17 @@
             <artifactId>kato-web</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.kato.pro</groupId>
+            <artifactId>kato-redis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--阿里云短信-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.3</version>
+        </dependency>
     </dependencies>
 
 </project>

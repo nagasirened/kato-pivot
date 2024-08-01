@@ -2,7 +2,7 @@ package com.kato.pro.uaa.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kato.pro.base.feign.UserClient;
-import com.kato.pro.uaa.entity.AuthConstant;
+import com.kato.pro.uaa.entity.base.AuthConstant;
 import com.kato.pro.uaa.handler.KatoAuthenticationLoginFailureHandler;
 import com.kato.pro.uaa.handler.KatoAuthenticationLoginSuccessHandler;
 import com.kato.pro.uaa.handler.KatoUserDetailService;

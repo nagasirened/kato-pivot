@@ -5,7 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.base.entity.LoginAppUser;
 import com.kato.pro.base.entity.SysRole;
 import com.kato.pro.base.feign.UserClient;
-import com.kato.pro.uaa.entity.AuthConstant;
+import com.kato.pro.uaa.entity.base.AuthConstant;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

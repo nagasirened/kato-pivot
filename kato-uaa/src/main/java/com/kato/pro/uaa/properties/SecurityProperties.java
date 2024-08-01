@@ -9,6 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "kato.security")
 public final class SecurityProperties {
 
-    BrowserProperties browser = new BrowserProperties();
+    private BrowserProperties browser = new BrowserProperties();
+
+    private ValidateCodeProperties valid = new ValidateCodeProperties();
 
 }

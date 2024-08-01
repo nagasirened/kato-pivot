@@ -1,7 +1,7 @@
 package com.kato.pro.uaa.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kato.pro.uaa.entity.LoginType;
+import com.kato.pro.uaa.entity.base.LoginType;
 import com.kato.pro.uaa.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
