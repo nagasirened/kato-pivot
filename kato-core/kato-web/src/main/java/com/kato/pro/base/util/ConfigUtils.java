@@ -2,7 +2,7 @@ package com.kato.pro.base.util;
 
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.common.constant.BaseConstant;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +26,10 @@ public class ConfigUtils implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        ConfigUtils.coverAttribute(applicationContext);
+    }
+
+    private static void coverAttribute(ApplicationContext applicationContext) {
         ConfigUtils.context = applicationContext;
         ConfigUtils.environment = applicationContext.getEnvironment();
     }
@@ -92,7 +96,7 @@ public class ConfigUtils implements ApplicationContextAware {
      * @return              布尔类型属性值
      */
     public static Boolean checkRule(Map<String, String> abMap, String key) {
-        return StrUtil.equals(BaseConstant.JUDGE_YES, getAbOrProperty(abMap, key, BaseConstant.JUDGE_NO));
+        return CharSequenceUtil.equals(BaseConstant.JUDGE_YES, getAbOrProperty(abMap, key, BaseConstant.JUDGE_NO));
     }
 
     /**

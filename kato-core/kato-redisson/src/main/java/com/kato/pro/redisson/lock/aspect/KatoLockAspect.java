@@ -1,6 +1,6 @@
 package com.kato.pro.redisson.lock.aspect;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.google.common.base.Preconditions;
 import com.kato.pro.common.entity.Locker;
 import com.kato.pro.redisson.lock.annotation.KatoDistributedLock;
@@ -44,8 +44,8 @@ public class KatoLockAspect {
         String baseName = katoDistributedLock.name();
         String prefix = katoDistributedLock.prefix();
         String suffix = katoDistributedLock.suffix();
-        return (StrUtil.isBlank(prefix) ? baseName : prefix + "_" + baseName) +
-                (StrUtil.isBlank(suffix) ? "" : "_" + suffix);
+        return (CharSequenceUtil.isBlank(prefix) ? baseName : prefix + "_" + baseName) +
+                (CharSequenceUtil.isBlank(suffix) ? "" : "_" + suffix);
     }
 
 }

@@ -2,7 +2,7 @@ package com.kato.pro.base.log;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.kato.pro.base.util.ConfigUtils;
 import com.kato.pro.common.constant.PropertyConstant;
@@ -79,7 +79,7 @@ public class ScaleLogger {
      */
     private static int userStrongHit(String deviceId) {
         String strongHits = ConfigUtils.getProperty(PropertyConstant.LOG_STRONG_HITS, "{}");
-        if (StrUtil.isBlank(strongHits) || "{}".equals(strongHits)) return 1;
+        if (CharSequenceUtil.isBlank(strongHits) || "{}".equals(strongHits)) return 1;
         try {
             // 结合@RefreshScope，保证配置文件更新后，实时生效
             Map<String, String> userLevelDictionary = JsonUtils.toObject(strongHits, new TypeReference<Map<String, String>>(){} );

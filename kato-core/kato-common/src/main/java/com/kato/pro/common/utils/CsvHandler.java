@@ -19,7 +19,7 @@ public abstract class CsvHandler<T> {
     // 是否包含表头行
     private final Boolean existHeaderLine;
     // 表头字段所在的索引位置
-    private volatile Map<String, Integer> headerIndexMap;
+    private Map<String, Integer> headerIndexMap;
 
     @Getter private Boolean result = true;
     // 存储结果的集合
@@ -27,15 +27,15 @@ public abstract class CsvHandler<T> {
     // 是否有异常
     @Getter private Exception exception;
 
-    public CsvHandler() {
+    protected CsvHandler() {
         this(true);
     }
 
-    public CsvHandler(Boolean existHeaderLine) {
+    protected CsvHandler(boolean existHeaderLine) {
         this(existHeaderLine, 1024);
     }
 
-    public CsvHandler(Boolean existHeaderLine, Integer capacity) {
+    protected CsvHandler(boolean existHeaderLine, Integer capacity) {
         this.existHeaderLine = existHeaderLine;
         this.datas = new ArrayList<>(capacity);
         if (existHeaderLine) {
@@ -50,7 +50,7 @@ public abstract class CsvHandler<T> {
         }
         try (InputStreamReader inputStreamReader = new InputStreamReader(inputStream)) {
             CsvReader csvReader = new CsvReader(inputStreamReader);
-            if (existHeaderLine) {
+            if (Boolean.TRUE.equals(existHeaderLine)) {
                 String[] headers = csvReader.readRecord() ? csvReader.getValues() : new String[0];
                 if (ArrayUtil.isEmpty(headers)) {
                     log.error("CsvStreamHandler#handleCsv, csv file is empty");

@@ -23,14 +23,14 @@ public interface ILock<T> {
     /**
      * 尝试获取，没有获取到直接返回
      */
-    Locker<T> tryLock(String key, long waitTime, long leaseTime, TimeUnit timeUnit) throws Exception;
+    Locker<T> tryLock(String key, long waitTime, long leaseTime, TimeUnit timeUnit) throws Throwable;
 
 
-    default Locker<T> tryLock(String key, long waitTime, TimeUnit timeUnit) throws Exception{
+    default Locker<T> tryLock(String key, long waitTime, TimeUnit timeUnit) throws Throwable{
         return tryLock(key, waitTime, -1, timeUnit);
     }
 
-    default Locker<T> tryLock(String key, long waitTime) throws Exception {
+    default Locker<T> tryLock(String key, long waitTime) throws Throwable {
         return tryLock(key, waitTime, TimeUnit.MILLISECONDS);
     }
 

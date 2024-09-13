@@ -1,6 +1,9 @@
 package com.kato.pro.constant;
 
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * @ClassName ConstantClass
  * @Author Zeng Guangfu
@@ -8,6 +11,7 @@ package com.kato.pro.constant;
  * @Date 2022/4/1 3:27 下午
  * @Version 1.0
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConstantClass {
 
     /**

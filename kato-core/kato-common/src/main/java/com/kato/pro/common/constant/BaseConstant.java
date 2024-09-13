@@ -1,7 +1,10 @@
 package com.kato.pro.common.constant;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BaseConstant {
-    private BaseConstant() {}
 
     public static final String DEVICE_ID = "deviceId";
     public static final String USER_ID = "userId";

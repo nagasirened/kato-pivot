@@ -19,7 +19,7 @@ public class FilterProperties {
     @EqualsAndHashCode(of = "path")
     public static class FilterConf {
         private String path;
-        private String UrlPatterns;
+        private String urlPatterns;
         private Integer order;
     }
 

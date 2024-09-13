@@ -1,5 +1,9 @@
 package com.kato.pro.rec.entity.constant;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AbOrNacosConstant {
 
     // 浏览曝光的天数

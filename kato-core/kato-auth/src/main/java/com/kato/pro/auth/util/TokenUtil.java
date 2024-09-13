@@ -1,6 +1,6 @@
 package com.kato.pro.auth.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,10 +18,10 @@ public class TokenUtil {
      * @return      String
      */
     public static String getToken(String headerToken) {
-        if (StrUtil.isBlank(headerToken) || headerToken.length() < 7) {
+        if (CharSequenceUtil.isBlank(headerToken) || headerToken.length() < 7) {
             return null;
         }
-        if (StrUtil.equalsIgnoreCase(headerToken.substring(0, 6), TOKEN_PREFIX)) {
+        if (CharSequenceUtil.equalsIgnoreCase(headerToken.substring(0, 6), TOKEN_PREFIX)) {
             return headerToken.substring(7);
         }
         return null;

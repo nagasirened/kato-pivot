@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Service
 public class ItemFilterService {
 
-    final static Cache<String, BloomFilter<String>> bloomCache = CacheBuilder.newBuilder()
+    private static final Cache<String, BloomFilter<String>> bloomCache = CacheBuilder.newBuilder()
             .initialCapacity(1)
             .maximumSize(10)
             .recordStats()
@@ -40,7 +40,7 @@ public class ItemFilterService {
 
     private static final String TRASH_FILE_NAME = "/trash/%s.csv";
     private static final String OFF_SHELF = "off_shelf";
-    private final double FPP = 0.000000000000001;
+    private static final double FPP = 0.000000000000001;
 
     public void refreshTrash(OssRepository ossRepository) {
         String dateStr = DateUtil.format(new Date(), BaseConstant.DATE_FORMAT_YMD);

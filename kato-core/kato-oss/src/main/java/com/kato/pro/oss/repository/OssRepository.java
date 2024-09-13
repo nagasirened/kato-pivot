@@ -1,6 +1,6 @@
 package com.kato.pro.oss.repository;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.OSSObject;
@@ -34,7 +34,7 @@ public class OssRepository {
             ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
             // 检查文件是否存在
             if (!ossClient.doesObjectExist(bucket, fileName)) {
-                if (StrUtil.isBlank(backupFileName)) {
+                if (CharSequenceUtil.isBlank(backupFileName)) {
                     return null;
                 }
                 fileName = backupFileName;

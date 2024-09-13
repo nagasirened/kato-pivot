@@ -4,6 +4,6 @@ import com.kato.pro.constant.ServiceInfo;
 
 public interface DiscoveryService {
 
-    ServiceInfo discover(String serviceName) throws Exception;
+    ServiceInfo discover(String serviceName) throws Throwable;
 
 }

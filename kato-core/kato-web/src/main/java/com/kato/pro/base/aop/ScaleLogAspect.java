@@ -1,6 +1,6 @@
 package com.kato.pro.base.aop;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import com.kato.pro.base.annotation.ScaleLog;
 import com.kato.pro.base.log.ScaleLogger;
@@ -27,7 +27,7 @@ public class ScaleLogAspect {
 
         // 动态开启分级日志
         String deviceId = request.getHeader(BaseConstant.DEVICE_ID);
-        if (StrUtil.isBlank(deviceId)) {
+        if (CharSequenceUtil.isBlank(deviceId)) {
             return joinPoint.proceed();
         }
 

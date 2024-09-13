@@ -1,7 +1,7 @@
 package com.kato.pro.base.util;
 
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.google.common.util.concurrent.RateLimiter;
 import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.constant.CommonCode;
@@ -45,7 +45,7 @@ public class RateGateway implements CommandLineRunner {
      * pretreatment: check param & acquire
      */
     public static void tryAcquire(String categoryName) {
-        if (StrUtil.isBlank(categoryName)) {
+        if (CharSequenceUtil.isBlank(categoryName)) {
             return;
         }
         RateLimiter rateLimiter = limiterMap.get(categoryName);

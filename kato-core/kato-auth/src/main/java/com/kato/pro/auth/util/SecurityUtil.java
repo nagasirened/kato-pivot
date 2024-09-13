@@ -1,7 +1,7 @@
 package com.kato.pro.auth.util;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.common.entity.LoginUser;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
@@ -24,7 +24,7 @@ public class SecurityUtil {
      */
     public String getToken(HttpServletRequest request) {
         String headerToken = getHeaderToken(request);
-        if (StrUtil.isBlank(headerToken)) {
+        if (CharSequenceUtil.isBlank(headerToken)) {
             return null;
         }
         return TokenUtil.getToken(headerToken);
@@ -36,7 +36,7 @@ public class SecurityUtil {
      * @return          Claims
      */
     public Claims getClaims(String token) {
-        if (StrUtil.isBlank(token)) {
+        if (CharSequenceUtil.isBlank(token)) {
             return null;
         }
         try {

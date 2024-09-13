@@ -1,6 +1,6 @@
 package com.kato.pro.common.utils;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -99,7 +99,7 @@ public final class JsonUtils {
      * @param parameterClasses 泛型对象
      */
     public static <T> T toObject(String json, Class<?> parametrized, Class<?>... parameterClasses) {
-        if(StrUtil.isBlank(json) || parametrized == null){
+        if(CharSequenceUtil.isBlank(json) || parametrized == null){
             return null;
         }
         try {
@@ -116,7 +116,7 @@ public final class JsonUtils {
      * @param typeReference 目标对象类型
      */
     public static <T> T toObject(String json, TypeReference<T> typeReference) {
-        if(StrUtil.isBlank(json) || typeReference == null){
+        if(CharSequenceUtil.isBlank(json) || typeReference == null){
             return null;
         }
         try {
@@ -132,7 +132,7 @@ public final class JsonUtils {
      * @param cls 目标对象
      */
     public static <T> T toObject(String json, Class<T> cls) {
-        if(StrUtil.isBlank(json) || cls == null){
+        if(CharSequenceUtil.isBlank(json) || cls == null){
             return null;
         }
         try {
@@ -163,13 +163,13 @@ public final class JsonUtils {
      * @param json json字符串
      */
     public static JsonNode parse(String json) {
-        if (StrUtil.isBlank(json)) {
+        if (CharSequenceUtil.isBlank(json)) {
             return null;
         }
         try {
             return MAPPER.readTree(json);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -206,7 +206,7 @@ public final class JsonUtils {
      * @param json json字符串
      */
     public static <T> List<T> toList(String json) {
-        if (StrUtil.isBlank(json)) {
+        if (CharSequenceUtil.isBlank(json)) {
             return null;
         }
         try {
@@ -222,7 +222,7 @@ public final class JsonUtils {
      * @param cls list的元素类型
      */
     public static <T> List<T> toList(String json, Class<T> cls) {
-        if (StrUtil.isBlank(json)) {
+        if (CharSequenceUtil.isBlank(json)) {
             return null;
         }
         try {
