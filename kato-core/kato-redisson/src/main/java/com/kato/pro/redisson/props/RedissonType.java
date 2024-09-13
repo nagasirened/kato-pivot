@@ -1,7 +1,7 @@
 package com.kato.pro.redisson.props;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Splitter;
 import org.redisson.config.Config;
 
@@ -56,7 +56,7 @@ public enum RedissonType {
             Config config = new Config();
             String[] addresses = getAddress(properties);
             String masterAddress = properties.getMasterAddress();
-            if (StrUtil.isBlank(masterAddress)) {
+            if (CharSequenceUtil.isBlank(masterAddress)) {
                 masterAddress = addresses[0];
                 addresses = Arrays.stream(addresses).skip(1).toArray(String[]::new);
             }
@@ -73,7 +73,7 @@ public enum RedissonType {
 
     public String[] getAddress(RedissonProperties properties) {
         String addresses = properties.getAddress();
-        if (StrUtil.isEmpty( addresses )) {
+        if (CharSequenceUtil.isEmpty(addresses)) {
             throw new IllegalArgumentException( "redisson address not exist" );
         }
         List<String> split = Splitter.on(",").trimResults().splitToList(addresses);

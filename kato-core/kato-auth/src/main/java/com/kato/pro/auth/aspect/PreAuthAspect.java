@@ -1,8 +1,9 @@
 package com.kato.pro.auth.aspect;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.kato.pro.auth.annotation.PreAuth;
 import com.kato.pro.auth.constant.OAuth2Constant;
 import com.kato.pro.auth.constant.TokenException;
@@ -61,14 +62,14 @@ public class PreAuthAspect {
         if (ObjectUtil.isNull(loginUser)) {
             return false;
         }
-        if (StrUtil.isBlank(permission)) {
+        if (CharSequenceUtil.isBlank(permission)) {
             return true;
         }
         /* 超级管理员直接跳过 */
-        if (StrUtil.equalsIgnoreCase(loginUser.getAccount(), OAuth2Constant.SUPER_ADMIN)) {
+        if (CharSequenceUtil.equalsIgnoreCase(loginUser.getAccount(), OAuth2Constant.SUPER_ADMIN)) {
             return true;
         }
-        String redisKey = OAuth2Constant.PERMISSION_PREFIX + loginUser.getAccount() + StrUtil.DOT + loginUser.getRoleId();
+        String redisKey = OAuth2Constant.PERMISSION_PREFIX + loginUser.getAccount() + StrPool.DOT + loginUser.getRoleId();
         String permissionData = Convert.toStr(redisService.get(redisKey));
         try {
             return hasPermissions(Optional.ofNullable(JsonUtils.toList(permissionData, String.class)).orElse(new ArrayList<>()), permission);
@@ -80,7 +81,7 @@ public class PreAuthAspect {
 
     private boolean hasPermissions(Collection<String> authorityList, String permission) {
         return authorityList.stream()
-                .filter(StrUtil::isNotBlank)
+                .filter(CharSequenceUtil::isNotBlank)
                 .anyMatch(x -> ALL_PERMISSIONS.contains(x) || PatternMatchUtils.simpleMatch(permission, x));
 
     }

@@ -2,6 +2,8 @@ package com.kato.pro.client;
 
 import com.kato.pro.client.transport.NetClientTransportFactory;
 import com.kato.pro.client.transport.RequestMetadata;
+import com.kato.pro.common.exception.KatoServiceException;
+import com.kato.pro.common.utils.ThrowUtil;
 import com.kato.pro.config.KatoClientProperties;
 import com.kato.pro.constant.RpcRequest;
 import com.kato.pro.constant.RpcResponse;
@@ -60,12 +62,12 @@ class ClientStubInvocationHandler implements InvocationHandler {
         RpcProtocol<RpcResponse> responseRpcProtocol = NetClientTransportFactory.getNetClientTransport().sendRequest(requestMetadata);
         if (responseRpcProtocol == null) {
             log.error("请求超时");
-            throw new RuntimeException("rpc调用结果失败， 请求超时 timeout:" + clientProperties.getTimeout());
+            ThrowUtil.runtimeException("rpc调用结果失败， 请求超时 timeout:" + clientProperties.getTimeout());
         }
 
         if (responseRpcProtocol.getHeader().getStatus() != 0) {
             log.error("rpc调用结果失败， message：{}", responseRpcProtocol.getData().getMessage());
-            throw new RuntimeException(responseRpcProtocol.getData().getMessage());
+            ThrowUtil.runtimeException(responseRpcProtocol.getData().getMessage());
         }
 
         return responseRpcProtocol.getData().getData();

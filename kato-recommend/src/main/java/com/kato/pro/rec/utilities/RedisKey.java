@@ -1,8 +1,8 @@
 package com.kato.pro.rec.utilities;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 
 @Getter
@@ -37,10 +37,7 @@ public enum RedisKey {
         StringBuilder builder = new StringBuilder(getPrefix());
         for (int i = 0; i < len; i++) {
             Object detail = details[i];
-            if (detail == null) {
-                continue;
-            }
-            if (StrUtil.isBlank(Convert.toStr(detail))) {
+            if (detail == null || CharSequenceUtil.isBlank(Convert.toStr(detail))) {
                 continue;
             }
             builder.append(separator).append(detail);

@@ -119,7 +119,6 @@ public class AwsEndpoint {
             while ( (length = inputStream.read( buffer )) != -1 ) {
                 out.write( buffer, 0, length );
             }
-            inputStream.close();
             out.flush();
         } catch (Exception e) {
             log.info( "downloadS3File fail, bucket: {}, objectName: {}", bucketName, objectName, e );

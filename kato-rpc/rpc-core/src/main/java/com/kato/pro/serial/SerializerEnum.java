@@ -1,6 +1,6 @@
 package com.kato.pro.serial;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import lombok.Getter;
 
 /**
@@ -29,7 +29,7 @@ public enum SerializerEnum {
 
     public static SerializerEnum getSerializerByName(String name) {
         for (SerializerEnum item : SerializerEnum.values()) {
-            if (StrUtil.equalsIgnoreCase(item.name(), name)) {
+            if (CharSequenceUtil.equalsIgnoreCase(item.name(), name)) {
                 return item;
             }
         }

@@ -1,6 +1,7 @@
 package com.kato.pro.rpc;
 
 import cn.hutool.core.convert.Convert;
+import com.kato.pro.common.utils.ThrowUtil;
 import com.kato.pro.constant.ConstantClass;
 import com.kato.pro.constant.RpcRequest;
 import com.kato.pro.constant.RpcResponse;
@@ -58,7 +59,7 @@ public class DeCodec extends ByteToMessageDecoder {
         byte[] data = new byte[dataLength];
         in.readBytes(data);
         if (magic != ConstantClass.MAGIC_NUMBER) {
-            throw new RuntimeException("魔数错误");
+            ThrowUtil.runtimeException("魔数错误");
         }
         // 包装header
         MessageHeader header = MessageHeader.builder()
@@ -68,7 +69,7 @@ public class DeCodec extends ByteToMessageDecoder {
         Serializer serializer = SerializerEnum.getSerializerByType(serializerType);
         MessageType msgTypeEnum = MessageType.getByType(msgType);
         if (Objects.isNull(msgTypeEnum)) {
-            throw new RuntimeException("不存在的类型");
+            ThrowUtil.runtimeException("不存在的类型");
         }
         switch (msgTypeEnum) {
             case REQUEST:
@@ -86,7 +87,7 @@ public class DeCodec extends ByteToMessageDecoder {
                 list.add(respProtocol);
                 break;
             default:
-                throw new RuntimeException("不存在的类型");
+                ThrowUtil.runtimeException("不存在的类型");
         }
     }
 

@@ -1,6 +1,6 @@
 package com.kato.pro.rec.service;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.kato.pro.rec.entity.constant.AbParamConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.po.RecommendRequest;
@@ -40,7 +40,7 @@ public class StrongPushService {
     private List<RecommendItem> directHotPush(Map<String, String> abMap) {
         List<RecommendItem> result = new LinkedList<>();
         String directHotProperty = abMap.getOrDefault(AbParamConstant.DIRECT_PUSH_HOT, "0");
-        if (StrUtil.equalsIgnoreCase("0", directHotProperty)) {
+        if (CharSequenceUtil.equalsIgnoreCase("0", directHotProperty)) {
             return result;
         }
         // todo get content

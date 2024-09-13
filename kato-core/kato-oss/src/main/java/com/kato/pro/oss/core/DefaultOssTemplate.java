@@ -2,6 +2,7 @@ package com.kato.pro.oss.core;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.*;
+import com.kato.pro.common.utils.ThrowUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
@@ -22,7 +23,7 @@ public class DefaultOssTemplate implements OssTemplate{
         OSS ossClient = ossLinksPoolUtils.getOssClient();
         if (ossClient == null) {
             log.error("get ossClient fail");
-            throw new RuntimeException("system error");
+            ThrowUtil.runtimeException("get ossClient fail");
         }
         return ossClient;
     }

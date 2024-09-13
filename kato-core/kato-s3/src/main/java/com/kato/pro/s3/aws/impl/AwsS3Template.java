@@ -2,7 +2,7 @@ package com.kato.pro.s3.aws.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
@@ -133,7 +133,7 @@ public class AwsS3Template implements S3Template {
     @SneakyThrows
     public Optional<Bucket> getBucketByName(String bucketName) {
         return amazonS3.listBuckets().stream()
-                .filter(bucket -> StrUtil.equals(bucket.getName(), bucketName))
+                .filter(bucket -> CharSequenceUtil.equals(bucket.getName(), bucketName))
                 .findFirst();
     }
 

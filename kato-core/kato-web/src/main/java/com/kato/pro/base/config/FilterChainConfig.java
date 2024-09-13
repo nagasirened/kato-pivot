@@ -1,6 +1,6 @@
 package com.kato.pro.base.config;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
@@ -31,11 +31,11 @@ public class FilterChainConfig {
         List<FilterProperties.FilterConf> includes = Stream.concat(filterProperties.getIncludes().stream(), defaultFilter().stream()).distinct().collect(Collectors.toList());
         for (FilterProperties.FilterConf temp : includes) {
             String path = temp.getPath();
-            if (StrUtil.isBlank(path)) {
+            if (CharSequenceUtil.isBlank(path)) {
                 continue;
             }
             String urlPatternsStr = temp.getUrlPatterns();
-            List<String> patterns = StrUtil.isBlank(urlPatternsStr) ?
+            List<String> patterns = CharSequenceUtil.isBlank(urlPatternsStr) ?
                     ImmutableList.of("/*") : Splitter.on(",").trimResults().splitToList(urlPatternsStr);
 
             try {
