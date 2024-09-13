@@ -7,6 +7,7 @@ import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.po.RecommendRequest;
 import com.kato.pro.rec.service.RecommendService;
 import com.kato.pro.base.util.RateGateway;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +26,9 @@ public class RecommendController {
         return Result.build(recommendService.recommend(request));
     }
 
+    /**
+     * 单机用：手动修改单点限速速率
+     */
     @GetMapping
     public Result<String> refreshRate() {
         rateGateway.init();

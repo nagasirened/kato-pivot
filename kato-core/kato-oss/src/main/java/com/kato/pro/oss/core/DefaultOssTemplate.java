@@ -2,7 +2,7 @@ package com.kato.pro.oss.core;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.*;
-import com.kato.pro.common.utils.ThrowUtil;
+import com.kato.pro.common.exception.KatoServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
@@ -22,8 +22,7 @@ public class DefaultOssTemplate implements OssTemplate{
     private OSS getClient() {
         OSS ossClient = ossLinksPoolUtils.getOssClient();
         if (ossClient == null) {
-            log.error("get ossClient fail");
-            ThrowUtil.runtimeException("get ossClient fail");
+            throw new KatoServiceException("get ossClient fail");
         }
         return ossClient;
     }

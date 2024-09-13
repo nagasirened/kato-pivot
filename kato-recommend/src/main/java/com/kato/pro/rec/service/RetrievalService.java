@@ -30,7 +30,6 @@ public class RetrievalService {
         // 获取并更新该用户当天推荐次数
         int obtainNumber = refreshObtainNumber(request);
 
-
     }
 
     /**

@@ -3,7 +3,6 @@ package com.kato.pro.serial;
 import com.caucho.hessian.io.HessianSerializerInput;
 import com.caucho.hessian.io.HessianSerializerOutput;
 import com.kato.pro.common.exception.KatoServiceException;
-import com.kato.pro.common.utils.ThrowUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
