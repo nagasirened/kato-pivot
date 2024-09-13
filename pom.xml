@@ -67,6 +67,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <ttl.version>2.12.1</ttl.version>
         <social-security.version>1.1.6.RELEASE</social-security.version>
+        <reflections.version>0.10.2</reflections.version>
     </properties>
 
     <repositories>
@@ -343,6 +344,11 @@
                 <groupId>org.springframework.social</groupId>
                 <artifactId>spring-social-security</artifactId>
                 <version>${social-security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

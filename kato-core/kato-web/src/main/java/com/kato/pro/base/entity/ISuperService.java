@@ -18,9 +18,9 @@ public interface ISuperService<T> extends IService<T> {
      * @param msg       对象已经存在得提示信息
      * @return          是否保存成功
      */
-    boolean saveIdempotency(T entity, ILock<?> iLock, String lockKey, Wrapper<T> countWrapper, String msg) throws Exception;
+    boolean saveIdempotency(T entity, ILock<?> iLock, String lockKey, Wrapper<T> countWrapper, String msg) throws Throwable;
 
-    boolean saveIdempotency(T entity, ILock<?> iLock, String lockKey, Wrapper<T> countWrapper) throws Exception;
+    boolean saveIdempotency(T entity, ILock<?> iLock, String lockKey, Wrapper<T> countWrapper) throws Throwable;
 
     /**
      * 幂等性新增或更新记录

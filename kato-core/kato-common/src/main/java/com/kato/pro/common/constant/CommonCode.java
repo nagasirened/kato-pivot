@@ -10,6 +10,7 @@ public enum CommonCode {
     PARAM_ERROR(5001, "参数错误"),
     REQUEST_RATE_LIMIT(5002, "请求被限制"),
     SECURITY_REQUIRE(5003, "未授权"),
+    BEAN_NOT_EXIST(5004, "不存在的BEAN")
     ;
 
     @Getter
