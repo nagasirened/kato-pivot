@@ -4,14 +4,17 @@ import com.kato.pro.rpc.DeCodec;
 import com.kato.pro.rpc.EnCodec;
 import com.kato.pro.rpc.KatoLengthFiledHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Slf4j
 public class NettyServer implements RpcServer {
@@ -43,10 +46,13 @@ public class NettyServer implements RpcServer {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             String hostAddress = InetAddress.getLocalHost().getHostAddress();
             ChannelFuture channelFuture = serverBootstrap.bind(hostAddress, port).sync();
-            log.info("server addr {} started on port {}", hostAddress, port);
+            log.info("server address {} started on port {}", hostAddress, port);
             channelFuture.channel().closeFuture().sync();
-        } catch (Exception e) {
-            log.error("netty server init error", e);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException, netty server init error", e);
+            Thread.currentThread().interrupt();
+        } catch (UnknownHostException e) {
+            log.error("UnknownHostException, get host address error", e);
         } finally {
             boss.shutdownGracefully();
             worker.shutdownGracefully();

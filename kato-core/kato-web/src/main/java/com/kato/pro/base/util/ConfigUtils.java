@@ -112,6 +112,14 @@ public class ConfigUtils implements ApplicationContextAware {
         return bean;
     }
 
+    /**
+     * 使用默认的BeanName作为参数，获取对应的Bean实体
+     */
+    public static <T> T getSingletonBeanByType(Class<T> clazz) {
+        String beanName = CharSequenceUtil.lowerFirst(clazz.getSimpleName());
+        return getBean(beanName, clazz);
+    }
+
     public static <T> Map<String, T> getBeanMapByType(Class<T> clazz) {
         return Optional.of(context.getBeansOfType(clazz)).orElse(new HashMap<>());
     }

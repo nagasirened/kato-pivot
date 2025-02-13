@@ -27,7 +27,7 @@ public class UserTypeFilter implements IRetrievalFilter{
         RsInfo rsInfo = rsSet.stream().filter(item -> Objects.nonNull(item.getAccessible())).findFirst().orElse(null);
         if (rsInfo != null) return;
 
-        UserService userService = ConfigUtils.getBean("userService", UserService.class);
+        UserService userService = ConfigUtils.getSingletonBeanByType(UserService.class);
         boolean isNewUser = userService.isNewUser(abMap);
         Iterator<RsInfo> iterator = rsSet.iterator();
         while (iterator.hasNext()) {
