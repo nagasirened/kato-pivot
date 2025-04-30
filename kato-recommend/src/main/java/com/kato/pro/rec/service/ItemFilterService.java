@@ -3,6 +3,7 @@ package com.kato.pro.rec.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.util.BooleanUtil;
 import com.aliyun.oss.model.OSSObject;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -56,7 +57,7 @@ public class ItemFilterService {
             @Cleanup OSSObject ossObject = ossRepository.loadFile(String.format(TRASH_FILE_NAME, dateStr));
             if (ossObject != null) {
                 csvHandler.handleCsv(ossObject.getObjectContent());
-                if (!csvHandler.getResult()) {
+                if (!BooleanUtil.isTrue(csvHandler.getResult())) {
                     throw csvHandler.getException();
                 }
                 List<String> results = csvHandler.getDatas();
@@ -80,6 +81,9 @@ public class ItemFilterService {
         }
     }
 
+    /**
+     * 移除布隆过滤器中的设定无效的内容
+     */
     public static List<RecommendItem> filterClosedV1(List<RecommendItem> items) {
         BloomFilter<String> filter = bloomCache.getIfPresent(OFF_SHELF);
         if (CollUtil.isNotEmpty(items) || filter == null) return Lists.newLinkedList();

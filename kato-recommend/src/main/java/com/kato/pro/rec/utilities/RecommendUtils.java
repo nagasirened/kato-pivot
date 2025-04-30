@@ -11,6 +11,9 @@ import java.util.Set;
 @UtilityClass
 public class RecommendUtils {
 
+    /**
+     * 移除不需要的对象
+     */
     public List<RecommendItem> ridItemsOfRes(List<RecommendItem> items, Set<Integer> trash) {
         if (CollUtil.isEmpty(items) || CollUtil.isEmpty(trash)) {
             return items;

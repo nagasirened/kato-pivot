@@ -1,5 +1,6 @@
 package com.kato.pro.rec.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.google.common.base.Splitter;
 import com.kato.pro.base.util.ConfigUtils;
@@ -9,12 +10,14 @@ import com.kato.pro.common.utils.Lambdas;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
 import com.kato.pro.rec.entity.core.RsInfo;
 import com.kato.pro.rec.service.core.UserService;
-import com.kato.pro.rec.service.retrieval.filter.RetrievalFilterProcessor;
+import com.kato.pro.rec.service.retrieval.RetrievalFilterProcessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 
+@Slf4j
 @Service
 public class RetrieveCaptor {
 
@@ -44,7 +47,14 @@ public class RetrieveCaptor {
         if (CharSequenceUtil.isBlank(rsStr) || BaseConstant.EMPTY_BRACKET.equals(rsStr)) {
             return;
         }
-        rsSet.addAll(Objects.requireNonNull(JsonUtils.toList(rsStr, RsInfo.class)));
+        try {
+            List<RsInfo> abRsList = Optional.ofNullable(JsonUtils.toList(rsStr, RsInfo.class)).orElse(new LinkedList<>());
+            if (CollUtil.isNotEmpty(abRsList)) {
+                rsSet.addAll(abRsList);
+            }
+        } catch (Exception e) {
+            log.error("ab召回源配置解析失败, rsStr:{}", rsStr, e);
+        }
     }
 
     // 从配置中获取

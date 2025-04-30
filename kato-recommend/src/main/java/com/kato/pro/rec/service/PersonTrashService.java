@@ -2,6 +2,7 @@ package com.kato.pro.rec.service;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.BooleanUtil;
 import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.resolver.DeviceContextHolder;
 import com.kato.pro.common.utils.JsonUtils;
@@ -94,7 +95,7 @@ public class PersonTrashService {
      */
     private Collection<Integer> getBlackRecords(Map<String, String> abMap) {
         Boolean switched = ConfigUtils.checkRule(abMap, AbOrNacosConstant.REC_FILTER_BLACK_SWITCH);
-        if (switched) {
+        if (BooleanUtil.isTrue(switched)) {
             String property = ConfigUtils.getProperty(AbOrNacosConstant.REC_FILTER_BLACK_LIST, BaseConstant.EMPTY_BRACKET);
             return JsonUtils.toList(property, Integer.class);
         }

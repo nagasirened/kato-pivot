@@ -1,7 +1,6 @@
 package com.kato.pro.rec;
 
 
-import com.kato.pro.rec.service.retrieval.filter.RetrievalFilterProcessor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +20,6 @@ public class RecommendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        RetrievalFilterProcessor.loadFilters();
+        // ...
     }
 }

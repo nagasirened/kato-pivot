@@ -1,11 +1,11 @@
 package com.kato.pro.rec.service.retrieval.filter;
 
-import cn.hutool.core.collection.CollUtil;
 import com.kato.pro.rec.entity.core.RsInfo;
+import com.kato.pro.rec.service.retrieval.IRetrievalFilter;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UniqueRsFilter implements IRetrievalFilter {
     @Override
@@ -19,11 +19,10 @@ public class UniqueRsFilter implements IRetrievalFilter {
      * 多个唯一召回源的话，label最大的代表最近创建，当出这个
      */
     @Override
-    public void consume(Set<RsInfo> rsSet, Map<String, String> abMap) {
-        if (CollUtil.isEmpty(rsSet)) return;
+    public void consume(Set<RsInfo> rsSet, Map<String, String> abMap, AtomicBoolean suspend) {
         RsInfo unique = rsSet.stream()
                 .filter(rs -> Boolean.TRUE.equals(rs.getUnique()))
-                .max(Comparator.comparing(RsInfo::getLabel))
+                .findFirst()
                 .orElse(null);
         if (unique != null) {
             Integer label = unique.getLabel();

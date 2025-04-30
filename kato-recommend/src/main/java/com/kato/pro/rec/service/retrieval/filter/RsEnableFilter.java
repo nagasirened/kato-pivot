@@ -1,13 +1,14 @@
 package com.kato.pro.rec.service.retrieval.filter;
 
-import cn.hutool.core.collection.CollUtil;
 import com.kato.pro.rec.entity.core.RsInfo;
 import com.kato.pro.rec.entity.enums.RsEnum;
+import com.kato.pro.rec.service.retrieval.IRetrievalFilter;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,11 +23,10 @@ public class RsEnableFilter implements IRetrievalFilter {
      * 最后填充一下label和初始化weight权重等信息
      */
     @Override
-    public void consume(Set<RsInfo> rsSet, Map<String, String> abMap) {
-        if (CollUtil.isEmpty(rsSet)) return;
+    public void consume(Set<RsInfo> rsSet, Map<String, String> abMap, AtomicBoolean suspend) {
         Map<String, RsEnum> mapping = Arrays.stream(RsEnum.values())
                 .filter(RsEnum::getEnable)
-                .collect(Collectors.toMap(RsEnum::getCode, Function.identity()));
+                .collect(Collectors.toMap(RsEnum::getRsName, Function.identity()));
         Iterator<RsInfo> iterator = rsSet.iterator();
         while (iterator.hasNext()) {
             RsInfo next = iterator.next();

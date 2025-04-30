@@ -1,9 +1,9 @@
 package com.kato.pro.rec.entity.core;
 
 import com.kato.pro.rec.entity.enums.RsEnum;
-import lombok.*;
-
-import java.util.Arrays;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -13,6 +13,7 @@ import java.util.Arrays;
 @Setter
 @EqualsAndHashCode(of = {"rsName"})
 public class RsInfo {
+    /* 召回源的唯一数字标签 */
     private Integer label;
     /* 召回源名称 */
     private String rsName;
@@ -50,6 +51,9 @@ public class RsInfo {
         }
         if (this.weight == null) {
             this.weight = 1;
+        }
+        if (this.label == null) {
+            this.label = RsEnum.getLabelByCode(this.rsName);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.kato.pro.common.threadPool;
+package com.kato.pro.rec.threadPool;
 
 import cn.hutool.core.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
