@@ -1,8 +1,6 @@
 package com.kato.pro.rec.service;
 
 import cn.hutool.core.collection.CollUtil;
-import com.jd.platform.async.executor.Async;
-import com.jd.platform.async.wrapper.WorkerWrapper;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.core.RsInfo;
 import com.kato.pro.rec.entity.po.RecommendParams;
@@ -15,7 +13,6 @@ import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
@@ -35,8 +32,13 @@ public class RetrievalService {
         if (CollUtil.isEmpty(rsInfos)) {
             return new LinkedList<>();
         }
-        // 开启多路召回
-        WorkerWrapper[] workerWrappers = RetrieveStrategyHelper.allOfAndReturn(rsInfos, request);
+        // 开启多路召回并返回结果，key是召回源，value是召回结果
+        Map<RsInfo, List<RecommendItem>> recallResultMap = RetrieveStrategyHelper.allOfAndReturn(rsInfos, request);
+        // 蛇形排序
+        return snakeSort(recallResultMap);
+    }
+
+    private List<RecommendItem> snakeSort(Map<RsInfo, List<RecommendItem>> recallResultMap) {
 
         return null;
     }
