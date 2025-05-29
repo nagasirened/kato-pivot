@@ -1,0 +1,15 @@
+resilience4j:
+  circuitbreaker:
+    instances:                                # 定义不同的断路器实例
+      demoCircuitBreaker:
+        failure-rate-threshold: 50            # 失败率阈值，超过50%触发熔断
+        wait-duration-in-open-state: 10s      # 熔断后等待时间，10秒后进入半开状态
+        permitted-number-of-calls-in-half-open-state: 3  # 半开状态下允许的调用次数
+        automatic-transition-from-open-to-half-open-enabled: true  # 自动从打开状态到半开状态的转换
+        sliding-window-size: 10                     # 滑动窗口大小，10个请求
+        sliding-window-type: COUNT_BASED            # 滑动窗口类型，基于请求数量
+        minimum-number-of-calls: 5                  # 最小调用次数，5次请求
+        max-wait-duration-in-half-open-state: 30s   # 半开状态下最大等待时间，30秒
+        register-health-indicator: true             # 注册健康指示器
+        event-consumer-buffer-size: 10              # 事件消费者缓冲区大小
+        record-failure-predicate: '#{myFailurePredicate}'  # 自定义了一个Configuration类型，加载了Predicate类
