@@ -21,6 +21,7 @@
         <module>kato-oss</module>
         <module>kato-common</module>
         <module>code-generator</module>
+        <module>kato-database</module>
     </modules>
 
     <properties>
