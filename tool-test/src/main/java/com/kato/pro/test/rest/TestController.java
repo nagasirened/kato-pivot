@@ -1,4 +1,4 @@
-package com.kato.pro.test.controller;
+package com.kato.pro.test.rest;
 
 
 import io.swagger.annotations.Api;

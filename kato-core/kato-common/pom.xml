@@ -9,7 +9,7 @@
 
     <groupId>org.kato</groupId>
     <artifactId>kato-common</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>kato-common</name>
     <url>http://maven.apache.org</url>

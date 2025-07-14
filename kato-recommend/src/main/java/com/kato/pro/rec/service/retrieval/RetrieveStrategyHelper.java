@@ -78,7 +78,7 @@ public class RetrieveStrategyHelper implements CommandLineRunner {
             if (ResultState.SUCCESS.equals(workResult.getResultState())) {
                 List<RecommendItem> recallList = workResult.getResult();
                 if (CollUtil.isNotEmpty(recallList)) {
-                    resultMap.put(rsMap.get(recallList.getFirst().getRs()), recallList);
+                    resultMap.put(rsMap.get(recallList.get(0).getRs()), recallList);
                 }
             }
         }

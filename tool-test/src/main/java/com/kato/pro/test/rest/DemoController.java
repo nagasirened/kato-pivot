@@ -1,4 +1,4 @@
-package com.kato.pro.test.controller;
+package com.kato.pro.test.rest;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.web.bind.annotation.GetMapping;
