@@ -34,12 +34,12 @@ public class CircuitBreakerEventListener {
         // 处理成功和失败的结果
         result
                 .onSuccess(value -> System.out.println("Operation succeeded with value: " + value))
-                .onFailure(ex -> System.out.println("Operation failed with exception: " + ex.getMessage()));
+                .onFailure(ex -> System.out.println("Operation failed with exception: " + ex.getMessage()))
+                .recover(ex -> -1);
 
         // 提供默认值或备用操作
         Integer finalResult = result.getOrElse(0);
         System.out.println("Final result: " + finalResult);
-
         // 使用 recover 方法
         Try<Integer> recover = result.recover(ex -> {
             System.out.println("Recovering from exception: " + ex.getMessage());

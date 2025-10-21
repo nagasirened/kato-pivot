@@ -22,6 +22,7 @@
         <module>kato-common</module>
         <module>code-generator</module>
         <module>kato-database</module>
+        <module>kato-zookeeper</module>
     </modules>
 
     <properties>
