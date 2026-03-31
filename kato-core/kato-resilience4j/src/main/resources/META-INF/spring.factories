@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.kato.pro.resilience4j.config.KatoResilience4jEnvironmentPostProcessor

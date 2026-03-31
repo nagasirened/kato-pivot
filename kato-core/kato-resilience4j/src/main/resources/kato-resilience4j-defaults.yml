@@ -1,0 +1,89 @@
+# Bundled defaults (lowest precedence; override via application.yml).
+# Instance keys match com.kato.pro.resilience4j.KatoResilienceInstanceNames
+resilience4j:
+  circuitbreaker:
+    configs:
+      kato-circuitbreaker-default:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 50
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 2s
+        permittedNumberOfCallsInHalfOpenState: 5
+        maxWaitDurationInHalfOpenState: 0s
+        waitDurationInOpenState: 30s
+      kato-circuitbreaker-alt:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 20
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 35
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 1s
+        permittedNumberOfCallsInHalfOpenState: 3
+        maxWaitDurationInHalfOpenState: 0s
+        waitDurationInOpenState: 15s
+    instances:
+      kato-circuitbreaker-default:
+        baseConfig: kato-circuitbreaker-default
+      kato-circuitbreaker-alt:
+        baseConfig: kato-circuitbreaker-alt
+  retry:
+    configs:
+      kato-retry-default:
+        maxAttempts: 3
+        waitDuration: 400ms
+        retryExceptions:
+          - java.lang.Exception
+      kato-retry-alt:
+        maxAttempts: 5
+        waitDuration: 200ms
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - java.lang.Exception
+    instances:
+      kato-retry-default:
+        baseConfig: kato-retry-default
+      kato-retry-alt:
+        baseConfig: kato-retry-alt
+  ratelimiter:
+    configs:
+      kato-ratelimiter-default:
+        limitForPeriod: 20
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0s
+      kato-ratelimiter-alt:
+        limitForPeriod: 80
+        limitRefreshPeriod: 1s
+        timeoutDuration: 3s
+    instances:
+      kato-ratelimiter-default:
+        baseConfig: kato-ratelimiter-default
+      kato-ratelimiter-alt:
+        baseConfig: kato-ratelimiter-alt
+  bulkhead:
+    configs:
+      kato-bulkhead-default:
+        maxConcurrentCalls: 12
+        maxWaitDuration: 0s
+      kato-bulkhead-alt:
+        maxConcurrentCalls: 4
+        maxWaitDuration: 200ms
+    instances:
+      kato-bulkhead-default:
+        baseConfig: kato-bulkhead-default
+      kato-bulkhead-alt:
+        baseConfig: kato-bulkhead-alt
+  timelimiter:
+    configs:
+      kato-timelimiter-default:
+        timeoutDuration: 3s
+        cancelRunningFuture: true
+      kato-timelimiter-alt:
+        timeoutDuration: 1s
+        cancelRunningFuture: true
+    instances:
+      kato-timelimiter-default:
+        baseConfig: kato-timelimiter-default
+      kato-timelimiter-alt:
+        baseConfig: kato-timelimiter-alt
