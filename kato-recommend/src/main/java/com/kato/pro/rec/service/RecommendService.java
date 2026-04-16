@@ -7,6 +7,7 @@ import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.common.entity.LevelEnum;
 import com.kato.pro.rec.entity.po.RecommendParams;
 import com.kato.pro.rec.service.rerank.RerankPipelineService;
+import com.kato.pro.rec.service.rank.RankService;
 import com.kato.pro.base.util.RateGateway;
 import com.kato.pro.base.log.ScaleLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class RecommendService {
     @Resource private PersonTrashService personTrashService;
     @Resource private RetrievalService retrievalService;
     @Resource private RerankPipelineService rerankPipelineService;
+    @Resource private RankService rankService;
 
     /**
      * RECOMMEND
@@ -63,11 +65,16 @@ public class RecommendService {
             return CollUtil.isEmpty(retrieveItems) ? new ArrayList<>() : new ArrayList<>(retrieveItems);
         }
 
-        // rank（精排模型）暂不接入
+        // rank（精排模型）：将召回结果送入 TF Serving 进行分数预测，支持 Mock 降级
+        List<RecommendItem> ranked = rankService.rank(retrieveItems);
 
-        List<RecommendItem> reranked = rerankPipelineService.rerank(retrieveItems, recommendParams);
+        List<RecommendItem> reranked = rerankPipelineService.rerank(ranked, recommendParams);
 
-        // 后置处理, 如曝光、埋点等
+        // 后置处理: 写入本次推荐的商品曝光记录到 Redis，供下次推荐时过滤已曝光商品
+        personTrashService.recordShowedItems(reranked);
+
+        // TODO: 埋点/日志记录最终推荐结果（如曝光上报、推荐日志打点等），可接入 ScaleLogger 或独立埋点服务
+        // doTrackRerankedResult(reranked, recommendParams);
 
         return reranked;
     }

@@ -33,4 +33,15 @@ public class RecommendConstant {
 
     public static final String DEFAULT_RERANK_SLIDING_WINDOW = "";
 
+    // ===================== 精排（Rank）相关配置 =====================
+
+    /** 精排：TensorFlow Serving gRPC 地址，如 "localhost:8500"；未配置则跳过精排 */
+    public static final String PROP_RANK_TARGET_URL = "kato.recommend.rank.target-url";
+
+    /** 精排：模型名称，默认 recommend_rank_model */
+    public static final String PROP_RANK_MODEL_NAME = "kato.recommend.rank.model-name";
+
+    /** 精排：模型签名，默认 serving_default */
+    public static final String PROP_RANK_SIGNATURE_NAME = "kato.recommend.rank.signature-name";
+
 }

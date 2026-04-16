@@ -1,12 +1,15 @@
 package com.kato.pro.rec.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
 import com.kato.pro.common.constant.BaseConstant;
 import com.kato.pro.common.resolver.DeviceContextHolder;
 import com.kato.pro.common.utils.JsonUtils;
 import com.kato.pro.rec.entity.constant.AbOrNacosConstant;
+import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.rec.entity.po.RecommendParams;
 import com.kato.pro.base.util.ConfigUtils;
 import com.kato.pro.rec.utilities.RedisKey;
@@ -81,6 +84,43 @@ public class PersonTrashService {
         return playedIdSet.stream().map(Convert::toInt)
                 .filter(item -> !safetySet.contains(item))
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * 将本次推荐结果（reranked items）的 itemId 写入 Redis 曝光记录集合，
+     * 供后续推荐请求的 {@link #getShowedRecords(String, Map)} 查询去重使用。
+     * <p>使用 Redis SET 结构存储，key 格式为 {@code rec_impression:yyyyMMdd:deviceId}，
+     * 过期时间跟随 {@link RedisKey#REC_CONTENT_IMPRESSION} 的配置（默认 3 天）。
+     *
+     * @param items 本次推荐返回的最终商品列表（已重排）
+     * @see RedisKey#REC_CONTENT_IMPRESSION
+     */
+    public void recordShowedItems(List<RecommendItem> items) {
+        if (CollUtil.isEmpty(items)) {
+            return;
+        }
+        String deviceId = DeviceContextHolder.getDeviceId();
+        if (CharSequenceUtil.isBlank(deviceId)) {
+            return;
+        }
+        String dated = DateUtil.format(new Date(), BaseConstant.DATE_FORMAT_SIMPLE);
+        String redisKey = RedisKey.REC_CONTENT_IMPRESSION.makeRedisKey(dated, deviceId);
+        // 将 itemId 列表转为 String 数组写入 Redis Set
+        String[] itemIdStrs = items.stream()
+                .map(RecommendItem::getItemId)
+                .filter(Objects::nonNull)
+                .map(String::valueOf)
+                .toArray(String[]::new);
+        if (itemIdStrs.length == 0) {
+            return;
+        }
+        // sSetAndTime 自动设置过期时间，无需手动 expire
+        try {
+            redisService.sSetAndTime(redisKey, RedisKey.REC_CONTENT_IMPRESSION.getExpire().longValue(), itemIdStrs);
+        } catch (Exception e) {
+            log.error("PersonTrashService#recordShowedItems, record impression fail, deviceId={}, msg={}",
+                    deviceId, e.getMessage(), e);
+        }
     }
 
     /** add contents by custom logic */
