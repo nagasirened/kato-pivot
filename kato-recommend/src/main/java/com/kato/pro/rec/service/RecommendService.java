@@ -6,6 +6,7 @@ import com.kato.pro.rec.entity.constant.LogConstant;
 import com.kato.pro.rec.entity.core.RecommendItem;
 import com.kato.pro.common.entity.LevelEnum;
 import com.kato.pro.rec.entity.po.RecommendParams;
+import com.kato.pro.rec.service.rerank.RerankPipelineService;
 import com.kato.pro.base.util.RateGateway;
 import com.kato.pro.base.log.ScaleLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class RecommendService {
     @Resource private StrongPushService strongPushService;
     @Resource private PersonTrashService personTrashService;
     @Resource private RetrievalService retrievalService;
+    @Resource private RerankPipelineService rerankPipelineService;
 
     /**
      * RECOMMEND
@@ -55,16 +57,19 @@ public class RecommendService {
      * @return  List<RecommendResItem>
      */
     private List<RecommendItem> doRecommend(RecommendParams recommendParams) {
-        // 召回/裁剪
         List<RecommendItem> retrieveItems = retrievalService.retrieve(recommendParams);
+        Integer topK = recommendParams.getTopK() == null ? 10 : recommendParams.getTopK();
+        if (CollUtil.isEmpty(retrieveItems) || retrieveItems.size() < topK) {
+            return CollUtil.isEmpty(retrieveItems) ? new ArrayList<>() : new ArrayList<>(retrieveItems);
+        }
 
-        // rank
+        // rank（精排模型）暂不接入
 
-        // 重排序
+        List<RecommendItem> reranked = rerankPipelineService.rerank(retrieveItems, recommendParams);
 
         // 后置处理, 如曝光、埋点等
 
-        return null;
+        return reranked;
     }
 
 

@@ -23,6 +23,7 @@
         <module>code-generator</module>
         <module>kato-database</module>
         <module>kato-zookeeper</module>
+        <module>kato-resilience4j</module>
     </modules>
 
     <properties>

@@ -1,0 +1,14 @@
+kato:
+  recommend:
+    retrieve:
+      # 多路召回蛇形合并后保留的最大条数（可被 Nacos kato-retrieve 等覆盖）
+      snake-merge-top-n: 100
+      # 合并时每路非空召回至少占坑条数，再进入加权蛇形填剩余；0 表示不做保底（与早期纯蛇形一致）
+      snake-min-per-source: 1
+    rerank:
+      # label -> 分数倍率（JSON 字符串）；命中多个 label 时倍率连乘
+      label-weights: '{}'
+      # 强插：labels 与商品 labels 有交集则可固定到 position（JSON 数组）；可写 labels:[100,101] 或单 label:100
+      strong-inserts: '[]'
+      # 滑动窗口打散；labels 为集合；空字符串关闭
+      sliding-window: ""

@@ -10,6 +10,9 @@
         <module>kato-core</module>
         <module>tool-test</module>
         <module>kato-uaa</module>
+        <module>kato-ai</module>
+        <module>kato-ai/kato-langchain</module>
+        <module>kato-ai/kato-spring-ai</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -70,6 +73,7 @@
         <reflections.version>0.10.2</reflections.version>
         <zookeeper.version>3.6.3</zookeeper.version>
         <curator-recipes.version>5.2.1</curator-recipes.version>
+        <resilience4j-version>2.3.0</resilience4j-version>
     </properties>
 
     <repositories>
@@ -139,9 +143,23 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-bom</artifactId>
+                <version>${resilience4j-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
                 <version>${amazon.awssdk}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>1.12.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
