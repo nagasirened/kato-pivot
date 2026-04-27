@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.chat.tools;
+package com.kato.pro.langchain.demo.chat.tools;
 
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;

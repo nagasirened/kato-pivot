@@ -1,7 +1,7 @@
-package com.kato.pro.langchain.chat.config;
+package com.kato.pro.langchain.demo.chat.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kato.pro.langchain.chat.store.RedisChatMemoryStore;
+import com.kato.pro.langchain.demo.chat.store.RedisChatMemoryStore;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;

@@ -1,7 +1,7 @@
-package com.kato.pro.langchain.chat.service;
+package com.kato.pro.langchain.demo.chat.service;
 
 
-import com.kato.pro.langchain.chat.prompt.LegalPrompt;
+import com.kato.pro.langchain.demo.chat.prompt.LegalPrompt;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.spring.AiService;
 

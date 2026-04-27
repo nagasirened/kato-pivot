@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.chat.service;
+package com.kato.pro.langchain.demo.chat.service;
 
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.Result;

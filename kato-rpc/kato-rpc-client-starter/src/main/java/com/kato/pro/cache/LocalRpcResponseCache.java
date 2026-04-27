@@ -29,6 +29,11 @@ public class LocalRpcResponseCache {
         // 获取缓存中的 future
         RpcFuture<RpcProtocol<RpcResponse>> future = requestResponseCache.get(reqId);
 
+        // 如果 future 为空（可能已超时被清理），直接忽略
+        if (future == null) {
+            return;
+        }
+
         // 设置数据
         future.setResponse(messageProtocol);
 

@@ -32,7 +32,9 @@ public class RedissonDiscoveryService implements DiscoveryService{
                     config.useSingleServer().setAddress(serverAddress);
                     this.redissonClient = Redisson.create(config);
                     break;
-                } catch (Exception ignored) { }
+                } catch (Exception e) {
+                    log.warn("Redisson connection attempt {} failed: {}", count.get(), e.getMessage());
+                }
             }
             if (Objects.isNull(redissonClient)) {
                 throw new RuntimeException("redisson serviceDiscovery init fail!");

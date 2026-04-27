@@ -38,6 +38,7 @@ class ClientStubInvocationHandler implements InvocationHandler {
         ServiceInfo serviceInfo = discoveryService.discover(serviceVersion);
         if (Objects.isNull(serviceInfo)) {
             log.error("invoke discover serviceVersion not exists, sv: {}", serviceVersion);
+            throw new KatoServiceException("service not found: " + serviceVersion);
         }
 
         // 封装请求

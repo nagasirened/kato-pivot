@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.chat.prompt;
+package com.kato.pro.langchain.demo.chat.prompt;
 
 
 import dev.langchain4j.model.input.structured.StructuredPrompt;

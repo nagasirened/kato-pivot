@@ -1,10 +1,13 @@
 package com.kato.pro.server;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public final class LocalServiceCache {
 
     /**
@@ -14,7 +17,10 @@ public final class LocalServiceCache {
     private static final Map<String, Object> beanMap = new ConcurrentHashMap<>();
 
     public static void store(String serviceVersion, Object bean) {
-        beanMap.merge(serviceVersion, bean, (oldOne, newOne) -> oldOne);
+        beanMap.merge(serviceVersion, bean, (oldOne, newOne) -> {
+            log.warn("service {} already registered, keeping existing one", serviceVersion);
+            return oldOne;
+        });
     }
 
     public static Object get(String serviceVersion) {

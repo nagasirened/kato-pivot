@@ -33,7 +33,8 @@ public class KatoRequestHandler extends SimpleChannelInboundHandler<RpcProtocol<
             rpcResponse.setData(handle(rpcRequest));
         } catch (Exception e) {
             header.setStatus(ResultStatus.FAIL.getCode());
-            rpcResponse.setMessage(e.getMessage());
+            // 不直接返回异常信息，避免泄露内部实现细节
+            rpcResponse.setMessage("RPC request failed");
             log.error("request handler exception happened", e);
         }
         header.setMsgType(MessageType.RESPONSE.getType());
@@ -53,7 +54,8 @@ public class KatoRequestHandler extends SimpleChannelInboundHandler<RpcProtocol<
         if (Objects.isNull(bean)) {
             return null;
         }
-        Method method = bean.getClass().getMethod(rpcRequest.getMethod(), rpcRequest.getParameterTypes());
+        Method method = bean.getClass().getDeclaredMethod(rpcRequest.getMethod(), rpcRequest.getParameterTypes());
+        method.setAccessible(true);
         return method.invoke(bean, rpcRequest.getParameters());
     }
 }

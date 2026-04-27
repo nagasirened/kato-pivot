@@ -27,7 +27,7 @@ public class RoundRobinBalancer implements LoadBalancer {
             int i = counter.get();
             int j = (i + 1) % size;
             if (counter.compareAndSet(i, j)) {
-                return j;
+                return i;  // 返回当前值 i，而非递增后的 j
             }
         }
     }

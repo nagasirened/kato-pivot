@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.chat.model;
+package com.kato.pro.langchain.demo.chat.model;
 
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.chat.request.ChatRequest;

@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.chat.store;
+package com.kato.pro.langchain.demo.chat.store;
 
 import java.time.Duration;
 

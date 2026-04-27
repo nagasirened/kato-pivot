@@ -1,7 +1,7 @@
-package com.kato.pro.langchain.chat.config;
+package com.kato.pro.langchain.demo.chat.config;
 
 
-import com.kato.pro.langchain.chat.service.SeparateAssistant;
+import com.kato.pro.langchain.demo.chat.service.SeparateAssistant;
 import dev.langchain4j.invocation.InvocationContext;
 import dev.langchain4j.invocation.InvocationParameters;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;

@@ -1,4 +1,4 @@
-package com.kato.pro.langchain.test;
+package com.kato.pro.langchain.demo.test;
 
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.junit.jupiter.api.Test;
