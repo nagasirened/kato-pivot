@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: kato-risk-client
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 127.0.0.1:8848
+        group: kato-group
+        namespace: 149f2d06-67cf-4e07-bd30-3efb718662eb
+        extension-configs:
+          - { dataId: 'kato-risk-config.yaml', group: "DEFAULT_GROUP", refresh: true }
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: 149f2d06-67cf-4e07-bd30-3efb718662eb
+        group: kato-group

@@ -1,0 +1,37 @@
+server:
+  port: 0  # TODO: 当前是 gRPC only 模式，HTTP 端口被设为 0；如需同时提供 REST API 需修复
+
+spring:
+  application:
+    name: kato-risk-server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/kato_risk?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.kato.pro.risk.server.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# gRPC Server
+risk:
+  grpc:
+    port: 50051
+    tls:
+      enabled: false
+      cert.path: classpath:certs/server.crt
+      private.key.path: classpath:certs/server-key.pem
+
+# Logging
+logging:
+  level:
+    com.kato.pro.risk: DEBUG

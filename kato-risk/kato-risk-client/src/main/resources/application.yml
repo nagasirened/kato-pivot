@@ -1,0 +1,39 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: kato-risk-client
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/kato_risk?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      group-id: kato-risk-client
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.kato.pro.risk.client.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# gRPC Client
+risk:
+  grpc:
+    host: localhost
+    port: 50051
+    tls:
+      enabled: false
+      ca.cert.path: classpath:certs/ca.crt
+
+# Logging
+logging:
+  level:
+    com.kato.pro.risk: DEBUG

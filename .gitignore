@@ -21,6 +21,9 @@ export/
 .cursor/
 node_modules/
 
+### TLS 私钥,不提交仓库 ###
+**/certs/*-key.pem
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

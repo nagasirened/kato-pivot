@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package com.kato.pro.risk;
+
+option java_package = "com.kato.pro.risk.grpc";
+option java_multiple_files = true;
+
+// ===================== 风控检查 =====================
+
+message GrpcRiskRequest {
+  string request_id = 1;
+  string scene = 2;          // REGISTER/LOGIN/MARKETING/ORDER/PAYMENT/REFUND
+  string user_id = 3;
+  string device_id = 4;
+  string ip = 5;
+  map<string, string> ext_data = 6;  // 扩展字段
+}
+
+message GrpcRiskResponse {
+  string request_id = 1;
+  string action = 2;         // PASS/BLOCK/REVIEW
+  int32 score = 3;           // 0-100
+  repeated string reason_codes = 4;
+  map<string, string> ext_data = 5;
+  string message = 6;
+}
+
+// ===================== Groovy 脚本测试 =====================
+
+message GrpcGroovyTestRequest {
+  string script_content = 1;
+  string test_case_name = 2;
+  map<string, string> input_context = 3;  // ctx 中的变量
+}
+
+message GrpcGroovyTestResult {
+  string test_case_name = 1;
+  bool passed = 2;
+  string output = 3;
+  string error_message = 4;
+  int64 execution_time_ms = 5;
+}
+
+// ===================== 服务定义 =====================
+
+service RiskCheckService {
+
+  // 同步风控检查
+  rpc check(GrpcRiskRequest) returns (GrpcRiskResponse);
+
+  // Groovy 脚本单元测试
+  rpc testGroovyScript(GrpcGroovyTestRequest) returns (GrpcGroovyTestResult);
+}
