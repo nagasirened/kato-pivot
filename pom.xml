@@ -13,6 +13,7 @@
         <module>kato-ai</module>
         <module>kato-ai/kato-langchain</module>
         <module>kato-ai/kato-spring-ai</module>
+        <module>kato-risk</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
