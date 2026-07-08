@@ -1,0 +1,12 @@
+minimax:
+  api-key: test-key
+  base-url: http://stub
+  models:
+    simple: m2.5
+    complex: m3
+  embedding:
+    dimension: 512
+
+logging:
+  level:
+    com.kato.pro.langchain: DEBUG

@@ -17,6 +17,9 @@ export/
 .springBeans
 .sts4-cache
 .claude
+.codegraph/
+.cursor/
+node_modules/
 
 ### IntelliJ IDEA ###
 .idea
