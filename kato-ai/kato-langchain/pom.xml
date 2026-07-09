@@ -31,7 +31,24 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-        </dependencies>
+            <!-- ====== M5 RAG: document parsers (1.2.0-beta8, in m2) ====== -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
+        <version>1.2.0-beta8</version>
+    </dependency>
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-document-parser-apache-poi</artifactId>
+        <version>1.2.0-beta8</version>
+    </dependency>
+    <!-- ====== M5 RAG: Caffeine cache (query rewriter) ====== -->
+    <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>3.1.8</version>
+    </dependency>
+</dependencies>
     </dependencyManagement>
 
     <dependencies>
@@ -104,6 +121,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.44</version>
+        </dependency>
 
         <!-- ====== M1 Foundation (sandbox-adjusted) ====== -->
         <!-- MyBatis-Plus core: NOT using spring-boot3-starter because its
@@ -138,7 +160,24 @@
             <version>8.0.33</version>
             <scope>runtime</scope>
         </dependency>
-    </dependencies>
+        <!-- ====== M5 RAG: document parsers (1.2.0-beta8, in m2) ====== -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
+        <version>1.2.0-beta8</version>
+    </dependency>
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-document-parser-apache-poi</artifactId>
+        <version>1.2.0-beta8</version>
+    </dependency>
+    <!-- ====== M5 RAG: Caffeine cache (query rewriter) ====== -->
+    <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>3.1.8</version>
+    </dependency>
+</dependencies>
 
 
     <build>

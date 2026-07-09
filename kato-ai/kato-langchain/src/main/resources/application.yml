@@ -52,3 +52,23 @@ minimax:
     complex: m3
   embedding:
     dimension: 512
+
+# ====== M4 Memory ======
+memory:
+  window:
+    max-tokens: 8000
+    reserve-ratio: 0.1
+  summary:
+    trigger-threshold-tokens: 4000
+    min-interval-seconds: 30
+
+# ====== M5 RAG ======
+rag:
+  retriever:
+    top-k: 5
+    min-score: 0.6
+  reranker:
+    enabled: false
+  query-rewriter:
+    enabled: true
+    cache-ttl-seconds: 86400
