@@ -94,3 +94,11 @@ tool:
   cb-failure-threshold: 5
   cb-reset-ms: 30000
   audit-auto-approve: false
+
+# ====== M8 ChatEngine ======
+chat-engine:
+  rag-top-k: 5
+  rag-min-score: 0.6
+  model-timeout-ms: 30000
+  sse-timeout-ms: 30000
+  tool-call-enabled: true
