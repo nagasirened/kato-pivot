@@ -513,3 +513,147 @@ Week 4:
 
 **文档版本**: v1.0  
 **最后更新**: 2026-07-07
+
+---
+
+### 7.3 M6 — Prompt 模板 + 内容安全
+
+**目标**：M8 ChatEngine 拼 prompt 不再硬编码字符串；同时入参/出参双层敏感词过滤，**故障降级不阻断**（R7）。
+
+**核心交互**：
+
+```
+[ChatEngine M8] 
+  1. promptRenderer.render("rag_chat", tenantId, vars)
+       ├─ PromptTemplateRegistry.get(key, tenantId)  → 模板
+       └─ PromptRenderer.substitute(template, vars)  → 渲染后字符串
+  2. contentSafetyService.checkInput(userInput, tenantId)
+       ├─ CompositeSafetyFilter.check(text)
+       │   ├─ LocalKeywordSafetyFilter     (内存关键词匹配，永远可用)
+       │   └─ HttpSensitiveSafetyFilter    (可选，调 kato-sensitive-client；故障降级)
+       └─ SafetyResult{ passed, hitWords, sanitizedText, fallback }
+  3. 调 LLM 出回复
+  4. contentSafetyService.checkOutput(assistantReply, tenantId)
+       └─ 同 2
+```
+
+**决策矩阵**（已确认）：
+
+| # | 决策 | 选择 |
+|---|---|---|
+| D1 | ContentSafetyFilter 实现 | C：SPI + LocalKeyword 占位 + HttpSensitive 客户端实现 + 关键词 fallback 兜底 |
+| D2 | 敏感词降级策略 | C：warn 日志 + 通过 + 计数器告警 |
+| D3 | Prompt 模板存储 | C：YAML 默认 + DB 覆盖（合并规则：DB > YAML > 内置 default） |
+| D4 | 模板变量替换 | B：自实现 `${var}` 替换（零依赖） |
+| D5 | 模板 cache | C：启动时加载 + @Scheduled 5min 刷新（v1 简化） |
+| D6 | 租户覆盖语义 | A：完全替换（DB 行覆盖整段模板） |
+| D7 | 入参/出参过滤触发点 | B：暴露 `ContentSafetyService`，M8 决定何时调 |
+| D8 | 关键词 fallback 词表 | B：配置文件可配置（默认几个测试词） |
+
+**核心 SPI 接口**：
+
+```java
+public interface PromptTemplateRegistry {
+    /** 取模板（DB 覆盖 YAML，未配置时取内置默认） */
+    Optional<PromptTemplate> get(String key, Long tenantId);
+
+    /** 列出全部（admin 调试用） */
+    List<PromptTemplate> listAll(Long tenantId);
+}
+
+public interface PromptRenderer {
+    String render(String key, Long tenantId, Map<String, Object> vars);
+}
+
+public interface ContentSafetyFilter {
+    /** SPI 名称（用于日志/诊断） */
+    String name();
+
+    /** 检测；失败/异常时 filter 自身决定降级或抛错 */
+    SafetyResult check(String text, SafetyContext ctx);
+}
+
+public interface ContentSafetyService {
+    /** 入参检测 */
+    SafetyResult checkInput(String text);
+
+    /** 出参检测 */
+    SafetyResult checkOutput(String text);
+}
+```
+
+**核心数据结构**：
+
+```java
+public record PromptTemplate(Long tenantId, String key, String content,
+                             Integer version, String source) {}
+
+public record SafetyResult(boolean passed, List<String> hitWords,
+                           String sanitizedText, boolean fallback,
+                           Map<String, Object> details) {}
+```
+
+**关键类清单**：
+
+| 类 | 职责 |
+|---|---|
+| `PromptTemplate` 实体 + Mapper | 继承 BaseEntity；`tenant_id + key` 唯一 |
+| `PromptTemplateVO` / DTO | API 传输对象 |
+| `PromptRenderer` | 纯方法：`substitute(template, vars)` |
+| `PromptTemplateRegistry` 内存版 | 启动时从 YAML + DB 加载；定时刷新 |
+| `YamlPromptSource` | 读 `classpath:prompts/default.yml` |
+| `DbPromptSource` | 读 `prompt_template` 表 |
+| `PromptTemplateService` | 增删改查；触发缓存失效 |
+| `PromptTemplateController` | CRUD + render |
+| `SafetyProperties` | 绑定 `safety.*` |
+| `ContentSafetyFilter` SPI | `LocalKeywordSafetyFilter`（默认）+ `HttpSensitiveSafetyFilter`（生产）+ `CompositeSafetyFilter`（链式 + 短路） |
+| `ContentSafetyService` | 暴露 `checkInput`/`checkOutput`；记录统计 |
+| `ContentSafetyController` | REST：`/api/v1/safety/check` |
+| DDL | `V4__init_prompt_template.sql` |
+
+**配置**：
+
+```yaml
+safety:
+  enabled: true                     # 全局开关
+  sensitive-client:
+    enabled: false                  # HTTP 客户端实现是否启用
+    base-url: http://localhost:8081 # kato-sensitive-client 地址
+    timeout-ms: 1000
+  local-keywords:                   # 内置关键词 fallback
+    enabled: true
+    default-words:                  # 默认词
+      - 色情
+      - 赌博
+      - 毒品
+```
+
+**ChatEngine → Prompt 接口契约**（M8 直接调用）：
+
+```java
+// M8 ChatApplicationService.sendMessage 内部：
+String systemPrompt = promptRenderer.render("rag_chat", tenantId,
+        Map.of("userName", "xxx", "ragContext", "..."));
+SafetyResult inSafety = contentSafetyService.checkInput(userInput);
+if (!inSafety.passed()) {
+    return "抱歉，您的问题包含违规内容";
+}
+String reply = modelRouter.route(...).block();
+SafetyResult outSafety = contentSafetyService.checkOutput(reply);
+String finalReply = outSafety.sanitizedText() == null ? reply : outSafety.sanitizedText();
+```
+
+**沙箱测试边界**：
+- ✅ 纯方法单测：PromptRenderer、LocalKeywordSafetyFilter、CompositeSafetyFilter 短路/降级
+- ✅ PromptTemplateRegistry 内存版：手写 stub DbPromptSource
+- ✅ ContentSafetyService：mock filter 链
+- ❌ `@SpringBootTest` / 真 HTTP client（沙箱无真 sensitive-client）
+
+**风险与对策**：
+- R7 sensitive-client 不可用 → HTTP filter 故障降级（warn + 通过）
+- 新增 R10：DB prompt_template 表过大导致启动慢 → v1 限制加载最多 1000 条
+
+**M6 验收定义**：PromptRegistry 合并规则单测覆盖；关键词命中/未命中单测覆盖；故障降级路径单测覆盖。
+
+**文档版本**：v1.0  
+**最后更新**：2026-07-09（M6 详细设计追加 + 实现完成 183/183 测试全绿）

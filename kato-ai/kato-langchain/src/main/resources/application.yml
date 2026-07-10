@@ -72,3 +72,25 @@ rag:
   query-rewriter:
     enabled: true
     cache-ttl-seconds: 86400
+
+# ====== M6 Safety ======
+safety:
+  enabled: true
+  local-keywords:
+    enabled: true
+    default-words:
+      - 色情
+      - 赌博
+      - 毒品
+  sensitive-client:
+    enabled: false
+    base-url: http://localhost:8081
+    timeout-ms: 1000
+
+# ====== M7 Tool Framework ======
+tool:
+  enabled: true
+  default-timeout-ms: 1000
+  cb-failure-threshold: 5
+  cb-reset-ms: 30000
+  audit-auto-approve: false

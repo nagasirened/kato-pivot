@@ -7,7 +7,7 @@ logs/
 !**/src/main/**
 !**/src/test/**
 export/
-docs
+docs/
 
 ### STS ###
 .apt_generated
