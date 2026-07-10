@@ -126,3 +126,16 @@ knife4j:
     enable-version: true
     enable-swagger-models: true
     swagger-model-name: 实体类列表
+
+# ====== M11 Auth / Observability ======
+jwt:
+  secret: "kato-langchain-secret-key-must-be-at-least-32-bytes-long-for-hs256"
+  ttl-seconds: 3600
+  issuer: kato-langchain
+  header: Authorization
+  prefix: "Bearer "
+
+alert:
+  enabled: true
+  interval-ms: 60000
+  webhook-url: ""

@@ -2,6 +2,7 @@ package com.kato.pro.langchain.domain.safety;
 
 import com.kato.pro.langchain.common.exception.BusinessException;
 import com.kato.pro.langchain.common.exception.ErrorCode;
+import com.kato.pro.langchain.common.metrics.SafetyMetrics;
 import com.kato.pro.langchain.common.tenant.TenantContext;
 import com.kato.pro.langchain.common.trace.TraceContext;
 import com.kato.pro.langchain.config.SafetyProperties;
@@ -63,6 +64,12 @@ public class ContentSafetyService {
         SafetyResult r = composite.check(text, ctx);
         if (r.isFallback()) fallbackCount.incrementAndGet();
         if (!r.isPassed()) rejectCount.incrementAndGet();
+        // M11 metrics
+        String kind = dir == SafetyContext.Direction.INPUT ? "input" : "output";
+        String result = r.isPassed() ? "pass" : "reject";
+        if (r.isFallback()) result = "fallback";
+        SafetyMetrics.onCheck(kind, result);
+        if (!r.isPassed()) SafetyMetrics.onReject(kind);
         log.debug("Safety check dir={} passed={} fallback={} hits={}",
                 dir, r.isPassed(), r.isFallback(), r.getHitWords());
         return r;

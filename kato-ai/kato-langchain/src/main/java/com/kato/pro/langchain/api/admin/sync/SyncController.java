@@ -6,6 +6,9 @@ import com.kato.pro.langchain.api.admin.sync.dto.TriggerResponse;
 import com.kato.pro.langchain.common.exception.BusinessException;
 import com.kato.pro.langchain.common.exception.ErrorCode;
 import com.kato.pro.langchain.common.result.Result;
+import com.kato.pro.langchain.common.security.RequireRole;
+import com.kato.pro.langchain.common.security.Role;
+import com.kato.pro.langchain.domain.audit.OpAuditLog;
 import com.kato.pro.langchain.domain.sync.SyncApplicationService;
 import com.kato.pro.langchain.domain.sync.SyncRunRecord;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 知识库同步 admin REST API（spec §6 M9）。
+ * 知识库同步 admin REST API（spec §6 M9 + M11 RBAC）。
  *
- *   POST /api/v1/admin/sync/{adapterName}/trigger  手动触发
- *   GET  /api/v1/admin/sync/status                状态概览（所有 adapter）
- *   GET  /api/v1/admin/sync/runs?adapter=&limit=  指定 adapter 的最近运行记录
- *
- * v1：admin 鉴权暂未接入（TODO M11）；生产应加 @PreAuthorize 限 admin 角色。
- * v1：runs 接口必须指定 adapter（跨 adapter 查询在 v2 加入）。
+ *   POST /api/v1/admin/sync/{adapterName}/trigger  手动触发（ADMIN）
+ *   GET  /api/v1/admin/sync/status                状态概览（ADMIN/OPERATOR）
+ *   GET  /api/v1/admin/sync/runs?adapter=&limit=  指定 adapter 的最近运行记录（ADMIN/OPERATOR）
  */
 @RestController
 @RequestMapping("/api/v1/admin/sync")
@@ -38,6 +38,8 @@ public class SyncController {
     private final SyncApplicationService syncService;
 
     @PostMapping("/{adapterName}/trigger")
+    @RequireRole(Role.ADMIN)
+    @OpAuditLog(action = "TRIGGER", resource = "SYNC")
     public Result<TriggerResponse> trigger(@PathVariable String adapterName) {
         SyncRunRecord run = syncService.runOne(adapterName);
         return Result.ok(TriggerResponse.builder()
@@ -51,6 +53,7 @@ public class SyncController {
     }
 
     @GetMapping("/status")
+    @RequireRole({Role.ADMIN, Role.OPERATOR})
     public Result<List<SyncStatusVO>> status() {
         List<Map<String, Object>> raw = syncService.statusOverview();
         List<SyncStatusVO> result = raw.stream().map(e -> {
@@ -66,6 +69,7 @@ public class SyncController {
     }
 
     @GetMapping("/runs")
+    @RequireRole({Role.ADMIN, Role.OPERATOR})
     public Result<List<SyncRunVO>> runs(@RequestParam String adapter,
                                           @RequestParam(defaultValue = "20") int limit) {
         if (adapter == null || adapter.isBlank()) {

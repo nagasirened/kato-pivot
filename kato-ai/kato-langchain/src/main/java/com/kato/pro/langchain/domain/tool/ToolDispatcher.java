@@ -2,6 +2,7 @@ package com.kato.pro.langchain.domain.tool;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.kato.pro.langchain.annotation.ToolDef;
+import com.kato.pro.langchain.common.metrics.ToolMetrics;
 import com.kato.pro.langchain.common.tenant.TenantContext;
 import com.kato.pro.langchain.common.trace.TraceContext;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +42,23 @@ public class ToolDispatcher {
         }
         Tool tool = registry.require(toolName);
         ToolDef ann = tool.getClass().getAnnotation(ToolDef.class);
+        // M11 metrics
+        ToolMetrics.onDispatch(toolName, ann.type().name());
+        try {
+            return dispatchInternal(tool, ann, toolName, args);
+        } catch (Exception e) {
+            ToolMetrics.onFailure(toolName, e.getClass().getSimpleName());
+            throw e;
+        }
+    }
+
+    private ToolResult dispatchInternal(Tool tool, ToolDef ann, String toolName, JsonNode args) {
         Long tenantId = TenantContext.requireCurrent().tenantId();
         Long userId = TenantContext.requireCurrent().userId();
 
         // R2 — 租户启用检查
         if (!tenantConfigService.isEnabled(tenantId, toolName)) {
+            ToolMetrics.onFailure(toolName, "tenant-disabled");
             return ToolResult.fail("tool disabled for tenant: " + toolName);
         }
 

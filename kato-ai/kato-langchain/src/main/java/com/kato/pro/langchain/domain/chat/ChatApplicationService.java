@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kato.pro.langchain.common.exception.BusinessException;
 import com.kato.pro.langchain.common.exception.ErrorCode;
 import com.kato.pro.langchain.common.tenant.TenantContext;
+import com.kato.pro.langchain.common.metrics.ChatMetrics;
 import com.kato.pro.langchain.config.ChatEngineProperties;
 import com.kato.pro.langchain.domain.knowledge.RagPipeline;
 import com.kato.pro.langchain.domain.knowledge.ScoredChunk;
@@ -72,6 +73,10 @@ public class ChatApplicationService {
             return Mono.error(new BusinessException(ErrorCode.PARAM_INVALID, "userInput 不能为空"));
         }
 
+        // M11 metrics: 入口 + 出口埋点
+        long start = System.currentTimeMillis();
+        ChatMetrics.onRequest("unknown");
+
         // Step 1: 入参安全
         SafetyResult inSafety = safetyService.checkInput(userInput);
         safetyService.assertPassedOrThrow(inSafety);
@@ -86,14 +91,21 @@ public class ChatApplicationService {
 
         // Step 4-8: 意图 → RAG → 拼 prompt → 调模型 → tool_call 解析与执行
         return intentClassifier.classify(userInput)
-                .flatMap(intent -> ragIfNeeded(userInput, intent)
-                        .flatMap(ragHits -> {
-                            String prompt = buildPrompt(tenantId, history, ragHits, intent, userInput);
-                            return modelRouter.route(TaskType.COMPLEX_CHAT,
-                                    "你是客服助手。基于上下文回答用户问题。", prompt);
-                        })
-                        .flatMap(reply -> postProcess(reply, userInput, sessionId))
-                );
+                .flatMap(intent -> {
+                    ChatMetrics.onRequest(intent.name());
+                    return ragIfNeeded(userInput, intent)
+                            .flatMap(ragHits -> {
+                                String prompt = buildPrompt(tenantId, history, ragHits, intent, userInput);
+                                return modelRouter.route(TaskType.COMPLEX_CHAT,
+                                        "你是客服助手。基于上下文回答用户问题。", prompt);
+                            })
+                            .flatMap(reply -> postProcess(reply, userInput, sessionId));
+                })
+                .doOnSuccess(reply -> ChatMetrics.onDuration(System.currentTimeMillis() - start))
+                .doOnError(err -> {
+                    ChatMetrics.onDuration(System.currentTimeMillis() - start);
+                    ChatMetrics.onError(err.getClass().getSimpleName());
+                });
     }
 
     /** RAG_ONLY / TOOL_CALL 触发 RAG；CHITCHAT 跳过 */
