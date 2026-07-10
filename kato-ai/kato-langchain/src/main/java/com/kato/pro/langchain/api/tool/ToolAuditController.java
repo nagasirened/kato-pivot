@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.kato.pro.langchain.api.chat.dto.PageResult;
 import com.kato.pro.langchain.api.tool.dto.ApproveRequest;
 import com.kato.pro.langchain.api.tool.dto.AuditListVO;
+import com.kato.pro.langchain.api.tool.dto.AuditStatsVO;
 import com.kato.pro.langchain.common.exception.BusinessException;
 import com.kato.pro.langchain.common.exception.ErrorCode;
 import com.kato.pro.langchain.common.result.Result;
 import com.kato.pro.langchain.common.tenant.TenantContext;
 import com.kato.pro.langchain.domain.tool.ToolAuditService;
+import com.kato.pro.langchain.domain.tool.ToolAuditStatsService;
 import com.kato.pro.langchain.domain.tool.ToolCallAudit;
 import com.kato.pro.langchain.domain.tool.ToolDispatcher;
 import com.kato.pro.langchain.domain.tool.ToolResult;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  *   GET  /api/v1/admin/tool/audit?status=&toolName=&page=&size=    审核列表
  *   POST /api/v1/admin/tool/audit/{id}/approve                     审核通过
  *   POST /api/v1/admin/tool/audit/{id}/reject                      审核拒绝
+ *   GET  /api/v1/admin/tool/audit/stats?days=7                     维度统计（M10）
  */
 @RestController
 @RequestMapping("/api/v1/admin/tool/audit")
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ToolAuditController {
 
     private final ToolAuditService auditService;
+    private final ToolAuditStatsService statsService;
     private final ToolDispatcher dispatcher;
 
     @GetMapping
@@ -58,5 +62,13 @@ public class ToolAuditController {
         if (req == null) throw new BusinessException(ErrorCode.PARAM_INVALID, "body 不能为空");
         Long approverId = TenantContext.requireCurrent().userId();
         return Result.ok(auditService.reject(id, approverId));
+    }
+
+    @GetMapping("/stats")
+    public Result<AuditStatsVO> stats(@RequestParam(defaultValue = "7") int days) {
+        if (days < 1 || days > 90) {
+            throw new BusinessException(ErrorCode.PARAM_INVALID, "days 必须在 1-90");
+        }
+        return Result.ok(statsService.stats(days));
     }
 }
