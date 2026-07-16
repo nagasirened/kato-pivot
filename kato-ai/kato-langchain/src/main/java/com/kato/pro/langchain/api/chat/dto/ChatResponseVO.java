@@ -2,9 +2,12 @@ package com.kato.pro.langchain.api.chat.dto;
 
 import lombok.Builder;
 import lombok.Value;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Value
 @Builder
+@Schema(description = "对话响应体")
 public class ChatResponseVO {
     Long sessionId;
     String reply;

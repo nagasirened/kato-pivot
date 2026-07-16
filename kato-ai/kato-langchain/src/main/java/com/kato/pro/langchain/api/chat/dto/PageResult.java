@@ -6,6 +6,8 @@ import lombok.Value;
 
 import java.util.List;
 import java.util.function.Function;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * 统一分页响应。MyBatis-Plus IPage → API PageResult 转换。
@@ -13,6 +15,7 @@ import java.util.function.Function;
  */
 @Value
 @Builder
+@Schema(description = "统一分页响应")
 public class PageResult<T> {
     long page;
     long size;

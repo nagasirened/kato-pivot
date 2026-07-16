@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.util.Map;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * 工具调用审计统计（GET /api/v1/admin/tool/audit/stats）。
@@ -16,6 +18,7 @@ import java.util.Map;
  */
 @Value
 @Builder
+@Schema(description = "审计统计视图")
 public class AuditStatsVO {
     int days;
     long total;

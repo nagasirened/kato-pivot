@@ -1,5 +1,7 @@
 package com.kato.pro.langchain.api.chat.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * SSE 流事件类型。
  *
@@ -9,6 +11,7 @@ package com.kato.pro.langchain.api.chat.dto;
  *   - END    : 流结束（最终内容）
  *   - ERROR  : 流异常
  */
+@Schema(description = "SSE 流事件（START/CHUNK/TOOL/END/ERROR）")
 public record SseEvent(String type, String data, Long auditId, String toolName) {
 
     public static SseEvent start(Long sessionId) {

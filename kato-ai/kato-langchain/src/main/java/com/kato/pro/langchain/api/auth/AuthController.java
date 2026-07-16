@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.Optional;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+
+
 
 /**
  * 鉴权 REST API（spec §6 M11）。
@@ -34,6 +38,7 @@ import java.util.Optional;
  * v2：bcrypt + 真实密码策略。
  */
 @Slf4j
+@Tag(name = "Auth", description = "登录、JWT 颁发、当前用户信息")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -42,6 +47,7 @@ public class AuthController {
     private final UserMapper userMapper;
     private final JwtTokenService tokenService;
     private final JwtProperties jwtProperties;
+    @Operation(operationId = "UserLogin", summary = "用户登录", description = "校验用户名密码，颁发 JWT（默认 24h 有效）")
 
     @PostMapping("/login")
     public Result<LoginResponse> login(@Valid @RequestBody LoginRequest req) {

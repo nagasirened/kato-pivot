@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * 消息视图对象。
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Value
 @Builder
+@Schema(description = "消息视图对象")
 public class MessageVO {
     Long id;
     Long sessionId;

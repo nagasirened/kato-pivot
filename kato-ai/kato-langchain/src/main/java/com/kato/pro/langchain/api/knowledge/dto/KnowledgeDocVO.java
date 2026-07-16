@@ -7,9 +7,12 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Value
 @Builder
+@Schema(description = "知识库文档视图")
 public class KnowledgeDocVO {
     Long id;
     String title;

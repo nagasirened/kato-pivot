@@ -1,6 +1,8 @@
 package com.kato.pro.langchain.common.exception;
 
 import com.kato.pro.langchain.common.result.Result;
+import com.kato.pro.resilience.aspect.CircuitOpenException;
+import com.kato.pro.resilience.aspect.RateLimitException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,11 @@ import java.util.stream.Collectors;
  * 记录策略：
  *   - BusinessException → log.warn（可预期，不需 error 级别）
  *   - SystemException + 其它 → log.error（系统级，需要排查）
+ *   - RateLimitException / CircuitOpenException → log.warn（保护性触发，可预期）
+ *
+ * HTTP 状态码映射：
+ *   - RateLimitException → 429 Too Many Requests
+ *   - CircuitOpenException → 503 Service Unavailable
  */
 @Slf4j
 @RestControllerAdvice
@@ -34,6 +41,21 @@ public class GlobalExceptionHandler {
         // 系统异常对外隐藏细节，只返回错误码 + 通用 message
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Result.fail(e.getErrorCode(), e.getErrorCode().getMessage()));
+    }
+
+    @ExceptionHandler(RateLimitException.class)
+    public ResponseEntity<Result<Object>> handleRateLimit(RateLimitException e) {
+        // 原始 message 仅用于服务端日志（含 key/dimension 等内部 trace），对外用 ErrorCode 默认文案
+        log.warn("Rate limit triggered: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(Result.fail(ErrorCode.RATE_LIMITED, ErrorCode.RATE_LIMITED.getMessage()));
+    }
+
+    @ExceptionHandler(CircuitOpenException.class)
+    public ResponseEntity<Result<Object>> handleCircuitOpen(CircuitOpenException e) {
+        log.warn("Circuit breaker open: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Result.fail(ErrorCode.CIRCUIT_OPEN, ErrorCode.CIRCUIT_OPEN.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

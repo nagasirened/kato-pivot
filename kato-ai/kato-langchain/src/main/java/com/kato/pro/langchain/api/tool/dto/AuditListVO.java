@@ -5,9 +5,12 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Value
 @Builder
+@Schema(description = "工具审计列表视图")
 public class AuditListVO {
     Long id;
     String toolName;

@@ -5,9 +5,12 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Value
 @Builder
+@Schema(description = "Prompt 模板视图")
 public class PromptTemplateVO {
     Long id;
     Long tenantId;

@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+
+
 
 /**
  * 内容安全 REST API：
@@ -24,15 +29,17 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * 命中违规时 controller 不会抛异常 — 由调用方根据 passed 决定下一步（M8 走 assertPassedOrThrow）。
  */
+@Tag(name = "Content-Safety", description = "内容安全检测 + 命中统计")
 @RestController
 @RequestMapping("/api/v1/safety")
 @RequiredArgsConstructor
 public class ContentSafetyController {
 
     private final ContentSafetyService service;
+    @Operation(operationId = "SafetyCheck", summary = "内容安全检测", description = "敏感词 / 政治 / 暴力 / 广告四合一检测")
 
     @PostMapping("/check")
-    public Result<SafetyResultVO> check(@RequestBody SafetyCheckRequest req) {
+    public Result<SafetyResultVO> check(@Valid @RequestBody SafetyCheckRequest req) {
         if (req == null || req.getText() == null || req.getText().isBlank()) {
             throw new BusinessException(ErrorCode.PARAM_INVALID, "text 不能为空");
         }
@@ -42,6 +49,7 @@ public class ContentSafetyController {
                 : service.checkInput(req.getText());
         return Result.ok(SafetyResultVO.from(r));
     }
+    @Operation(operationId = "SafetyStats", summary = "检测命中统计", description = "查询最近 N 天的命中情况")
 
     @GetMapping("/stats")
     public Result<StatsVO> stats() {

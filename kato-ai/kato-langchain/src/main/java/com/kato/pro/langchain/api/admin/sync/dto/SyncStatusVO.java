@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.util.Map;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * Adapter 状态概览（GET /api/v1/admin/sync/status）。
@@ -16,6 +18,7 @@ import java.util.Map;
  */
 @Value
 @Builder
+@Schema(description = "同步状态视图")
 public class SyncStatusVO {
     String adapterName;
     String description;

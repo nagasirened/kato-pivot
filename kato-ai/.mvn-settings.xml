@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <localRepository>${user.home}/.m2/repository</localRepository>
+  <profiles>
+    <profile>
+      <id>offline-strict</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>file://${user.home}/.m2/repository</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>file://${user.home}/.m2/repository</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>offline-strict</activeProfile>
+  </activeProfiles>
+</settings>

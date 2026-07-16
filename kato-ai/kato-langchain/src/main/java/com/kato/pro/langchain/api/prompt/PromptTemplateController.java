@@ -13,7 +13,8 @@ import com.kato.pro.langchain.domain.prompt.PromptRenderer;
 import com.kato.pro.langchain.domain.prompt.PromptTemplate;
 import com.kato.pro.langchain.domain.prompt.PromptTemplateRegistry;
 import com.kato.pro.langchain.domain.prompt.PromptTemplateService;
-import com.kato.pro.langchain.domain.prompt.PromptTemplateVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import jakarta.validation.Valid;
 
 /**
  * Prompt 模板 REST API：
@@ -35,6 +37,7 @@ import java.util.Map;
  *   DELETE /api/v1/prompts/{id}             删除
  *   POST   /api/v1/prompts/render           渲染（key + vars → content）
  */
+@Tag(name = "Prompt-Template", description = "Prompt 模板 CRUD + 渲染")
 @RestController
 @RequestMapping("/api/v1/prompts")
 @RequiredArgsConstructor
@@ -44,6 +47,8 @@ public class PromptTemplateController {
     private final PromptTemplateRegistry registry;
     private final PromptRenderer renderer;
 
+    @Operation(operationId = "ListPromptTemplates", summary = "模板列表",
+            description = "分页查询 prompt 模板")
     @GetMapping
     public Result<PageResult<PromptTemplateVO>> list(
             @RequestParam(defaultValue = "1") int page,
@@ -52,14 +57,18 @@ public class PromptTemplateController {
         return Result.ok(PageResult.of(p, PromptTemplateVO::from));
     }
 
+    @Operation(operationId = "CreatePromptTemplate", summary = "创建模板",
+            description = "新建 prompt 模板")
     @PostMapping
-    public Result<PromptTemplateVO> create(@RequestBody PromptTemplateVO vo) {
+    public Result<PromptTemplateVO> create(@Valid @RequestBody PromptTemplateVO vo) {
         if (vo == null) throw new BusinessException(ErrorCode.PARAM_INVALID, "body 不能为空");
         PromptTemplate t = service.create(vo.getTenantId(), vo.getTemplateKey(),
                 vo.getContent(), vo.getDescription());
         return Result.ok(PromptTemplateVO.from(t));
     }
 
+    @Operation(operationId = "UpdatePromptTemplate", summary = "更新模板",
+            description = "按 id 修改模板内容")
     @PutMapping("/{id}")
     public Result<PromptTemplateVO> update(@PathVariable Long id, @RequestBody PromptTemplateVO vo) {
         if (vo == null) throw new BusinessException(ErrorCode.PARAM_INVALID, "body 不能为空");
@@ -67,13 +76,17 @@ public class PromptTemplateController {
         return Result.ok(PromptTemplateVO.from(t));
     }
 
+    @Operation(operationId = "DeletePromptTemplate", summary = "删除模板",
+            description = "按 id 删除模板")
     @DeleteMapping("/{id}")
     public Result<Boolean> delete(@PathVariable Long id) {
         return Result.ok(service.delete(id));
     }
 
+    @Operation(operationId = "RenderPrompt", summary = "渲染模板",
+            description = "用变量渲染模板，输出最终 prompt")
     @PostMapping("/render")
-    public Result<RenderResponse> render(@RequestBody RenderRequest req) {
+    public Result<RenderResponse> render(@Valid @RequestBody RenderRequest req) {
         if (req == null || req.getKey() == null || req.getKey().isBlank()) {
             throw new BusinessException(ErrorCode.PARAM_INVALID, "key 不能为空");
         }
@@ -85,14 +98,9 @@ public class PromptTemplateController {
                     return Result.ok(RenderResponse.builder()
                             .key(req.getKey())
                             .content(content)
-                            .source(t.source())
-                            .version(t.version())
                             .build());
                 })
-                .orElseGet(() -> Result.ok(RenderResponse.builder()
-                        .key(req.getKey())
-                        .content("")
-                        .source("MISS")
-                        .build()));
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,
+                        "template not found: " + req.getKey()));
     }
 }

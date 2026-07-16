@@ -6,6 +6,8 @@ import lombok.Value;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * 内容安全检测结果 VO。
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 @Value
 @Builder
+@Schema(description = "安全检测结果视图")
 public class SafetyResultVO {
     boolean passed;
     List<String> hitWords;

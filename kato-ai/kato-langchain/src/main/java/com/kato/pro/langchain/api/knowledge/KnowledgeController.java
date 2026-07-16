@@ -15,14 +15,24 @@ import com.kato.pro.langchain.domain.knowledge.RagPipeline;
 import com.kato.pro.langchain.domain.knowledge.ScoredChunk;
 import com.kato.pro.langchain.domain.knowledge.SourceType;
 import com.kato.pro.langchain.domain.rag.QueryRewriter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import jakarta.validation.Valid;
 
 /**
  * 知识库 REST API（D6=A — 完整 CRUD + 上传 + 检索）。
@@ -33,6 +43,7 @@ import java.util.Set;
  *   POST   /api/v1/knowledge/search        — 检索（debug/admin 用）
  */
 @Slf4j
+@Tag(name = "Knowledge", description = "知识库文档 CRUD + 检索")
 @RestController
 @RequestMapping("/api/v1/knowledge")
 @RequiredArgsConstructor
@@ -42,6 +53,8 @@ public class KnowledgeController {
     private final RagPipeline ragPipeline;
     private final QueryRewriter queryRewriter;
 
+    @Operation(operationId = "IngestDocument", summary = "知识入库",
+            description = "上传文本块，触发 embedding + 入库")
     @PostMapping("/docs")
     public Result<KnowledgeDocVO> upload(
             @RequestParam("file") MultipartFile file,
@@ -66,6 +79,8 @@ public class KnowledgeController {
         return Result.ok(KnowledgeDocVO.from(indexed));
     }
 
+    @Operation(operationId = "ListDocuments", summary = "知识列表",
+            description = "分页查询知识库文档")
     @GetMapping("/docs")
     public Result<PageResult<KnowledgeDocVO>> list(
             @RequestParam(defaultValue = "1") int page,
@@ -78,14 +93,18 @@ public class KnowledgeController {
         return Result.ok(PageResult.of(p, KnowledgeDocVO::from));
     }
 
+    @Operation(operationId = "DeleteDocument", summary = "删除文档",
+            description = "按 id 删除知识库文档")
     @DeleteMapping("/docs/{id}")
     public Result<Boolean> delete(@PathVariable Long id) {
         boolean ok = docService.delete(id);
         return Result.ok(ok);
     }
 
+    @Operation(operationId = "Search", summary = "语义检索",
+            description = "按 query 检索最相似的 topK 个文档")
     @PostMapping("/search")
-    public Result<SearchResultVO> search(@RequestBody SearchRequest req) {
+    public Result<SearchResultVO> search(@Valid @RequestBody SearchRequest req) {
         if (req == null || req.getQuery() == null || req.getQuery().isBlank()) {
             throw new BusinessException(ErrorCode.PARAM_INVALID, "query 不能为空");
         }

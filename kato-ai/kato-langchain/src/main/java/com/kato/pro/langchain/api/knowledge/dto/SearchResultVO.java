@@ -6,9 +6,12 @@ import lombok.Value;
 
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Value
 @Builder
+@Schema(description = "RAG 检索结果视图")
 public class SearchResultVO {
     String query;
     String rewrittenQuery;

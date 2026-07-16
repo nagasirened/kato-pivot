@@ -15,6 +15,8 @@ public enum ErrorCode {
     PARAM_INVALID(1001, "参数无效"),
     RESOURCE_NOT_FOUND(1002, "资源不存在"),
     DUPLICATE_RESOURCE(1003, "资源已存在"),
+    RATE_LIMITED(1004, "请求过于频繁，请稍后再试"),
+    CIRCUIT_OPEN(1005, "服务暂不可用，请稍后再试"),
 
     // 2xxx 鉴权/权限
     UNAUTHORIZED(2001, "未登录或登录已过期"),

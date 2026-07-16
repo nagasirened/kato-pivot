@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * 同步运行记录 VO（GET /api/v1/admin/sync/runs）。
  */
 @Value
 @Builder
+@Schema(description = "同步运行记录视图")
 public class SyncRunVO {
     Long id;
     String adapterName;

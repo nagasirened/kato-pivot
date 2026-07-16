@@ -25,6 +25,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.springframework.validation.annotation.Validated;
+
+
 
 /**
  * 工具审核 REST API（admin + M11 RBAC）。
@@ -34,6 +41,8 @@ import org.springframework.web.bind.annotation.RestController;
  *   POST /api/v1/admin/tool/audit/{id}/reject                      审核拒绝（ADMIN）
  *   GET  /api/v1/admin/tool/audit/stats?days=7                     维度统计（ADMIN/OPERATOR）
  */
+@Tag(name = "Tool-Audit", description = "工具调用审计：查询、审批、拒绝、统计")
+@Validated
 @RestController
 @RequestMapping("/api/v1/admin/tool/audit")
 @RequiredArgsConstructor
@@ -43,6 +52,7 @@ public class ToolAuditController {
     private final ToolAuditStatsService statsService;
     private final ToolDispatcher dispatcher;
 
+    @Operation(operationId = "ListToolAudit", summary = "审计列表", description = "分页查询工具调用审计记录")
     @GetMapping
     @RequireRole({Role.ADMIN, Role.OPERATOR})
     public Result<PageResult<AuditListVO>> list(
@@ -55,6 +65,7 @@ public class ToolAuditController {
         return Result.ok(PageResult.of(p, AuditListVO::from));
     }
 
+    @Operation(operationId = "ApproveToolAudit", summary = "审批通过", description = "管理员审批通过指定审计记录")
     @PostMapping("/{id}/approve")
     @RequireRole(Role.ADMIN)
     @OpAuditLog(action = "APPROVE", resource = "TOOL")
@@ -63,6 +74,7 @@ public class ToolAuditController {
         return Result.ok(dispatcher.executeApproved(id));
     }
 
+    @Operation(operationId = "RejectToolAudit", summary = "审批拒绝", description = "管理员拒绝指定审计记录")
     @PostMapping("/{id}/reject")
     @RequireRole(Role.ADMIN)
     @OpAuditLog(action = "REJECT", resource = "TOOL")
@@ -72,9 +84,10 @@ public class ToolAuditController {
         return Result.ok(auditService.reject(id, approverId));
     }
 
+    @Operation(operationId = "ToolAuditStats", summary = "审计统计", description = "工具调用成功率/拒绝率统计")
     @GetMapping("/stats")
     @RequireRole({Role.ADMIN, Role.OPERATOR})
-    public Result<AuditStatsVO> stats(@RequestParam(defaultValue = "7") int days) {
+    public Result<AuditStatsVO> stats(@RequestParam(defaultValue = "7") @Min(1) @Max(90) int days) {
         if (days < 1 || days > 90) {
             throw new BusinessException(ErrorCode.PARAM_INVALID, "days 必须在 1-90");
         }
