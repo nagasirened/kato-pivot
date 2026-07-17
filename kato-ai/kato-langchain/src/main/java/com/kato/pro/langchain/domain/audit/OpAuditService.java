@@ -7,6 +7,7 @@ import com.kato.pro.langchain.common.security.AuthInfo;
 import com.kato.pro.langchain.common.trace.TraceContext;
 import com.kato.pro.langchain.infrastructure.persistence.OpAuditMapper;
 import lombok.RequiredArgsConstructor;
+import com.kato.pro.langchain.domain.audit.OpAuditJsonAppender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class OpAuditService {
 
     private final OpAuditMapper mapper;
     private final ObjectMapper objectMapper;
+    private final OpAuditJsonAppender jsonAppender;
 
     /**
      * 记录一次操作审计。失败时 log 异常但不抛出。
@@ -63,6 +65,8 @@ public class OpAuditService {
             audit.setDurationMs((int) Math.min(durationMs, Integer.MAX_VALUE));
             audit.setCreateTime(LocalDateTime.now());
             mapper.insert(audit);
+            // M14: 同步追加 NDJSON 行到日志文件（失败仅 log warn，append 内部处理）
+            jsonAppender.append(audit);
         } catch (Exception e) {
             log.error("OpAudit write failed: user={} action={} resource={}",
                     info.username(), action, resource, e);

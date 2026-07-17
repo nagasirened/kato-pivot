@@ -139,3 +139,10 @@ alert:
   enabled: true
   interval-ms: 60000
   webhook-url: ""
+
+kato:
+  audit:
+    file:
+      enabled: false      # 生产开启：true 后每条审计追加一行 NDJSON 到 logs/op-audit.json
+      path: logs/op-audit.json
+      max-line-length: 8000
