@@ -1,0 +1,98 @@
+[
+  {
+    "id": "faq-return-001",
+    "query": "退货流程是什么",
+    "expectedChunkIds": [1001],
+    "expectedMinScore": null,
+    "category": "退货",
+    "notes": "基础退货流程"
+  },
+  {
+    "id": "faq-return-002",
+    "query": "怎么申请退货",
+    "expectedChunkIds": [1002],
+    "expectedMinScore": null,
+    "category": "退货",
+    "notes": "口语化 query"
+  },
+  {
+    "id": "faq-refund-001",
+    "query": "如何申请退款",
+    "expectedChunkIds": [1003, 1004],
+    "expectedMinScore": null,
+    "category": "退款",
+    "notes": "多 chunk 命中"
+  },
+  {
+    "id": "faq-refund-002",
+    "query": "退款多久到账",
+    "expectedChunkIds": [1005],
+    "expectedMinScore": null,
+    "category": "退款",
+    "notes": "时效类问题"
+  },
+  {
+    "id": "faq-logistics-001",
+    "query": "订单多久发货",
+    "expectedChunkIds": [1006],
+    "expectedMinScore": null,
+    "category": "物流",
+    "notes": "发货时效"
+  },
+  {
+    "id": "faq-logistics-002",
+    "query": "怎么看物流",
+    "expectedChunkIds": [1007],
+    "expectedMinScore": null,
+    "category": "物流",
+    "notes": "物流查询入口"
+  },
+  {
+    "id": "faq-order-001",
+    "query": "如何取消订单",
+    "expectedChunkIds": [1008],
+    "expectedMinScore": null,
+    "category": "订单",
+    "notes": "订单状态变更"
+  },
+  {
+    "id": "faq-order-002",
+    "query": "订单状态怎么查",
+    "expectedChunkIds": [1009],
+    "expectedMinScore": null,
+    "category": "订单",
+    "notes": "订单状态查询"
+  },
+  {
+    "id": "faq-faq-001",
+    "query": "优惠券怎么用",
+    "expectedChunkIds": [1010],
+    "expectedMinScore": null,
+    "category": "优惠",
+    "notes": "FAQ 优惠"
+  },
+  {
+    "id": "faq-faq-002",
+    "query": "发票怎么开",
+    "expectedChunkIds": [1011],
+    "expectedMinScore": null,
+    "category": "发票",
+    "notes": "FAQ 发票"
+  },
+  {
+    "id": "faq-account-001",
+    "query": "怎么修改密码",
+    "expectedChunkIds": [1012],
+    "expectedMinScore": null,
+    "category": "账户",
+    "notes": "账户安全"
+  },
+  {
+    "id": "faq-pay-001",
+    "query": "支持哪些支付方式",
+    "expectedChunkIds": [1013],
+    "expectedMinScore": null,
+    "category": "支付",
+    "notes": "支付方式"
+  }
+]
