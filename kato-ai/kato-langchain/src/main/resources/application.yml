@@ -146,3 +146,28 @@ kato:
       enabled: false      # 生产开启：true 后每条审计追加一行 NDJSON 到 logs/op-audit.json
       path: logs/op-audit.json
       max-line-length: 8000
+
+# ====== M16: Kato Config Refresh ======
+kato:
+  config:
+    refresh:
+      enabled: true
+      # 业务方关心的 key（健康日志 / 监控用）
+      watched-keys:
+        kato.audit.file.enabled: "审计文件输出开关"
+        chat-engine.rag-top-k: "RAG top-K"
+        chat-engine.rag-min-score: "RAG 最小分数"
+
+# ====== M17: Nacos Config Source（生产启用，沙箱默认关）======
+kato:
+  config:
+    nacos:
+      enabled: false        # 沙箱默认 false；生产开 true
+      server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+      namespace: ${NACOS_NAMESPACE:}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+      group: ${NACOS_GROUP:DEFAULT_GROUP}
+      data-ids:
+        - kato-langchain-common
+      timeout-ms: 10000

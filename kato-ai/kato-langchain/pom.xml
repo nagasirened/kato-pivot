@@ -131,6 +131,13 @@
             <artifactId>kato-metrics</artifactId>
         </dependency>
 
+        <!-- M17: Nacos client (直连 nacos-client，不引 spring-cloud-alibaba 避免 spring-cloud-context 传递依赖) -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
